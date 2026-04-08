@@ -1,5 +1,3 @@
-package isilimageprocessing;
-
 import CImage.*;
 import CImage.Exceptions.*;
 import CImage.Observers.*;
@@ -24,7 +22,7 @@ import org.jfree.data.xy.XYSeriesCollection;
  *
  * @author  HP_Propri�taire
  */
-public class IsilImageProcessing extends JFrame implements ClicListener,SelectLigneListener,SelectRectListener,SelectRectFillListener,SelectCercleListener,SelectCercleFillListener
+public class Main extends JFrame implements ClicListener,SelectLigneListener,SelectRectListener,SelectRectFillListener,SelectCercleListener,SelectCercleFillListener
 {
     private CImageRGB imageRGB;
     private CImageNG  imageNG;
@@ -34,7 +32,7 @@ public class IsilImageProcessing extends JFrame implements ClicListener,SelectLi
     private int   couleurPinceauNG;
     
     /** Creates new form TestCImage2 */
-    public IsilImageProcessing() 
+    public Main()
     {
         initComponents();
         
@@ -101,10 +99,10 @@ public class IsilImageProcessing extends JFrame implements ClicListener,SelectLi
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Isil Image Processing");
 
-        jMenuImage.setIcon(new ImageIcon(getClass().getResource("/Icones/Net 13_p1.jpg"))); // NOI18N
+        jMenuImage.setIcon(new ImageIcon(getClass().getResource("/net_13_p1.jpg"))); // NOI18N
         jMenuImage.setText("Image");
 
-        jMenuNouvelle.setIcon(new ImageIcon(getClass().getResource("/Icones/File 65_p3.jpg"))); // NOI18N
+        jMenuNouvelle.setIcon(new ImageIcon(getClass().getResource("/file_65_p3.jpg"))); // NOI18N
         jMenuNouvelle.setText("Nouvelle");
 
         jMenuItemNouvelleRGB.setText("Image RGB");
@@ -125,7 +123,7 @@ public class IsilImageProcessing extends JFrame implements ClicListener,SelectLi
 
         jMenuImage.add(jMenuNouvelle);
 
-        jMenuOuvrir.setIcon(new ImageIcon(getClass().getResource("/Icones/Folder 036_p3.jpg"))); // NOI18N
+        jMenuOuvrir.setIcon(new ImageIcon(getClass().getResource("/folder_036_p3.jpg"))); // NOI18N
         jMenuOuvrir.setText("Ouvrir");
 
         jMenuItemOuvrirRGB.setText("Image RGB");
@@ -146,7 +144,7 @@ public class IsilImageProcessing extends JFrame implements ClicListener,SelectLi
 
         jMenuImage.add(jMenuOuvrir);
 
-        jMenuItemEnregistrerSous.setIcon(new ImageIcon(getClass().getResource("/Icones/DD 27_p3.jpg"))); // NOI18N
+        jMenuItemEnregistrerSous.setIcon(new ImageIcon(getClass().getResource("/dd_27_p3.jpg"))); // NOI18N
         jMenuItemEnregistrerSous.setText("Enregistrer sous...");
         jMenuItemEnregistrerSous.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,7 +154,7 @@ public class IsilImageProcessing extends JFrame implements ClicListener,SelectLi
         jMenuImage.add(jMenuItemEnregistrerSous);
         jMenuImage.add(jSeparator1);
 
-        jMenuQuitter.setIcon(new ImageIcon(getClass().getResource("/Icones/CP 59_p3.jpg"))); // NOI18N
+        jMenuQuitter.setIcon(new ImageIcon(getClass().getResource("/cp_59_p3.jpg"))); // NOI18N
         jMenuQuitter.setText("Quitter");
         jMenuQuitter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,10 +165,10 @@ public class IsilImageProcessing extends JFrame implements ClicListener,SelectLi
 
         jMenuBar1.add(jMenuImage);
 
-        jMenuDessiner.setIcon(new ImageIcon(getClass().getResource("/Icones/Display 28_p1.jpg"))); // NOI18N
+        jMenuDessiner.setIcon(new ImageIcon(getClass().getResource("/dd_28_p1.jpg"))); // NOI18N
         jMenuDessiner.setText("Dessiner");
 
-        jMenuItemCouleurPinceau.setIcon(new ImageIcon(getClass().getResource("/Icones/Display 14_p3.jpg"))); // NOI18N
+        jMenuItemCouleurPinceau.setIcon(new ImageIcon(getClass().getResource("/display_14_p3.jpg"))); // NOI18N
         jMenuItemCouleurPinceau.setText("Couleur");
         jMenuItemCouleurPinceau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -230,10 +228,10 @@ public class IsilImageProcessing extends JFrame implements ClicListener,SelectLi
 
         jMenuBar1.add(jMenuDessiner);
 
-        jMenuFourier.setIcon(new ImageIcon(getClass().getResource("/Icones/CP 51_p1.jpg"))); // NOI18N
+        jMenuFourier.setIcon(new ImageIcon(getClass().getResource("/cp_51_p1.jpg"))); // NOI18N
         jMenuFourier.setText("Fourier");
 
-        jMenuFourierAfficher.setIcon(new ImageIcon(getClass().getResource("/Icones/CP 51_p3.jpg"))); // NOI18N
+        jMenuFourierAfficher.setIcon(new ImageIcon(getClass().getResource("/cp_51_p3.jpg"))); // NOI18N
         jMenuFourierAfficher.setText("Afficher");
 
         jMenuItemFourierAfficherModule.setText("Module");
@@ -272,10 +270,10 @@ public class IsilImageProcessing extends JFrame implements ClicListener,SelectLi
 
         jMenuBar1.add(jMenuFourier);
 
-        jMenuHistogramme.setIcon(new ImageIcon(getClass().getResource("/Icones/report_48_hot.jpg"))); // NOI18N
+        jMenuHistogramme.setIcon(new ImageIcon(getClass().getResource("/report_48_hot.jpg"))); // NOI18N
         jMenuHistogramme.setText("Histogramme");
 
-        jMenuHistogrammeAfficher.setIcon(new ImageIcon(getClass().getResource("/Icones/report_32_hot.jpg"))); // NOI18N
+        jMenuHistogrammeAfficher.setIcon(new ImageIcon(getClass().getResource("/report_32_hot.jpg"))); // NOI18N
         jMenuHistogrammeAfficher.setText("Afficher");
         jMenuHistogrammeAfficher.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -651,7 +649,7 @@ public class IsilImageProcessing extends JFrame implements ClicListener,SelectLi
     public static void main(String args[]) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new IsilImageProcessing().setVisible(true);
+                new Main().setVisible(true);
             }
         });
     }

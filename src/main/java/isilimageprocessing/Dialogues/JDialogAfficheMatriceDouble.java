@@ -147,7 +147,7 @@ public class JDialogAfficheMatriceDouble extends JDialog
             }
         });
 
-        jButton1.setIcon(new ImageIcon(getClass().getResource("/Icones/DD 27_p3.jpg")));
+        jButton1.setIcon(new ImageIcon(getClass().getResource("/dd_27_p3.jpg")));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
