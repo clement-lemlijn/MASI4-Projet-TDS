@@ -33,7 +33,7 @@ public class MainView extends JFrame implements ClicListener,SelectLigneListener
     private CImageRGB imageRGB;
     private CImageNG  imageNG;
 
-    private JLabelBeanCImage observer;
+    private final JLabelBeanCImage observer;
     private Color couleurPinceauRGB;
     private int   couleurPinceauNG;
 
