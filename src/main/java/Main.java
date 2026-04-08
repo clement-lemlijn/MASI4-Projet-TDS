@@ -1,20 +1,20 @@
+import app.AppModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import presenters.MainPresenter;
 import ui.implementation.views.MainView;
 
 import javax.swing.*;
 
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         Injector injector = Guice.createInjector(new AppModule());
 
         SwingUtilities.invokeLater(() -> {
-            MainView frame = injector.getInstance(MainView.class);
-            frame.setVisible(true);
+            MainView view = injector.getInstance(MainView.class);
+            MainPresenter presenter = injector.getInstance(MainPresenter.class);
+            view.setPresenter(presenter);
         });
     }
 }
