@@ -1,6 +1,9 @@
-package CImage;
+package domain.CImage;
 
 import CImage.Exceptions.*;
+import domain.CImage.Exceptions.CImageNGException;
+import domain.CImage.Exceptions.CImageRGBException;
+
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
@@ -12,7 +15,7 @@ public class CImageRGB extends CImage
      * @param la largeur de l'image (la>0)
      * @param ha hauteur de l'image (ha>0)
      * @param c couleur d'initialisation de l'image
-     * @exception CImageRGBException Parametres d'initialisation invalides 
+     * @exception CImageRGBException Parametres d'initialisation invalides
     */
     public CImageRGB(int la,int ha,Color c) throws CImageRGBException
     {

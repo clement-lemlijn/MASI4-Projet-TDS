@@ -1,7 +1,7 @@
 package ui.components.dialogs;
 
-import CImage.CImageRGB;
-import CImage.Exceptions.CImageRGBException;
+import domain.CImage.CImageRGB;
+import domain.CImage.Exceptions.CImageRGBException;
 import java.awt.Color;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;

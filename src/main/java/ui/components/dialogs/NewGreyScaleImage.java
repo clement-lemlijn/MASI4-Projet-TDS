@@ -1,7 +1,7 @@
 package ui.components.dialogs;
 
-import CImage.CImageNG;
-import CImage.Exceptions.CImageNGException;
+import domain.CImage.CImageNG;
+import domain.CImage.Exceptions.CImageNGException;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 

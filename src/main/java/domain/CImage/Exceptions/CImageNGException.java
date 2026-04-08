@@ -1,4 +1,4 @@
-package CImage.Exceptions;
+package domain.CImage.Exceptions;
 
 public class CImageNGException extends Exception
 {    

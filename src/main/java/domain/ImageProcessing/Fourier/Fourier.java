@@ -1,6 +1,7 @@
-package ImageProcessing.Fourier;
+package domain.ImageProcessing.Fourier;
 
 import ImageProcessing.Complexe.*;
+import domain.ImageProcessing.Complexe.MatriceComplexe;
 
 public class Fourier 
 {

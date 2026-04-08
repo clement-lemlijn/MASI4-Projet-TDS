@@ -1,6 +1,8 @@
-package CImage.Observers;
+package domain.CImage.Observers;
 
 import CImage.*;
+import domain.CImage.CImage;
+
 import javax.swing.*;
 
 public class JLabelCImage extends JLabel implements Observer

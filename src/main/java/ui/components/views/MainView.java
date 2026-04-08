@@ -1,12 +1,14 @@
 package ui.components.views;
 
-import CImage.*;
-import CImage.Exceptions.*;
-import CImage.Observers.*;
-import CImage.Observers.Events.*;
-import ImageProcessing.Complexe.MatriceComplexe;
-import ImageProcessing.Fourier.Fourier;
-import ImageProcessing.Histogramme.Histogramme;
+import domain.CImage.CImageNG;
+import domain.CImage.CImageRGB;
+import domain.CImage.Exceptions.CImageNGException;
+import domain.CImage.Exceptions.CImageRGBException;
+import domain.CImage.Observers.Events.*;
+import domain.CImage.Observers.JLabelBeanCImage;
+import domain.ImageProcessing.Complexe.MatriceComplexe;
+import domain.ImageProcessing.Fourier.Fourier;
+import domain.ImageProcessing.Histogramme.Histogramme;
 
 import java.awt.*;
 import java.io.*;
@@ -24,14 +26,10 @@ import ui.components.dialogs.GreyScalePicker;
 import ui.components.dialogs.NewGreyScaleImage;
 import ui.components.dialogs.NewRgbImage;
 
-/**
- *
- * @author  HP_Propri�taire
- */
-public class MainView extends JFrame implements ClicListener,SelectLigneListener,SelectRectListener,SelectRectFillListener,SelectCercleListener,SelectCercleFillListener
+public class MainView extends JFrame implements ClicListener, SelectLigneListener,SelectRectListener, SelectRectFillListener, SelectCercleListener,SelectCercleFillListener
 {
     private CImageRGB imageRGB;
-    private CImageNG  imageNG;
+    private CImageNG imageNG;
 
     private final JLabelBeanCImage observer;
     private Color couleurPinceauRGB;
@@ -60,7 +58,6 @@ public class MainView extends JFrame implements ClicListener,SelectLigneListener
         couleurPinceauRGB = Color.BLACK;
         couleurPinceauNG = 0;
     }
-
 
     /** This method is called from within the constructor to
      * initialize the form.

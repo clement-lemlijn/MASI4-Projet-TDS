@@ -1,6 +1,9 @@
-package CImage;
+package domain.CImage;
 
 import CImage.Exceptions.*;
+import domain.CImage.Exceptions.CImageNGException;
+import domain.CImage.Exceptions.CImageRGBException;
+
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;

@@ -1,4 +1,4 @@
-package ImageProcessing.Histogramme;
+package domain.ImageProcessing.Histogramme;
 
 public class Histogramme 
 {

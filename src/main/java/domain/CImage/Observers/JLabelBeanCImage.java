@@ -1,7 +1,10 @@
-package CImage.Observers;
+package domain.CImage.Observers;
 
 import CImage.*;
 import CImage.Observers.Events.*;
+import domain.CImage.CImage;
+import domain.CImage.Observers.Events.*;
+
 import java.awt.Color;
 import java.awt.event.*;
 import java.awt.image.*;

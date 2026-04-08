@@ -1,6 +1,8 @@
-package CImage;
+package domain.CImage;
 
 import CImage.Observers.*;
+import domain.CImage.Observers.Observer;
+
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;

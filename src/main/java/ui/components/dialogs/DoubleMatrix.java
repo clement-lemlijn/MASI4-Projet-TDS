@@ -1,8 +1,8 @@
 package ui.components.dialogs;
 
-import CImage.*;
-import CImage.Exceptions.CImageNGException;
-import CImage.Observers.JLabelBeanCImage;
+import domain.CImage.CImageNG;
+import domain.CImage.Exceptions.CImageNGException;
+import domain.CImage.Observers.JLabelBeanCImage;
 import java.io.*;
 import javax.swing.*;
 

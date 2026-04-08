@@ -1,4 +1,4 @@
-package CImage.Observers.Events;
+package domain.CImage.Observers.Events;
 
 import java.util.*;
 
