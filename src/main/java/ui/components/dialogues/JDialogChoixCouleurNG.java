@@ -1,4 +1,4 @@
-package isilimageprocessing.Dialogues;
+package ui.components.dialogues;
 
 import java.awt.Color;
 

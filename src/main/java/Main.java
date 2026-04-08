@@ -5,7 +5,7 @@ import CImage.Observers.Events.*;
 import ImageProcessing.Complexe.MatriceComplexe;
 import ImageProcessing.Fourier.Fourier;
 import ImageProcessing.Histogramme.Histogramme;
-import isilimageprocessing.Dialogues.*;
+
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
@@ -17,6 +17,10 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import ui.components.dialogues.JDialogAfficheMatriceDouble;
+import ui.components.dialogues.JDialogChoixCouleurNG;
+import ui.components.dialogues.JDialogNouvelleCImageNG;
+import ui.components.dialogues.JDialogNouvelleCImageRGB;
 
 /**
  *
