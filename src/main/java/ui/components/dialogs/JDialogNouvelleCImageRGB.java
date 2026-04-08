@@ -1,4 +1,4 @@
-package ui.components.dialogues;
+package ui.components.dialogs;
 
 import CImage.CImageRGB;
 import CImage.Exceptions.CImageRGBException;

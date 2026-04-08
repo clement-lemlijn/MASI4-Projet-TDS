@@ -17,10 +17,10 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import ui.components.dialogues.JDialogAfficheMatriceDouble;
-import ui.components.dialogues.JDialogChoixCouleurNG;
-import ui.components.dialogues.JDialogNouvelleCImageNG;
-import ui.components.dialogues.JDialogNouvelleCImageRGB;
+import ui.components.dialogs.JDialogAfficheMatriceDouble;
+import ui.components.dialogs.JDialogChoixCouleurNG;
+import ui.components.dialogs.JDialogNouvelleCImageNG;
+import ui.components.dialogs.JDialogNouvelleCImageRGB;
 
 /**
  *
