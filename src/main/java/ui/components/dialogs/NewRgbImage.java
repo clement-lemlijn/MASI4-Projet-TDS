@@ -6,13 +6,13 @@ import java.awt.Color;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
 
-public class JDialogNouvelleCImageRGB extends javax.swing.JDialog 
+public class NewRgbImage extends javax.swing.JDialog
 {
     private Color couleur;
     private CImageRGB cImageRGB;
     
     /** Creates new form JDialogChoixCouleurNG */
-    public JDialogNouvelleCImageRGB(java.awt.Frame parent, boolean modal) 
+    public NewRgbImage(java.awt.Frame parent, boolean modal)
     {
         super(parent, modal);
         couleur = new Color(255,255,255);
@@ -159,7 +159,7 @@ public class JDialogNouvelleCImageRGB extends javax.swing.JDialog
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JDialogNouvelleCImageRGB(new javax.swing.JFrame(), true).setVisible(true);
+                new NewRgbImage(new javax.swing.JFrame(), true).setVisible(true);
             }
         });
     }

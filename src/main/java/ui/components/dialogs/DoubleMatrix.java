@@ -6,7 +6,7 @@ import CImage.Observers.JLabelBeanCImage;
 import java.io.*;
 import javax.swing.*;
 
-public class JDialogAfficheMatriceDouble extends JDialog
+public class DoubleMatrix extends JDialog
 {
     private double Max;
     private double Min;
@@ -23,7 +23,7 @@ public class JDialogAfficheMatriceDouble extends JDialog
     private JLabelBeanCImage observer;
     
     /** Creates new form JDialogAfficheFourier */
-    public JDialogAfficheMatriceDouble(java.awt.Frame parent, boolean modal,double m[][],String titre) 
+    public DoubleMatrix(java.awt.Frame parent, boolean modal, double m[][], String titre)
     {
         super(parent, modal);
         initComponents();
@@ -343,7 +343,7 @@ public class JDialogAfficheMatriceDouble extends JDialog
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JDialogAfficheMatriceDouble(new JFrame(), true,null,null).setVisible(true);
+                new DoubleMatrix(new JFrame(), true,null,null).setVisible(true);
             }
         });
     }

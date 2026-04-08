@@ -5,13 +5,13 @@ import CImage.Exceptions.CImageNGException;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 
-public class JDialogNouvelleCImageNG extends javax.swing.JDialog 
+public class NewGreyScaleImage extends javax.swing.JDialog
 {
     private int couleur;
     private CImageNG cImageNG;
     
     /** Creates new form JDialogChoixCouleurNG */
-    public JDialogNouvelleCImageNG(java.awt.Frame parent, boolean modal) 
+    public NewGreyScaleImage(java.awt.Frame parent, boolean modal)
     {
         super(parent, modal);
         couleur = 255;
@@ -162,7 +162,7 @@ public class JDialogNouvelleCImageNG extends javax.swing.JDialog
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JDialogNouvelleCImageNG(new javax.swing.JFrame(), true).setVisible(true);
+                new NewGreyScaleImage(new javax.swing.JFrame(), true).setVisible(true);
             }
         });
     }

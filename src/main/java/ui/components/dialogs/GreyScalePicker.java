@@ -2,12 +2,12 @@ package ui.components.dialogs;
 
 import java.awt.Color;
 
-public class JDialogChoixCouleurNG extends javax.swing.JDialog 
+public class GreyScalePicker extends javax.swing.JDialog
 {
     private int couleur;
     
     /** Creates new form JDialogChoixCouleurNG */
-    public JDialogChoixCouleurNG(java.awt.Frame parent, boolean modal,int c) 
+    public GreyScalePicker(java.awt.Frame parent, boolean modal, int c)
     {
         super(parent, modal);
         couleur = c;
@@ -108,7 +108,7 @@ public class JDialogChoixCouleurNG extends javax.swing.JDialog
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JDialogChoixCouleurNG(new javax.swing.JFrame(), true, 128).setVisible(true);
+                new GreyScalePicker(new javax.swing.JFrame(), true, 128).setVisible(true);
             }
         });
     }

@@ -17,10 +17,10 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import ui.components.dialogs.JDialogAfficheMatriceDouble;
-import ui.components.dialogs.JDialogChoixCouleurNG;
-import ui.components.dialogs.JDialogNouvelleCImageNG;
-import ui.components.dialogs.JDialogNouvelleCImageRGB;
+import ui.components.dialogs.DoubleMatrix;
+import ui.components.dialogs.GreyScalePicker;
+import ui.components.dialogs.NewGreyScaleImage;
+import ui.components.dialogs.NewRgbImage;
 
 /**
  *
@@ -400,7 +400,7 @@ public class Main extends JFrame implements ClicListener,SelectLigneListener,Sel
             fourier = Fourier.decroise(fourier);
             double partieImaginaire[][] = fourier.getPartieImaginaire();
             
-            JDialogAfficheMatriceDouble dialog = new JDialogAfficheMatriceDouble(this,true,partieImaginaire,"Fourier : Affichage de la partie imaginaire");
+            DoubleMatrix dialog = new DoubleMatrix(this,true,partieImaginaire,"Fourier : Affichage de la partie imaginaire");
             dialog.setVisible(true);
         } 
         catch (CImageNGException ex) 
@@ -423,7 +423,7 @@ public class Main extends JFrame implements ClicListener,SelectLigneListener,Sel
             fourier = Fourier.decroise(fourier);
             double partieReelle[][] = fourier.getPartieReelle();
             
-            JDialogAfficheMatriceDouble dialog = new JDialogAfficheMatriceDouble(this,true,partieReelle,"Fourier : Affichage de la partie reelle");
+            DoubleMatrix dialog = new DoubleMatrix(this,true,partieReelle,"Fourier : Affichage de la partie reelle");
             dialog.setVisible(true);
         } 
         catch (CImageNGException ex) 
@@ -447,7 +447,7 @@ public class Main extends JFrame implements ClicListener,SelectLigneListener,Sel
             fourier = Fourier.decroise(fourier);
             double phase[][] = fourier.getPhase();
             
-            JDialogAfficheMatriceDouble dialog = new JDialogAfficheMatriceDouble(this,true,phase,"Fourier : Affichage de la phase");
+            DoubleMatrix dialog = new DoubleMatrix(this,true,phase,"Fourier : Affichage de la phase");
             dialog.setVisible(true);
         } 
         catch (CImageNGException ex) 
@@ -471,7 +471,7 @@ public class Main extends JFrame implements ClicListener,SelectLigneListener,Sel
             fourier = Fourier.decroise(fourier);
             double module[][] = fourier.getModule();
             
-            JDialogAfficheMatriceDouble dialog = new JDialogAfficheMatriceDouble(this,true,module,"Fourier : Affichage du module");
+            DoubleMatrix dialog = new DoubleMatrix(this,true,module,"Fourier : Affichage du module");
             dialog.setVisible(true);
         } 
         catch (CImageNGException ex) 
@@ -543,7 +543,7 @@ public class Main extends JFrame implements ClicListener,SelectLigneListener,Sel
     }//GEN-LAST:event_jMenuItemOuvrirNGActionPerformed
 
     private void jMenuItemNouvelleNGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNouvelleNGActionPerformed
-        JDialogNouvelleCImageNG dialog = new JDialogNouvelleCImageNG(this,true);
+        NewGreyScaleImage dialog = new NewGreyScaleImage(this,true);
         dialog.setVisible(true);
         imageNG = dialog.getCImageNG();
         observer.setCImage(imageNG);
@@ -561,7 +561,7 @@ public class Main extends JFrame implements ClicListener,SelectLigneListener,Sel
         
         if (imageNG != null)
         {
-            JDialogChoixCouleurNG dialog = new JDialogChoixCouleurNG(this,true,couleurPinceauNG);
+            GreyScalePicker dialog = new GreyScalePicker(this,true,couleurPinceauNG);
             dialog.setVisible(true);
             couleurPinceauNG = dialog.getCouleur();
         }
@@ -610,7 +610,7 @@ public class Main extends JFrame implements ClicListener,SelectLigneListener,Sel
     }//GEN-LAST:event_jCheckBoxMenuItemDessinerLigneActionPerformed
 
     private void jMenuItemNouvelleRGBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNouvelleRGBActionPerformed
-        JDialogNouvelleCImageRGB dialog = new JDialogNouvelleCImageRGB(this,true);
+        NewRgbImage dialog = new NewRgbImage(this,true);
         dialog.setVisible(true);
         imageRGB = dialog.getCImageRGB();
         observer.setCImage(imageRGB);
