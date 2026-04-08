@@ -1,6 +1,6 @@
 package domain.CImage;
 
-import CImage.Observers.*;
+import domain.CImage.Observers.*;
 import domain.CImage.Observers.Observer;
 
 import java.awt.*;

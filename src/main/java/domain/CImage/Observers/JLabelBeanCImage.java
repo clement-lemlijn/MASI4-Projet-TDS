@@ -1,7 +1,6 @@
 package domain.CImage.Observers;
 
-import CImage.*;
-import CImage.Observers.Events.*;
+import domain.CImage.*;
 import domain.CImage.CImage;
 import domain.CImage.Observers.Events.*;
 

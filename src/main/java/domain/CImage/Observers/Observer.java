@@ -1,6 +1,5 @@
 package domain.CImage.Observers;
 
-import CImage.*;
 import domain.CImage.CImage;
 
 public interface Observer 

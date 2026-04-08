@@ -1,4 +1,4 @@
-package ui.components.views;
+package ui.implementation.views;
 
 import domain.CImage.CImageNG;
 import domain.CImage.CImageRGB;
@@ -21,10 +21,10 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import ui.components.dialogs.DoubleMatrix;
-import ui.components.dialogs.GreyScalePicker;
-import ui.components.dialogs.NewGreyScaleImage;
-import ui.components.dialogs.NewRgbImage;
+import ui.implementation.dialogs.DoubleMatrix;
+import ui.implementation.dialogs.GreyScalePicker;
+import ui.implementation.dialogs.NewGreyScaleImage;
+import ui.implementation.dialogs.NewRgbImage;
 
 public class MainView extends JFrame implements ClicListener, SelectLigneListener,SelectRectListener, SelectRectFillListener, SelectCercleListener,SelectCercleFillListener
 {
@@ -34,6 +34,37 @@ public class MainView extends JFrame implements ClicListener, SelectLigneListene
     private final JLabelBeanCImage observer;
     private Color couleurPinceauRGB;
     private int   couleurPinceauNG;
+
+    private ButtonGroup buttonGroupDessiner;
+    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerCercle;
+    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerCerclePlein;
+    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerLigne;
+    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerPixel;
+    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerRectangle;
+    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerRectanglePlein;
+    private JMenuBar jMenuBar1;
+    private JMenu jMenuDessiner;
+    private JMenu jMenuFourier;
+    private JMenu jMenuFourierAfficher;
+    private JMenu jMenuHistogramme;
+    private JMenuItem jMenuHistogrammeAfficher;
+    private JMenu jMenuImage;
+    private JMenuItem jMenuItemCouleurPinceau;
+    private JMenuItem jMenuItemEnregistrerSous;
+    private JMenuItem jMenuItemFourierAfficherModule;
+    private JMenuItem jMenuItemFourierAfficherPartieImaginaire;
+    private JMenuItem jMenuItemFourierAfficherPartieReelle;
+    private JMenuItem jMenuItemFourierAfficherPhase;
+    private JMenuItem jMenuItemNouvelleNG;
+    private JMenuItem jMenuItemNouvelleRGB;
+    private JMenuItem jMenuItemOuvrirNG;
+    private JMenuItem jMenuItemOuvrirRGB;
+    private JMenu jMenuNouvelle;
+    private JMenu jMenuOuvrir;
+    private JMenuItem jMenuQuitter;
+    private JScrollPane jScrollPane;
+    private JSeparator jSeparator1;
+    private JSeparator jSeparator2;
 
     public MainView(){
         initComponents();
@@ -752,38 +783,5 @@ public class MainView extends JFrame implements ClicListener, SelectLigneListene
             { System.out.println("Erreur NG : " + ex.getMessage()); }
         }
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private ButtonGroup buttonGroupDessiner;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerCercle;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerCerclePlein;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerLigne;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerPixel;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerRectangle;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerRectanglePlein;
-    private JMenuBar jMenuBar1;
-    private JMenu jMenuDessiner;
-    private JMenu jMenuFourier;
-    private JMenu jMenuFourierAfficher;
-    private JMenu jMenuHistogramme;
-    private JMenuItem jMenuHistogrammeAfficher;
-    private JMenu jMenuImage;
-    private JMenuItem jMenuItemCouleurPinceau;
-    private JMenuItem jMenuItemEnregistrerSous;
-    private JMenuItem jMenuItemFourierAfficherModule;
-    private JMenuItem jMenuItemFourierAfficherPartieImaginaire;
-    private JMenuItem jMenuItemFourierAfficherPartieReelle;
-    private JMenuItem jMenuItemFourierAfficherPhase;
-    private JMenuItem jMenuItemNouvelleNG;
-    private JMenuItem jMenuItemNouvelleRGB;
-    private JMenuItem jMenuItemOuvrirNG;
-    private JMenuItem jMenuItemOuvrirRGB;
-    private JMenu jMenuNouvelle;
-    private JMenu jMenuOuvrir;
-    private JMenuItem jMenuQuitter;
-    private JScrollPane jScrollPane;
-    private JSeparator jSeparator1;
-    private JSeparator jSeparator2;
-    // End of variables declaration//GEN-END:variables
 
 }

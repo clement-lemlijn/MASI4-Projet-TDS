@@ -1,4 +1,4 @@
-package ui.components.dialogs;
+package ui.implementation.dialogs;
 
 import domain.CImage.CImageNG;
 import domain.CImage.Exceptions.CImageNGException;

@@ -1,9 +1,8 @@
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import ui.components.views.MainView;
+import ui.implementation.views.MainView;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Main {
 
