@@ -15,6 +15,8 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import ui.implementation.builders.MenuBuilder;
+import ui.implementation.builders.MenuItemBuilder;
 import ui.implementation.dialogs.DoubleMatrix;
 import ui.implementation.dialogs.GreyScalePicker;
 import ui.implementation.dialogs.NewGreyScaleImage;
@@ -22,6 +24,8 @@ import ui.implementation.dialogs.NewRgbImage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -63,22 +67,65 @@ public class NavBar extends JMenuBar {
     private Color couleurPinceauRGB;
     private int   couleurPinceauNG;
 
-    public NavBar() {
-        observer = new JLabelBeanCImage();
+    public NavBar(JLabelBeanCImage observer) {
+        initComponents();
+        this.observer = observer;
         jMenuDessiner.setEnabled(false);
         jMenuFourier.setEnabled(false);
         jMenuHistogramme.setEnabled(false);
     }
 
     private void initComponents(){
+
+        jMenuItemNouvelleRGB = new MenuItemBuilder()
+                .setText("Image RGB")
+                .setAction(this::jMenuItemNouvelleRGBActionPerformed)
+                .build();
+
+        jMenuItemNouvelleNG = new MenuItemBuilder()
+                .setText("Image NG")
+                .setAction(this::jMenuItemNouvelleNGActionPerformed)
+                .build();
+
+        jMenuNouvelle = new MenuBuilder()
+                .setText("Nouvelle")
+                .setIcon("/file_65_p3.jpg")
+                .addItem(jMenuItemNouvelleRGB)
+                .addItem(jMenuItemNouvelleNG)
+                .build();
+
+        jMenuItemOuvrirRGB = new MenuItemBuilder()
+                .setText("Image RGB")
+                .setAction(this::jMenuItemOuvrirRGBActionPerformed)
+                .build();
+
+        jMenuItemOuvrirNG = new MenuItemBuilder()
+                .setText("Image NG")
+                .setAction(this::jMenuItemOuvrirNGActionPerformed)
+                .build();
+
+        jMenuOuvrir = new MenuBuilder()
+                .setText("Ouvrir")
+                .setIcon("/folder_036_p3.jpg")
+                .addItem(jMenuItemOuvrirRGB)
+                .addItem(jMenuItemOuvrirNG)
+                .build();
+
+        jMenuImage = new MenuBuilder()
+                .setText("Image")
+                .setIcon("/net_13_p1.jpg")
+                .addSubMenu(jMenuNouvelle)
+                .addSubMenu(jMenuOuvrir)
+                .build();
+
         buttonGroupDessiner = new ButtonGroup();
-        jMenuImage = new JMenu();
-        jMenuNouvelle = new JMenu();
-        jMenuItemNouvelleRGB = new JMenuItem();
-        jMenuItemNouvelleNG = new JMenuItem();
-        jMenuOuvrir = new JMenu();
-        jMenuItemOuvrirRGB = new JMenuItem();
-        jMenuItemOuvrirNG = new JMenuItem();
+//        jMenuImage = new JMenu("Image");
+//        jMenuNouvelle = new JMenu();
+//        jMenuItemNouvelleRGB = new JMenuItem();
+//        jMenuItemNouvelleNG = new JMenuItem();
+//        jMenuOuvrir = new JMenu();
+//        jMenuItemOuvrirRGB = new JMenuItem();
+//        jMenuItemOuvrirNG = new JMenuItem();
         jMenuItemEnregistrerSous = new JMenuItem();
         jSeparator1 = new JSeparator();
         jMenuQuitter = new JMenuItem();
@@ -100,50 +147,51 @@ public class NavBar extends JMenuBar {
         jMenuHistogramme = new JMenu();
         jMenuHistogrammeAfficher = new JMenuItem();
 
-        jMenuImage.setIcon(new ImageIcon(getClass().getResource("/net_13_p1.jpg"))); // NOI18N
-        jMenuImage.setText("Image");
+//        jMenuImage.setIcon(new ImageIcon(getClass().getResource("/net_13_p1.jpg")));
+//        jMenuImage.setText("Image");
 
-        jMenuNouvelle.setIcon(new ImageIcon(getClass().getResource("/file_65_p3.jpg"))); // NOI18N
-        jMenuNouvelle.setText("Nouvelle");
+//        jMenuNouvelle.setIcon(new ImageIcon(getClass().getResource("/file_65_p3.jpg"))); // NOI18N
+//        jMenuNouvelle.setText("Nouvelle");
 
-        jMenuItemNouvelleRGB.setText("Image RGB");
-        jMenuItemNouvelleRGB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemNouvelleRGBActionPerformed(evt);
-            }
-        });
-        jMenuNouvelle.add(jMenuItemNouvelleRGB);
+//        jMenuItemNouvelleRGB.setText("Image RGB");
+//        jMenuItemNouvelleRGB.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                jMenuItemNouvelleRGBActionPerformed(evt);
+//            }
+//        });
+//
+//        jMenuNouvelle.add(jMenuItemNouvelleRGB);
 
-        jMenuItemNouvelleNG.setText("Image NG");
-        jMenuItemNouvelleNG.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemNouvelleNGActionPerformed(evt);
-            }
-        });
-        jMenuNouvelle.add(jMenuItemNouvelleNG);
+//        jMenuItemNouvelleNG.setText("Image NG");
+//        jMenuItemNouvelleNG.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                jMenuItemNouvelleNGActionPerformed(evt);
+//            }
+//        });
+//        jMenuNouvelle.add(jMenuItemNouvelleNG);
 
-        jMenuImage.add(jMenuNouvelle);
+ //       jMenuImage.add(jMenuNouvelle);
 
-        jMenuOuvrir.setIcon(new ImageIcon(getClass().getResource("/folder_036_p3.jpg"))); // NOI18N
-        jMenuOuvrir.setText("Ouvrir");
+//        jMenuOuvrir.setIcon(new ImageIcon(getClass().getResource("/folder_036_p3.jpg"))); // NOI18N
+//        jMenuOuvrir.setText("Ouvrir");
 
-        jMenuItemOuvrirRGB.setText("Image RGB");
-        jMenuItemOuvrirRGB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemOuvrirRGBActionPerformed(evt);
-            }
-        });
-        jMenuOuvrir.add(jMenuItemOuvrirRGB);
+//        jMenuItemOuvrirRGB.setText("Image RGB");
+//        jMenuItemOuvrirRGB.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                jMenuItemOuvrirRGBActionPerformed(evt);
+//            }
+//        });
+//        jMenuOuvrir.add(jMenuItemOuvrirRGB);
 
-        jMenuItemOuvrirNG.setText("Image NG");
-        jMenuItemOuvrirNG.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemOuvrirNGActionPerformed(evt);
-            }
-        });
-        jMenuOuvrir.add(jMenuItemOuvrirNG);
+//        jMenuItemOuvrirNG.setText("Image NG");
+//        jMenuItemOuvrirNG.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                jMenuItemOuvrirNGActionPerformed(evt);
+//            }
+//        });
+//        jMenuOuvrir.add(jMenuItemOuvrirNG);
 
-        jMenuImage.add(jMenuOuvrir);
+//        jMenuImage.add(jMenuOuvrir);
 
         jMenuItemEnregistrerSous.setIcon(new ImageIcon(getClass().getResource("/dd_27_p3.jpg"))); // NOI18N
         jMenuItemEnregistrerSous.setText("Enregistrer sous...");
@@ -164,7 +212,7 @@ public class NavBar extends JMenuBar {
         });
         jMenuImage.add(jMenuQuitter);
 
-        //jMenuBar1.add(jMenuImage);
+        this.add(jMenuImage);
 
         jMenuDessiner.setIcon(new ImageIcon(getClass().getResource("/dd_28_p1.jpg"))); // NOI18N
         jMenuDessiner.setText("Dessiner");
@@ -227,7 +275,7 @@ public class NavBar extends JMenuBar {
         });
         jMenuDessiner.add(jCheckBoxMenuItemDessinerCerclePlein);
 
-        //jMenuBar1.add(jMenuDessiner);
+        this.add(jMenuDessiner);
 
         jMenuFourier.setIcon(new ImageIcon(getClass().getResource("/cp_51_p1.jpg"))); // NOI18N
         jMenuFourier.setText("Fourier");
@@ -260,30 +308,22 @@ public class NavBar extends JMenuBar {
         jMenuFourierAfficher.add(jMenuItemFourierAfficherPartieReelle);
 
         jMenuItemFourierAfficherPartieImaginaire.setText("Partie Imaginaire");
-        jMenuItemFourierAfficherPartieImaginaire.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemFourierAfficherPartieImaginaireActionPerformed(evt);
-            }
-        });
+        jMenuItemFourierAfficherPartieImaginaire.addActionListener(this::jMenuItemFourierAfficherPartieImaginaireActionPerformed);
         jMenuFourierAfficher.add(jMenuItemFourierAfficherPartieImaginaire);
 
         jMenuFourier.add(jMenuFourierAfficher);
 
-        //jMenuBar1.add(jMenuFourier);
+        this.add(jMenuFourier);
 
         jMenuHistogramme.setIcon(new ImageIcon(getClass().getResource("/report_48_hot.jpg"))); // NOI18N
         jMenuHistogramme.setText("Histogramme");
 
         jMenuHistogrammeAfficher.setIcon(new ImageIcon(getClass().getResource("/report_32_hot.jpg"))); // NOI18N
         jMenuHistogrammeAfficher.setText("Afficher");
-        jMenuHistogrammeAfficher.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuHistogrammeAfficherActionPerformed(evt);
-            }
-        });
+        jMenuHistogrammeAfficher.addActionListener(this::jMenuHistogrammeAfficherActionPerformed);
         jMenuHistogramme.add(jMenuHistogrammeAfficher);
 
-        //jMenuBar1.add(jMenuHistogramme);
+        this.add(jMenuHistogramme);
 
     }
 

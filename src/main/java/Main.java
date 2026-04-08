@@ -15,6 +15,7 @@ public class Main {
             MainView view = injector.getInstance(MainView.class);
             MainPresenter presenter = injector.getInstance(MainPresenter.class);
             view.setPresenter(presenter);
+            view.setVisible(true);
         });
     }
 }

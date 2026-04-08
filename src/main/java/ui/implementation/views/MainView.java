@@ -1,28 +1,27 @@
 package ui.implementation.views;
 
-import com.google.inject.Inject;
 import domain.CImage.CImageNG;
 import domain.CImage.CImageRGB;
 import domain.CImage.Exceptions.CImageNGException;
 import domain.CImage.Exceptions.CImageRGBException;
 import domain.CImage.Observers.Events.*;
-import domain.CImage.Observers.JLabelBeanCImage;
 
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
 
+import domain.CImage.Observers.JLabelBeanCImage;
 import presenters.MainPresenter;
 import ui.implementation.components.NavBar;
 import ui.interfaces.IMainView;
 
-public class MainView extends JFrame implements IMainView
-        /*ClicListener, SelectLigneListener,SelectRectListener,
-        SelectRectFillListener, SelectCercleListener,SelectCercleFillListener*/
+public class MainView extends JFrame implements IMainView,
+        ClicListener, SelectLigneListener,SelectRectListener,
+        SelectRectFillListener, SelectCercleListener,SelectCercleFillListener
 {
     private CImageRGB imageRGB;
     private CImageNG imageNG;
-    //private final JLabelBeanCImage observer;
+    private JLabelBeanCImage observer;
     private Color couleurPinceauRGB;
     private int   couleurPinceauNG;
 
@@ -37,17 +36,6 @@ public class MainView extends JFrame implements IMainView
         imageRGB = null;
         imageNG  = null;
 
-        /*observer = new JLabelBeanCImage();
-        observer.addClicListener(this);
-        observer.addSelectLigneListener(this);
-        observer.addSelectRectListener(this);
-        observer.addSelectRectFillListener(this);
-        observer.addSelectCercleListener(this);
-        observer.addSelectCercleFillListener(this);
-        observer.setMode(JLabelBeanCImage.INACTIF);
-        jScrollPane.setViewportView(observer);*/
-
-
         couleurPinceauRGB = Color.BLACK;
         couleurPinceauNG = 0;
     }
@@ -57,6 +45,18 @@ public class MainView extends JFrame implements IMainView
     }
 
     private void initComponents() {
+        observer = new JLabelBeanCImage();
+        observer.addClicListener(this);
+        observer.addSelectLigneListener(this);
+        observer.addSelectRectListener(this);
+        observer.addSelectRectFillListener(this);
+        observer.addSelectCercleListener(this);
+        observer.addSelectCercleFillListener(this);
+        observer.setMode(JLabelBeanCImage.INACTIF);
+        navBar = new NavBar(observer);
+
+        jScrollPane = new JScrollPane();
+        jScrollPane.setViewportView(observer);
 
         setJMenuBar(navBar);
 
