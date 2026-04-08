@@ -37,9 +37,7 @@ public class MainView extends JFrame implements ClicListener,SelectLigneListener
     private Color couleurPinceauRGB;
     private int   couleurPinceauNG;
 
-    /** Creates new form TestCImage2 */
-    public void main()
-    {
+    public MainView(){
         initComponents();
 
         imageRGB = null;
@@ -62,6 +60,7 @@ public class MainView extends JFrame implements ClicListener,SelectLigneListener
         couleurPinceauRGB = Color.BLACK;
         couleurPinceauNG = 0;
     }
+
 
     /** This method is called from within the constructor to
      * initialize the form.
