@@ -7,12 +7,11 @@ import domain.CImage.Exceptions.CImageRGBException;
 import domain.CImage.Observers.Events.*;
 
 import java.awt.*;
-import java.io.*;
 import javax.swing.*;
 
 import domain.CImage.Observers.JLabelBeanCImage;
 import presenters.MainPresenter;
-import ui.implementation.components.NavBar;
+import ui.implementation.components.nav.NavBar;
 import ui.interfaces.IMainView;
 
 public class MainView extends JFrame implements IMainView,

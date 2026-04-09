@@ -1,11 +1,9 @@
-package ui.implementation.components;
+package ui.implementation.components.nav;
 
 import domain.CImage.CImageNG;
 import domain.CImage.CImageRGB;
 import domain.CImage.Exceptions.CImageNGException;
 import domain.CImage.Observers.JLabelBeanCImage;
-import domain.ImageProcessing.Complexe.MatriceComplexe;
-import domain.ImageProcessing.Fourier.Fourier;
 import domain.ImageProcessing.Histogramme.Histogramme;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -17,15 +15,9 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import ui.implementation.builders.MenuBuilder;
 import ui.implementation.builders.MenuItemBuilder;
-import ui.implementation.dialogs.DoubleMatrix;
-import ui.implementation.dialogs.GreyScalePicker;
-import ui.implementation.dialogs.NewGreyScaleImage;
-import ui.implementation.dialogs.NewRgbImage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -77,46 +69,9 @@ public class NavBar extends JMenuBar {
 
     private void initComponents(){
 
-        jMenuItemNouvelleRGB = new MenuItemBuilder()
-                .setText("Image RGB")
-                .setAction(this::jMenuItemNouvelleRGBActionPerformed)
-                .build();
 
-        jMenuItemNouvelleNG = new MenuItemBuilder()
-                .setText("Image NG")
-                .setAction(this::jMenuItemNouvelleNGActionPerformed)
-                .build();
 
-        jMenuNouvelle = new MenuBuilder()
-                .setText("Nouvelle")
-                .setIcon("/file_65_p3.jpg")
-                .addItem(jMenuItemNouvelleRGB)
-                .addItem(jMenuItemNouvelleNG)
-                .build();
-
-        jMenuItemOuvrirRGB = new MenuItemBuilder()
-                .setText("Image RGB")
-                .setAction(this::jMenuItemOuvrirRGBActionPerformed)
-                .build();
-
-        jMenuItemOuvrirNG = new MenuItemBuilder()
-                .setText("Image NG")
-                .setAction(this::jMenuItemOuvrirNGActionPerformed)
-                .build();
-
-        jMenuOuvrir = new MenuBuilder()
-                .setText("Ouvrir")
-                .setIcon("/folder_036_p3.jpg")
-                .addItem(jMenuItemOuvrirRGB)
-                .addItem(jMenuItemOuvrirNG)
-                .build();
-
-        jMenuImage = new MenuBuilder()
-                .setText("Image")
-                .setIcon("/net_13_p1.jpg")
-                .addSubMenu(jMenuNouvelle)
-                .addSubMenu(jMenuOuvrir)
-                .build();
+        this.add(jMenuImage);
 
         buttonGroupDessiner = new ButtonGroup();
 //        jMenuImage = new JMenu("Image");
@@ -126,9 +81,9 @@ public class NavBar extends JMenuBar {
 //        jMenuOuvrir = new JMenu();
 //        jMenuItemOuvrirRGB = new JMenuItem();
 //        jMenuItemOuvrirNG = new JMenuItem();
-        jMenuItemEnregistrerSous = new JMenuItem();
+//        jMenuItemEnregistrerSous = new JMenuItem();
+//        jMenuQuitter = new JMenuItem();
         jSeparator1 = new JSeparator();
-        jMenuQuitter = new JMenuItem();
         jMenuDessiner = new JMenu();
         jMenuItemCouleurPinceau = new JMenuItem();
         jSeparator2 = new JSeparator();
@@ -193,26 +148,25 @@ public class NavBar extends JMenuBar {
 
 //        jMenuImage.add(jMenuOuvrir);
 
-        jMenuItemEnregistrerSous.setIcon(new ImageIcon(getClass().getResource("/dd_27_p3.jpg"))); // NOI18N
-        jMenuItemEnregistrerSous.setText("Enregistrer sous...");
-        jMenuItemEnregistrerSous.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemEnregistrerSousActionPerformed(evt);
-            }
-        });
-        jMenuImage.add(jMenuItemEnregistrerSous);
+//        jMenuItemEnregistrerSous.setIcon(new ImageIcon(getClass().getResource("/dd_27_p3.jpg"))); // NOI18N
+//        jMenuItemEnregistrerSous.setText("Enregistrer sous...");
+//        jMenuItemEnregistrerSous.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                jMenuItemEnregistrerSousActionPerformed(evt);
+//            }
+//        });
+//        jMenuImage.add(jMenuItemEnregistrerSous);
+
+//        jMenuQuitter.setIcon(new ImageIcon(getClass().getResource("/cp_59_p3.jpg"))); // NOI18N
+//        jMenuQuitter.setText("Quitter");
+//        jMenuQuitter.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                jMenuQuitterActionPerformed(evt);
+//            }
+//        });
+//        jMenuImage.add(jMenuQuitter);
+
         jMenuImage.add(jSeparator1);
-
-        jMenuQuitter.setIcon(new ImageIcon(getClass().getResource("/cp_59_p3.jpg"))); // NOI18N
-        jMenuQuitter.setText("Quitter");
-        jMenuQuitter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuQuitterActionPerformed(evt);
-            }
-        });
-        jMenuImage.add(jMenuQuitter);
-
-        this.add(jMenuImage);
 
         jMenuDessiner.setIcon(new ImageIcon(getClass().getResource("/dd_28_p1.jpg"))); // NOI18N
         jMenuDessiner.setText("Dessiner");
@@ -551,63 +505,6 @@ public class NavBar extends JMenuBar {
         }*/
     }
 
-    private void jMenuItemEnregistrerSousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEnregistrerSousActionPerformed
-        JFileChooser choix = new JFileChooser();
-        File fichier;
-
-        choix.setCurrentDirectory(new File ("."));
-        if (choix.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-        {
-            fichier = choix.getSelectedFile();
-            if (fichier != null)
-            {
-                try
-                {
-                    if (imageRGB != null) imageRGB.enregistreFormatPNG(fichier);
-                    if (imageNG != null) imageNG.enregistreFormatPNG(fichier);
-                }
-                catch (IOException ex)
-                {
-                    System.err.println("Erreur I/O : " + ex.getMessage());
-                }
-            }
-        }
-    }
-
-    private void jMenuItemOuvrirNGActionPerformed(java.awt.event.ActionEvent evt) {
-        JFileChooser choix = new JFileChooser();
-        File fichier;
-
-        choix.setCurrentDirectory(new File ("."));
-        if (choix.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-        {
-            fichier = choix.getSelectedFile();
-            if (fichier != null)
-            {
-                try
-                {
-                    imageNG = new CImageNG(fichier);
-                    observer.setCImage(imageNG);
-                    imageRGB = null;
-                    activeMenusNG();
-                }
-                catch (IOException ex)
-                {
-                    System.err.println("Erreur I/O : " + ex.getMessage());
-                }
-            }
-        }
-    }
-
-    private void jMenuItemNouvelleNGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNouvelleNGActionPerformed
-        /*NewGreyScaleImage dialog = new NewGreyScaleImage(this,true);
-        dialog.setVisible(true);
-        imageNG = dialog.getCImageNG();
-        observer.setCImage(imageNG);
-        imageRGB = null;
-        activeMenusNG();*/
-    }
-
     private void jMenuItemCouleurPinceauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCouleurPinceauActionPerformed
         if (imageRGB != null)
         {
@@ -624,41 +521,5 @@ public class NavBar extends JMenuBar {
         }*/
     }
 
-    private void jMenuItemNouvelleRGBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNouvelleRGBActionPerformed
-        /*NewRgbImage dialog = new NewRgbImage(this,true);
-        dialog.setVisible(true);
-        imageRGB = dialog.getCImageRGB();
-        observer.setCImage(imageRGB);
-        imageNG = null;
-        activeMenusRGB();*/
-    }
 
-    private void jMenuQuitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuQuitterActionPerformed
-        System.exit(0);
-    }
-
-    private void jMenuItemOuvrirRGBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOuvrirRGBActionPerformed
-        JFileChooser choix = new JFileChooser();
-        File fichier;
-
-        choix.setCurrentDirectory(new File ("."));
-        if (choix.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-        {
-            fichier = choix.getSelectedFile();
-            if (fichier != null)
-            {
-                try
-                {
-                    imageRGB = new CImageRGB(fichier);
-                    observer.setCImage(imageRGB);
-                    imageNG = null;
-                    activeMenusRGB();
-                }
-                catch (IOException ex)
-                {
-                    System.err.println("Erreur I/O : " + ex.getMessage());
-                }
-            }
-        }
-    }
 }

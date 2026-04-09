@@ -44,14 +44,14 @@ public class MenuBuilder {
     public JMenu build() {
         JMenu menu = new JMenu(text);
         if (icon != null) menu.setIcon(new ImageIcon(icon));
-        if(!items.isEmpty()) {
-            for (JMenuItem item : items) {
-                menu.add(item);
-            }
-        }
         if(!subMenus.isEmpty()) {
             for (JMenu subMenu : subMenus) {
                 menu.add(subMenu);
+            }
+        }
+        if(!items.isEmpty()) {
+            for (JMenuItem item : items) {
+                menu.add(item);
             }
         }
         return menu;

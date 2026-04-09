@@ -1,4 +1,4 @@
-package ui.implementation.components;
+package ui.implementation.components.nav;
 
 import java.net.URL;
 
