@@ -1,21 +1,21 @@
 package ui.implementation.components.nav;
 
-import java.net.URL;
+import javax.swing.*;
+import java.awt.event.ActionListener;
 
-public class MenuItem {
+public class MenuItem extends JMenuItem {
 
-    private String title;
-    private URL iconPath;
-
-    public MenuItem() {
-
+    public MenuItem(String title, ActionListener listener) {
+        this(title, null, listener);
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setIconPath(URL iconPath) {
-        this.iconPath = iconPath;
+    public MenuItem(String title, String iconPath, ActionListener listener) {
+        super(title);
+        if(iconPath != null) {
+            super.setIcon(new ImageIcon(iconPath));
+        }
+        if (listener != null) {
+            addActionListener(listener);
+        }
     }
 }
