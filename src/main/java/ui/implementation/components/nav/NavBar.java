@@ -29,13 +29,6 @@ import java.io.IOException;
 public class NavBar extends JMenuBar implements INavBar {
 
     private JLabelBeanCImage observer;
-    private ButtonGroup buttonGroupDessiner;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerCercle;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerCerclePlein;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerLigne;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerPixel;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerRectangle;
-    private JCheckBoxMenuItem jCheckBoxMenuItemDessinerRectanglePlein;
     private JMenu jMenuDessiner;
     private JMenu jMenuFourier;
     private JMenu jMenuHistogramme;
@@ -59,10 +52,6 @@ public class NavBar extends JMenuBar implements INavBar {
     public void setPresenter(NavPresenter presenter) {
         this.presenter = presenter;
     }
-
-    /*public void setObserver(JLabelBeanCImage observer){
-        this.observer = observer;
-    }*/
 
     private void initComponents(){
 
@@ -163,18 +152,7 @@ public class NavBar extends JMenuBar implements INavBar {
 
 
     private void setMode(ActionEvent e, Mode mode) {
-        /*if (!jCheckBoxMenuItemDessinerPixel.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
-        else {
-            jCheckBoxMenuItemDessinerPixel.setSelected(true);
-            jCheckBoxMenuItemDessinerLigne.setSelected(false);
-            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
-            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
-            jCheckBoxMenuItemDessinerCercle.setSelected(false);
-            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
-            observer.setMode(JLabelBeanCImage.CLIC);
-        }*/
         presenter.setMode(mode);
-
     }
 
     private void chooseColor(ActionEvent e) {
@@ -195,75 +173,6 @@ public class NavBar extends JMenuBar implements INavBar {
 
     //####################################################
 
-//    private void jCheckBoxMenuItemDessinerRectanglePleinActionPerformed(ActionEvent e) {
-//        if (!jCheckBoxMenuItemDessinerRectanglePlein.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
-//        else
-//        {
-//            jCheckBoxMenuItemDessinerPixel.setSelected(false);
-//            jCheckBoxMenuItemDessinerLigne.setSelected(false);
-//            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
-//            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(true);
-//            jCheckBoxMenuItemDessinerCercle.setSelected(false);
-//            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
-//            observer.setMode(JLabelBeanCImage.SELECT_RECT_FILL);
-//        }
-//    }
-//
-//    private void jCheckBoxMenuItemDessinerRectangleActionPerformed(ActionEvent e) {
-//        if (!jCheckBoxMenuItemDessinerRectangle.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
-//        else
-//        {
-//            jCheckBoxMenuItemDessinerPixel.setSelected(false);
-//            jCheckBoxMenuItemDessinerLigne.setSelected(false);
-//            jCheckBoxMenuItemDessinerRectangle.setSelected(true);
-//            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
-//            jCheckBoxMenuItemDessinerCercle.setSelected(false);
-//            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
-//            observer.setMode(JLabelBeanCImage.SELECT_RECT);
-//        }
-//    }
-//
-//    private void jCheckBoxMenuItemDessinerLigneActionPerformed(ActionEvent e) {
-//        if (!jCheckBoxMenuItemDessinerLigne.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
-//        else
-//        {
-//            jCheckBoxMenuItemDessinerPixel.setSelected(false);
-//            jCheckBoxMenuItemDessinerLigne.setSelected(true);
-//            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
-//            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
-//            jCheckBoxMenuItemDessinerCercle.setSelected(false);
-//            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
-//            observer.setMode(JLabelBeanCImage.SELECT_LIGNE);
-//        }
-//    }
-//
-//    private void jCheckBoxMenuItemDessinerCerclePleinActionPerformed(ActionEvent e) {
-//        if (!jCheckBoxMenuItemDessinerCerclePlein.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
-//        else {
-//            jCheckBoxMenuItemDessinerPixel.setSelected(false);
-//            jCheckBoxMenuItemDessinerLigne.setSelected(false);
-//            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
-//            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
-//            jCheckBoxMenuItemDessinerCercle.setSelected(false);
-//            jCheckBoxMenuItemDessinerCerclePlein.setSelected(true);
-//            observer.setMode(JLabelBeanCImage.SELECT_CERCLE_FILL);
-//        }
-//    }
-//
-//    private void jCheckBoxMenuItemDessinerCercleActionPerformed(ActionEvent e) {
-//        if (!jCheckBoxMenuItemDessinerCercle.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
-//        else
-//        {
-//            jCheckBoxMenuItemDessinerPixel.setSelected(false);
-//            jCheckBoxMenuItemDessinerLigne.setSelected(false);
-//            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
-//            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
-//            jCheckBoxMenuItemDessinerCercle.setSelected(true);
-//            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
-//            observer.setMode(JLabelBeanCImage.SELECT_CERCLE);
-//        }
-//    }
-
     private void activeMenusNG()
     {
         jMenuDessiner.setEnabled(true);
@@ -277,7 +186,7 @@ public class NavBar extends JMenuBar implements INavBar {
         jMenuFourier.setEnabled(false);
         jMenuHistogramme.setEnabled(false);
     }
-    
+
     private void jMenuHistogrammeAfficherActionPerformed(ActionEvent e) {
         int[] histo;
         try
@@ -291,7 +200,7 @@ public class NavBar extends JMenuBar implements INavBar {
             return;
         }
 
-        // Cr�ation du dataset
+        //Création du dataset
         XYSeries serie = new XYSeries("Histo");
         for(int i=0 ; i<256 ; i++) serie.add(i,histo[i]);
         XYSeriesCollection dataset = new XYSeriesCollection();
