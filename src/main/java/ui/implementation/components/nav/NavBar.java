@@ -13,9 +13,14 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import ui.implementation.components.intent.FileChooser;
+import ui.implementation.dialogs.NewRgbImage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class NavBar extends JMenuBar {
 
@@ -29,25 +34,8 @@ public class NavBar extends JMenuBar {
     private JCheckBoxMenuItem jCheckBoxMenuItemDessinerRectanglePlein;
     private JMenu jMenuDessiner;
     private JMenu jMenuFourier;
-    private JMenu jMenuFourierAfficher;
     private JMenu jMenuHistogramme;
-    private JMenuItem jMenuHistogrammeAfficher;
     private JMenu jMenuImage;
-    private JMenuItem jMenuItemCouleurPinceau;
-    private JMenuItem jMenuItemEnregistrerSous;
-    private JMenuItem jMenuItemFourierAfficherModule;
-    private JMenuItem jMenuItemFourierAfficherPartieImaginaire;
-    private JMenuItem jMenuItemFourierAfficherPartieReelle;
-    private JMenuItem jMenuItemFourierAfficherPhase;
-    private JMenuItem jMenuItemNouvelleNG;
-    private JMenuItem jMenuItemNouvelleRGB;
-    private JMenuItem jMenuItemOuvrirNG;
-    private JMenuItem jMenuItemOuvrirRGB;
-    private JMenu jMenuNouvelle;
-    private JMenu jMenuOuvrir;
-    private JMenuItem jMenuQuitter;
-    private JSeparator jSeparator1;
-    private JSeparator jSeparator2;
 
     private CImageRGB imageRGB;
     private CImageNG imageNG;
@@ -67,15 +55,15 @@ public class NavBar extends JMenuBar {
 
         jMenuImage = new Menu("Image","/net_13_p1.jpg",
                 new Menu("Nouvelle", "/file_65_p3.jpg",
-                        new MenuItem("RGB", e -> {}),
+                        new MenuItem("RGB", this::jMenuItemNouvelleRGBActionPerformed),
                         new MenuItem("NG", e -> {})
                 ),
                 new Menu("Ouvrir", "/folder_036_p3.jpg",
-                        new MenuItem("RGB", e -> {}),
-                        new MenuItem("NG", e -> {})
+                        new MenuItem("RGB", this::loadRGBImage),
+                        new MenuItem("NG", this::loadGreyScaleImage)
                 ),
                 new MenuItem("Enregistrer sous...","/dd_27_p3.jpg", e -> {}),
-                new MenuItem("Quitter","/cp_59_p3.jpg",  e -> {})
+                new MenuItem("Quitter","/cp_59_p3.jpg", this::quit)
         );
 
         jMenuDessiner = new Menu("Dessiner","/dd_28_p1.jpg",
@@ -106,7 +94,64 @@ public class NavBar extends JMenuBar {
         this.add(jMenuHistogramme);
     }
 
-    private void jCheckBoxMenuItemDessinerPixelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemDessinerPixelActionPerformed
+    //####################################################
+
+    private File chooseFile(){
+        FileChooser chooser = new FileChooser("./");
+
+        int dialogResult = chooser.showOpenDialog(this);
+        if (dialogResult != JFileChooser.APPROVE_OPTION) return null;
+
+        return chooser.getSelectedFile();
+    }
+
+    private void loadRGBImage(ActionEvent e) {
+        try
+        {
+            File file = chooseFile();
+            imageRGB = new CImageRGB(file);
+            observer.setCImage(imageRGB);
+            imageNG = null;
+            activeMenusRGB();
+        }
+        catch (IOException ex)
+        {
+            System.err.println("Erreur I/O : " + ex.getMessage());
+        }
+    }
+
+    private void loadGreyScaleImage(ActionEvent e) {
+        try
+        {
+            File file = chooseFile();
+            imageNG = new CImageNG(file);
+            observer.setCImage(imageNG);
+            imageRGB = null;
+            activeMenusNG();
+        }
+        catch (IOException ex)
+        {
+            System.err.println("Erreur I/O : " + ex.getMessage());
+        }
+    }
+
+    private void quit(ActionEvent e) {
+        System.exit(0);
+    }
+
+    //####################################################
+
+    private void jMenuItemNouvelleRGBActionPerformed(java.awt.event.ActionEvent e) {
+        NewRgbImage dialog = new NewRgbImage(new JFrame(),true);
+        dialog.setVisible(true);
+        imageRGB = dialog.getCImageRGB();
+        observer.setCImage(imageRGB);
+        imageNG = null;
+        activeMenusRGB();
+    }
+
+
+    private void jCheckBoxMenuItemDessinerPixelActionPerformed(java.awt.event.ActionEvent e) {
         if (!jCheckBoxMenuItemDessinerPixel.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
         else {
             jCheckBoxMenuItemDessinerPixel.setSelected(true);
@@ -119,7 +164,7 @@ public class NavBar extends JMenuBar {
         }
     }
 
-    private void jCheckBoxMenuItemDessinerRectanglePleinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemDessinerRectanglePleinActionPerformed
+    private void jCheckBoxMenuItemDessinerRectanglePleinActionPerformed(java.awt.event.ActionEvent e) {
         if (!jCheckBoxMenuItemDessinerRectanglePlein.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
         else
         {
@@ -133,7 +178,7 @@ public class NavBar extends JMenuBar {
         }
     }
 
-    private void jCheckBoxMenuItemDessinerRectangleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemDessinerRectangleActionPerformed
+    private void jCheckBoxMenuItemDessinerRectangleActionPerformed(java.awt.event.ActionEvent e) {
         if (!jCheckBoxMenuItemDessinerRectangle.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
         else
         {
@@ -147,7 +192,7 @@ public class NavBar extends JMenuBar {
         }
     }
 
-    private void jCheckBoxMenuItemDessinerLigneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemDessinerLigneActionPerformed
+    private void jCheckBoxMenuItemDessinerLigneActionPerformed(java.awt.event.ActionEvent e) {
         if (!jCheckBoxMenuItemDessinerLigne.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
         else
         {
@@ -175,7 +220,7 @@ public class NavBar extends JMenuBar {
         jMenuHistogramme.setEnabled(false);
     }
 
-    private void jCheckBoxMenuItemDessinerCerclePleinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemDessinerCerclePleinActionPerformed
+    private void jCheckBoxMenuItemDessinerCerclePleinActionPerformed(ActionEvent e) {
         if (!jCheckBoxMenuItemDessinerCerclePlein.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
         else {
             jCheckBoxMenuItemDessinerPixel.setSelected(false);
@@ -188,7 +233,7 @@ public class NavBar extends JMenuBar {
         }
     }
 
-    private void jCheckBoxMenuItemDessinerCercleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemDessinerCercleActionPerformed
+    private void jCheckBoxMenuItemDessinerCercleActionPerformed(ActionEvent e) {
         if (!jCheckBoxMenuItemDessinerCercle.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
         else
         {
@@ -203,11 +248,11 @@ public class NavBar extends JMenuBar {
     }
 
 
-    private void jMenuHistogrammeAfficherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuHistogrammeAfficherActionPerformed
-        int histo[];
+    private void jMenuHistogrammeAfficherActionPerformed(ActionEvent e) {
+        int[] histo;
         try
         {
-            int f_int[][] = imageNG.getMatrice();
+            int[][] f_int = imageNG.getMatrice();
             histo = Histogramme.Histogramme256(f_int);
         }
         catch (CImageNGException ex)
@@ -225,7 +270,7 @@ public class NavBar extends JMenuBar {
         // Creation du chart
         JFreeChart chart = ChartFactory.createHistogram("Histogramme","Niveaux de gris","Nombre de pixels",dataset, PlotOrientation.VERTICAL,false,false,false);
 
-        XYPlot plot = (XYPlot)chart.getXYPlot();
+        XYPlot plot = chart.getXYPlot();
         ValueAxis axeX = plot.getDomainAxis();
         axeX.setRange(0,255);
         plot.setDomainAxis(axeX);
@@ -236,115 +281,111 @@ public class NavBar extends JMenuBar {
         frame.setVisible(true);
     }
 
-    private void jMenuItemFourierAfficherPartieImaginaireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFourierAfficherPartieImaginaireActionPerformed
-        /*try
-        {
-            int f_int[][] = imageNG.getMatrice();
-            double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
-            for(int i=0 ; i<imageNG.getLargeur() ; i++)
-                for(int j=0 ; j<imageNG.getHauteur() ; j++) f[i][j] = (double)(f_int[i][j]);
-
-            System.out.println("Debut Fourier");
-            MatriceComplexe fourier = Fourier.Fourier2D(f);
-            System.out.println("Fin Fourier");
-            fourier = Fourier.decroise(fourier);
-            double partieImaginaire[][] = fourier.getPartieImaginaire();
-
-            DoubleMatrix dialog = new DoubleMatrix(this,true,partieImaginaire,"Fourier : Affichage de la partie imaginaire");
-            dialog.setVisible(true);
-        }
-        catch (CImageNGException ex)
-        {
-            System.out.println("Erreur CImageNG : " + ex.getMessage());
-        }*/
+    private void jMenuItemFourierAfficherPartieImaginaireActionPerformed(ActionEvent e) {
+//        try
+//        {
+//            int f_int[][] = imageNG.getMatrice();
+//            double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
+//            for(int i=0 ; i<imageNG.getLargeur() ; i++)
+//                for(int j=0 ; j<imageNG.getHauteur() ; j++) f[i][j] = (double)(f_int[i][j]);
+//
+//            System.out.println("Debut Fourier");
+//            MatriceComplexe fourier = Fourier.Fourier2D(f);
+//            System.out.println("Fin Fourier");
+//            fourier = Fourier.decroise(fourier);
+//            double partieImaginaire[][] = fourier.getPartieImaginaire();
+//
+//            DoubleMatrix dialog = new DoubleMatrix(this,true,partieImaginaire,"Fourier : Affichage de la partie imaginaire");
+//            dialog.setVisible(true);
+//        }
+//        catch (CImageNGException ex)
+//        {
+//            System.out.println("Erreur CImageNG : " + ex.getMessage());
+//        }
     }
 
-    private void jMenuItemFourierAfficherPartieReelleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFourierAfficherPartieReelleActionPerformed
-        /*try
-        {
-            int f_int[][] = imageNG.getMatrice();
-            double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
-            for(int i=0 ; i<imageNG.getLargeur() ; i++)
-                for(int j=0 ; j<imageNG.getHauteur() ; j++) f[i][j] = (double)(f_int[i][j]);
-
-            System.out.println("Debut Fourier");
-            MatriceComplexe fourier = Fourier.Fourier2D(f);
-            System.out.println("Fin Fourier");
-            fourier = Fourier.decroise(fourier);
-            double partieReelle[][] = fourier.getPartieReelle();
-
-            DoubleMatrix dialog = new DoubleMatrix(this,true,partieReelle,"Fourier : Affichage de la partie reelle");
-            dialog.setVisible(true);
-        }
-        catch (CImageNGException ex)
-        {
-            System.out.println("Erreur CImageNG : " + ex.getMessage());
-        }*/
-
+    private void jMenuItemFourierAfficherPartieReelleActionPerformed(ActionEvent e) {
+//        try
+//        {
+//            int f_int[][] = imageNG.getMatrice();
+//            double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
+//            for(int i=0 ; i<imageNG.getLargeur() ; i++)
+//                for(int j=0 ; j<imageNG.getHauteur() ; j++) f[i][j] = (double)(f_int[i][j]);
+//
+//            System.out.println("Debut Fourier");
+//            MatriceComplexe fourier = Fourier.Fourier2D(f);
+//            System.out.println("Fin Fourier");
+//            fourier = Fourier.decroise(fourier);
+//            double partieReelle[][] = fourier.getPartieReelle();
+//
+//            DoubleMatrix dialog = new DoubleMatrix(this,true,partieReelle,"Fourier : Affichage de la partie reelle");
+//            dialog.setVisible(true);
+//        }
+//        catch (CImageNGException ex)
+//        {
+//            System.out.println("Erreur CImageNG : " + ex.getMessage());
+//        }
     }
 
-    private void jMenuItemFourierAfficherPhaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFourierAfficherPhaseActionPerformed
-        /*try
-        {
-            int f_int[][] = imageNG.getMatrice();
-            double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
-            for(int i=0 ; i<imageNG.getLargeur() ; i++)
-                for(int j=0 ; j<imageNG.getHauteur() ; j++) f[i][j] = (double)(f_int[i][j]);
-
-            System.out.println("Debut Fourier");
-            MatriceComplexe fourier = Fourier.Fourier2D(f);
-            System.out.println("Fin Fourier");
-            fourier = Fourier.decroise(fourier);
-            double phase[][] = fourier.getPhase();
-
-            DoubleMatrix dialog = new DoubleMatrix(this,true,phase,"Fourier : Affichage de la phase");
-            dialog.setVisible(true);
-        }
-        catch (CImageNGException ex)
-        {
-            System.out.println("Erreur CImageNG : " + ex.getMessage());
-        }*/
-
+    private void jMenuItemFourierAfficherPhaseActionPerformed(ActionEvent e) {
+//        try
+//        {
+//            int f_int[][] = imageNG.getMatrice();
+//            double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
+//            for(int i=0 ; i<imageNG.getLargeur() ; i++)
+//                for(int j=0 ; j<imageNG.getHauteur() ; j++) f[i][j] = (double)(f_int[i][j]);
+//
+//            System.out.println("Debut Fourier");
+//            MatriceComplexe fourier = Fourier.Fourier2D(f);
+//            System.out.println("Fin Fourier");
+//            fourier = Fourier.decroise(fourier);
+//            double phase[][] = fourier.getPhase();
+//
+//            DoubleMatrix dialog = new DoubleMatrix(this,true,phase,"Fourier : Affichage de la phase");
+//            dialog.setVisible(true);
+//        }
+//        catch (CImageNGException ex)
+//        {
+//            System.out.println("Erreur CImageNG : " + ex.getMessage());
+//        }
     }
 
-    private void jMenuItemFourierAfficherModuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemFourierAfficherModuleActionPerformed
-        /*try
-        {
-            int f_int[][] = imageNG.getMatrice();
-            double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
-            for(int i=0 ; i<imageNG.getLargeur() ; i++)
-                for(int j=0 ; j<imageNG.getHauteur() ; j++) f[i][j] = (double)(f_int[i][j]);
-
-            System.out.println("Debut Fourier");
-            MatriceComplexe fourier = Fourier.Fourier2D(f);
-            System.out.println("Fin Fourier");
-            fourier = Fourier.decroise(fourier);
-            double module[][] = fourier.getModule();
-
-            DoubleMatrix dialog = new DoubleMatrix(this,true,module,"Fourier : Affichage du module");
-            dialog.setVisible(true);
-        }
-        catch (CImageNGException ex)
-        {
-            System.out.println("Erreur CImageNG : " + ex.getMessage());
-        }*/
+    private void jMenuItemFourierAfficherModuleActionPerformed(ActionEvent e) {
+//        try
+//        {
+//            int f_int[][] = imageNG.getMatrice();
+//            double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
+//            for(int i=0 ; i<imageNG.getLargeur() ; i++)
+//                for(int j=0 ; j<imageNG.getHauteur() ; j++) f[i][j] = (double)(f_int[i][j]);
+//
+//            System.out.println("Debut Fourier");
+//            MatriceComplexe fourier = Fourier.Fourier2D(f);
+//            System.out.println("Fin Fourier");
+//            fourier = Fourier.decroise(fourier);
+//            double module[][] = fourier.getModule();
+//
+//            DoubleMatrix dialog = new DoubleMatrix(this,true,module,"Fourier : Affichage du module");
+//            dialog.setVisible(true);
+//        }
+//        catch (CImageNGException ex)
+//        {
+//            System.out.println("Erreur CImageNG : " + ex.getMessage());
+//        }
     }
 
-    private void jMenuItemCouleurPinceauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCouleurPinceauActionPerformed
-        if (imageRGB != null)
-        {
-            Color newC = JColorChooser.showDialog(this,"Couleur du pinceau",couleurPinceauRGB);
-            if (newC != null) couleurPinceauRGB = newC;
-            observer.setCouleurPinceau(couleurPinceauRGB);
-        }
-
-        /*if (imageNG != null)
-        {
-            GreyScalePicker dialog = new GreyScalePicker(this,true,couleurPinceauNG);
-            dialog.setVisible(true);
-            couleurPinceauNG = dialog.getCouleur();
-        }*/
+    private void jMenuItemCouleurPinceauActionPerformed(ActionEvent e) {
+//        if (imageRGB != null)
+//        {
+//            Color newC = JColorChooser.showDialog(this,"Couleur du pinceau",couleurPinceauRGB);
+//            if (newC != null) couleurPinceauRGB = newC;
+//            observer.setCouleurPinceau(couleurPinceauRGB);
+//        }
+//
+//        if (imageNG != null)
+//        {
+//            GreyScalePicker dialog = new GreyScalePicker(this,true,couleurPinceauNG);
+//            dialog.setVisible(true);
+//            couleurPinceauNG = dialog.getCouleur();
+//        }
     }
-
-
 }

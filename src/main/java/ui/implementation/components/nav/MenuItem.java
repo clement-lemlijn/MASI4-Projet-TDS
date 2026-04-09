@@ -2,6 +2,7 @@ package ui.implementation.components.nav;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 public class MenuItem extends JMenuItem {
 
@@ -12,7 +13,10 @@ public class MenuItem extends JMenuItem {
     public MenuItem(String title, String iconPath, ActionListener listener) {
         super(title);
         if(iconPath != null) {
-            super.setIcon(new ImageIcon(iconPath));
+            URL url = getClass().getResource(iconPath);
+            if (url != null) {
+                super.setIcon(new ImageIcon(url));
+            }
         }
         if (listener != null) {
             addActionListener(listener);

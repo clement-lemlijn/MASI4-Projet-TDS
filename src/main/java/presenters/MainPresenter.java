@@ -15,6 +15,10 @@ public class MainPresenter {
         this.appState = appState;
     }
 
+    public void loadImage(){
+
+    }
+
     public boolean isPixelModeActive(){
         return false;
     }

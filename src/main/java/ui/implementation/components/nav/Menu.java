@@ -1,6 +1,7 @@
 package ui.implementation.components.nav;
 
 import javax.swing.*;
+import java.net.URL;
 
 public class Menu extends JMenu {
 
@@ -14,7 +15,7 @@ public class Menu extends JMenu {
         super(title);
 
         if (iconPath != null) {
-            var url = getClass().getResource(iconPath);
+            URL url = getClass().getResource(iconPath);
             if (url != null) {
                 setIcon(new ImageIcon(url));
             }
