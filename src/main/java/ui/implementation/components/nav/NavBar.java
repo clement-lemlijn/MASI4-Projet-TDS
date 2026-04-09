@@ -5,6 +5,7 @@ import domain.CImage.CImageRGB;
 import domain.CImage.Exceptions.CImageNGException;
 import domain.CImage.Observers.JLabelBeanCImage;
 import domain.ImageProcessing.Histogramme.Histogramme;
+import domain.common.Mode;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -13,8 +14,11 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import presenters.NavPresenter;
 import ui.implementation.components.intent.FileChooser;
-import ui.implementation.dialogs.NewRgbImage;
+import ui.implementation.dialogs.CreateImageDialog;
+import ui.implementation.dialogs.GreyScalePicker;
+import ui.interfaces.INavBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,9 +26,9 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class NavBar extends JMenuBar {
+public class NavBar extends JMenuBar implements INavBar {
 
-    private final JLabelBeanCImage observer;
+    private JLabelBeanCImage observer;
     private ButtonGroup buttonGroupDessiner;
     private JCheckBoxMenuItem jCheckBoxMenuItemDessinerCercle;
     private JCheckBoxMenuItem jCheckBoxMenuItemDessinerCerclePlein;
@@ -43,19 +47,28 @@ public class NavBar extends JMenuBar {
     private Color couleurPinceauRGB;
     private int   couleurPinceauNG;
 
-    public NavBar(JLabelBeanCImage observer) {
+    private NavPresenter presenter;
+
+    public NavBar() {
         initComponents();
-        this.observer = observer;
         jMenuDessiner.setEnabled(false);
         jMenuFourier.setEnabled(false);
         jMenuHistogramme.setEnabled(false);
     }
 
+    public void setPresenter(NavPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    /*public void setObserver(JLabelBeanCImage observer){
+        this.observer = observer;
+    }*/
+
     private void initComponents(){
 
         jMenuImage = new Menu("Image","/net_13_p1.jpg",
                 new Menu("Nouvelle", "/file_65_p3.jpg",
-                        new MenuItem("RGB", this::jMenuItemNouvelleRGBActionPerformed),
+                        new MenuItem("RGB", this::createRGBImage),
                         new MenuItem("NG", e -> {})
                 ),
                 new Menu("Ouvrir", "/folder_036_p3.jpg",
@@ -67,12 +80,12 @@ public class NavBar extends JMenuBar {
         );
 
         jMenuDessiner = new Menu("Dessiner","/dd_28_p1.jpg",
-                new MenuItem("Couleur", "/display_14_p3.jpg", this::jMenuItemCouleurPinceauActionPerformed),
+                new MenuItem("Couleur", "/display_14_p3.jpg", this::chooseColor),
                 new Menu("Formes",
-                        new MenuItem("Pixel", this::jCheckBoxMenuItemDessinerPixelActionPerformed),
-                        new MenuItem("Ligne", this::jCheckBoxMenuItemDessinerLigneActionPerformed),
-                        new MenuItem("Rectangle", this::jCheckBoxMenuItemDessinerRectangleActionPerformed),
-                        new MenuItem("Cercle", this::jCheckBoxMenuItemDessinerCercleActionPerformed)
+                        new MenuItem("Pixel", e -> this.setMode(e, Mode.DRAW_PIXEL)),
+                        new MenuItem("Ligne", e -> this.setMode(e, Mode.DRAW_LINE)),
+                        new MenuItem("Rectangle",e -> this.setMode(e, Mode.DRAW_RECTANGLE)),
+                        new MenuItem("Cercle", e -> this.setMode(e, Mode.DRAW_CIRCLE))
                 )
         );
 
@@ -139,10 +152,8 @@ public class NavBar extends JMenuBar {
         System.exit(0);
     }
 
-    //####################################################
-
-    private void jMenuItemNouvelleRGBActionPerformed(java.awt.event.ActionEvent e) {
-        NewRgbImage dialog = new NewRgbImage(new JFrame(),true);
+    private void createRGBImage(ActionEvent e) {
+        CreateImageDialog dialog = new CreateImageDialog(new JFrame(),true);
         dialog.setVisible(true);
         imageRGB = dialog.getCImageRGB();
         observer.setCImage(imageRGB);
@@ -151,8 +162,8 @@ public class NavBar extends JMenuBar {
     }
 
 
-    private void jCheckBoxMenuItemDessinerPixelActionPerformed(java.awt.event.ActionEvent e) {
-        if (!jCheckBoxMenuItemDessinerPixel.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
+    private void setMode(ActionEvent e, Mode mode) {
+        /*if (!jCheckBoxMenuItemDessinerPixel.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
         else {
             jCheckBoxMenuItemDessinerPixel.setSelected(true);
             jCheckBoxMenuItemDessinerLigne.setSelected(false);
@@ -161,50 +172,97 @@ public class NavBar extends JMenuBar {
             jCheckBoxMenuItemDessinerCercle.setSelected(false);
             jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
             observer.setMode(JLabelBeanCImage.CLIC);
+        }*/
+        presenter.setMode(mode);
+
+    }
+
+    private void chooseColor(ActionEvent e) {
+        if (imageRGB != null)
+        {
+            Color newC = JColorChooser.showDialog(this,"Couleur du pinceau",couleurPinceauRGB);
+            if (newC != null) couleurPinceauRGB = newC;
+            observer.setCouleurPinceau(couleurPinceauRGB);
+        }
+
+        if (imageNG != null)
+        {
+            GreyScalePicker dialog = new GreyScalePicker(new JFrame(),true,couleurPinceauNG);
+            dialog.setVisible(true);
+            couleurPinceauNG = dialog.getCouleur();
         }
     }
 
-    private void jCheckBoxMenuItemDessinerRectanglePleinActionPerformed(java.awt.event.ActionEvent e) {
-        if (!jCheckBoxMenuItemDessinerRectanglePlein.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
-        else
-        {
-            jCheckBoxMenuItemDessinerPixel.setSelected(false);
-            jCheckBoxMenuItemDessinerLigne.setSelected(false);
-            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
-            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(true);
-            jCheckBoxMenuItemDessinerCercle.setSelected(false);
-            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
-            observer.setMode(JLabelBeanCImage.SELECT_RECT_FILL);
-        }
-    }
+    //####################################################
 
-    private void jCheckBoxMenuItemDessinerRectangleActionPerformed(java.awt.event.ActionEvent e) {
-        if (!jCheckBoxMenuItemDessinerRectangle.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
-        else
-        {
-            jCheckBoxMenuItemDessinerPixel.setSelected(false);
-            jCheckBoxMenuItemDessinerLigne.setSelected(false);
-            jCheckBoxMenuItemDessinerRectangle.setSelected(true);
-            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
-            jCheckBoxMenuItemDessinerCercle.setSelected(false);
-            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
-            observer.setMode(JLabelBeanCImage.SELECT_RECT);
-        }
-    }
-
-    private void jCheckBoxMenuItemDessinerLigneActionPerformed(java.awt.event.ActionEvent e) {
-        if (!jCheckBoxMenuItemDessinerLigne.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
-        else
-        {
-            jCheckBoxMenuItemDessinerPixel.setSelected(false);
-            jCheckBoxMenuItemDessinerLigne.setSelected(true);
-            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
-            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
-            jCheckBoxMenuItemDessinerCercle.setSelected(false);
-            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
-            observer.setMode(JLabelBeanCImage.SELECT_LIGNE);
-        }
-    }
+//    private void jCheckBoxMenuItemDessinerRectanglePleinActionPerformed(ActionEvent e) {
+//        if (!jCheckBoxMenuItemDessinerRectanglePlein.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
+//        else
+//        {
+//            jCheckBoxMenuItemDessinerPixel.setSelected(false);
+//            jCheckBoxMenuItemDessinerLigne.setSelected(false);
+//            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
+//            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(true);
+//            jCheckBoxMenuItemDessinerCercle.setSelected(false);
+//            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
+//            observer.setMode(JLabelBeanCImage.SELECT_RECT_FILL);
+//        }
+//    }
+//
+//    private void jCheckBoxMenuItemDessinerRectangleActionPerformed(ActionEvent e) {
+//        if (!jCheckBoxMenuItemDessinerRectangle.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
+//        else
+//        {
+//            jCheckBoxMenuItemDessinerPixel.setSelected(false);
+//            jCheckBoxMenuItemDessinerLigne.setSelected(false);
+//            jCheckBoxMenuItemDessinerRectangle.setSelected(true);
+//            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
+//            jCheckBoxMenuItemDessinerCercle.setSelected(false);
+//            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
+//            observer.setMode(JLabelBeanCImage.SELECT_RECT);
+//        }
+//    }
+//
+//    private void jCheckBoxMenuItemDessinerLigneActionPerformed(ActionEvent e) {
+//        if (!jCheckBoxMenuItemDessinerLigne.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
+//        else
+//        {
+//            jCheckBoxMenuItemDessinerPixel.setSelected(false);
+//            jCheckBoxMenuItemDessinerLigne.setSelected(true);
+//            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
+//            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
+//            jCheckBoxMenuItemDessinerCercle.setSelected(false);
+//            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
+//            observer.setMode(JLabelBeanCImage.SELECT_LIGNE);
+//        }
+//    }
+//
+//    private void jCheckBoxMenuItemDessinerCerclePleinActionPerformed(ActionEvent e) {
+//        if (!jCheckBoxMenuItemDessinerCerclePlein.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
+//        else {
+//            jCheckBoxMenuItemDessinerPixel.setSelected(false);
+//            jCheckBoxMenuItemDessinerLigne.setSelected(false);
+//            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
+//            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
+//            jCheckBoxMenuItemDessinerCercle.setSelected(false);
+//            jCheckBoxMenuItemDessinerCerclePlein.setSelected(true);
+//            observer.setMode(JLabelBeanCImage.SELECT_CERCLE_FILL);
+//        }
+//    }
+//
+//    private void jCheckBoxMenuItemDessinerCercleActionPerformed(ActionEvent e) {
+//        if (!jCheckBoxMenuItemDessinerCercle.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
+//        else
+//        {
+//            jCheckBoxMenuItemDessinerPixel.setSelected(false);
+//            jCheckBoxMenuItemDessinerLigne.setSelected(false);
+//            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
+//            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
+//            jCheckBoxMenuItemDessinerCercle.setSelected(true);
+//            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
+//            observer.setMode(JLabelBeanCImage.SELECT_CERCLE);
+//        }
+//    }
 
     private void activeMenusNG()
     {
@@ -219,35 +277,7 @@ public class NavBar extends JMenuBar {
         jMenuFourier.setEnabled(false);
         jMenuHistogramme.setEnabled(false);
     }
-
-    private void jCheckBoxMenuItemDessinerCerclePleinActionPerformed(ActionEvent e) {
-        if (!jCheckBoxMenuItemDessinerCerclePlein.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
-        else {
-            jCheckBoxMenuItemDessinerPixel.setSelected(false);
-            jCheckBoxMenuItemDessinerLigne.setSelected(false);
-            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
-            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
-            jCheckBoxMenuItemDessinerCercle.setSelected(false);
-            jCheckBoxMenuItemDessinerCerclePlein.setSelected(true);
-            observer.setMode(JLabelBeanCImage.SELECT_CERCLE_FILL);
-        }
-    }
-
-    private void jCheckBoxMenuItemDessinerCercleActionPerformed(ActionEvent e) {
-        if (!jCheckBoxMenuItemDessinerCercle.isSelected()) observer.setMode(JLabelBeanCImage.INACTIF);
-        else
-        {
-            jCheckBoxMenuItemDessinerPixel.setSelected(false);
-            jCheckBoxMenuItemDessinerLigne.setSelected(false);
-            jCheckBoxMenuItemDessinerRectangle.setSelected(false);
-            jCheckBoxMenuItemDessinerRectanglePlein.setSelected(false);
-            jCheckBoxMenuItemDessinerCercle.setSelected(true);
-            jCheckBoxMenuItemDessinerCerclePlein.setSelected(false);
-            observer.setMode(JLabelBeanCImage.SELECT_CERCLE);
-        }
-    }
-
-
+    
     private void jMenuHistogrammeAfficherActionPerformed(ActionEvent e) {
         int[] histo;
         try
@@ -370,22 +400,6 @@ public class NavBar extends JMenuBar {
 //        catch (CImageNGException ex)
 //        {
 //            System.out.println("Erreur CImageNG : " + ex.getMessage());
-//        }
-    }
-
-    private void jMenuItemCouleurPinceauActionPerformed(ActionEvent e) {
-//        if (imageRGB != null)
-//        {
-//            Color newC = JColorChooser.showDialog(this,"Couleur du pinceau",couleurPinceauRGB);
-//            if (newC != null) couleurPinceauRGB = newC;
-//            observer.setCouleurPinceau(couleurPinceauRGB);
-//        }
-//
-//        if (imageNG != null)
-//        {
-//            GreyScalePicker dialog = new GreyScalePicker(this,true,couleurPinceauNG);
-//            dialog.setVisible(true);
-//            couleurPinceauNG = dialog.getCouleur();
 //        }
     }
 }

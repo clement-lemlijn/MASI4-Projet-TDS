@@ -2,6 +2,7 @@ package presenters;
 
 import app.AppState;
 import com.google.inject.Inject;
+import domain.common.Mode;
 import ui.interfaces.IMainView;
 
 public class MainPresenter {
@@ -15,8 +16,8 @@ public class MainPresenter {
         this.appState = appState;
     }
 
-    public void loadImage(){
-
+    public void setMode(Mode mode) {
+        appState.setMode(mode);
     }
 
     public boolean isPixelModeActive(){

@@ -1,5 +1,6 @@
 package ui.implementation.views;
 
+import com.google.inject.Provider;
 import domain.CImage.CImageNG;
 import domain.CImage.CImageRGB;
 import domain.CImage.Exceptions.CImageNGException;
@@ -39,6 +40,11 @@ public class MainView extends JFrame implements IMainView,
         couleurPinceauNG = 0;
     }
 
+    public void setNavBar(NavBar navBar) {
+        this.navBar = navBar;
+        setJMenuBar(this.navBar);
+    }
+
     public void setPresenter(MainPresenter presenter) {
         this.presenter = presenter;
     }
@@ -52,12 +58,9 @@ public class MainView extends JFrame implements IMainView,
         observer.addSelectCercleListener(this);
         observer.addSelectCercleFillListener(this);
         observer.setMode(JLabelBeanCImage.INACTIF);
-        navBar = new NavBar(observer);
 
         jScrollPane = new JScrollPane();
         jScrollPane.setViewportView(observer);
-
-        setJMenuBar(navBar);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
