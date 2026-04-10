@@ -1,5 +1,5 @@
 package domain.events;
 
-import domain.CImage.CImage;
+import domain.image.Image;
 
-public record ImageChangedEvent(CImage image) { }
+public record ImageChangedEvent(Image image) { }

@@ -9,6 +9,9 @@ import ui.interfaces.IMainView;
 
 import javax.swing.*;
 
+/**
+ * @author Laurent Crema
+ */
 public class Main {
 
     public static void main(String[] args) {

@@ -143,6 +143,18 @@ public abstract class ImageCreatorDialog extends JDialog
         return color;
     }
 
+    public int getRed() {
+        return color.getRed();
+    }
+
+    public int getGreen() {
+        return color.getGreen();
+    }
+
+    public int getBlue() {
+        return color.getBlue();
+    }
+
     public int getImageWidth(){
         return width;
     }

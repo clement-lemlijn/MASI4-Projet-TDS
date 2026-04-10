@@ -28,16 +28,9 @@ import java.io.IOException;
 public class NavBar extends JMenuBar implements INavBar {
 
     private JMenu imageMenu;
-    private JMenu editMenu;
     private JMenu drawingMenu;
     private JMenu fourierMenu;
     private JMenu histogramMenu;
-
-//    private CImageRGB imageRGB;
-//    private CImageNG imageNG;
-
-    private Color couleurPinceauRGB;
-    private int   couleurPinceauNG;
 
     private NavPresenter presenter;
 
@@ -128,14 +121,12 @@ public class NavBar extends JMenuBar implements INavBar {
     }
 
     private void createImage(ActionEvent e, ImageCreatorDialog dialog) {
-        try {
-            dialog.setVisible(true);
-            presenter.createImage(dialog.getImageColor(), dialog.getImageHeight(), dialog.getImageWidth());
-            activeMenusRGB();
-            activeMenusNG();
-        } catch (CImageRGBException ex) {
-            throw new RuntimeException(ex);
-        }
+        dialog.setVisible(true);
+        presenter.createImage(
+                dialog.getRed(), dialog.getGreen(), dialog.getBlue(),
+                dialog.getImageHeight(), dialog.getImageWidth());
+        activeMenusRGB();
+        activeMenusNG();
     }
 
     private void setMode(ActionEvent e, Mode mode) {
@@ -177,11 +168,7 @@ public class NavBar extends JMenuBar implements INavBar {
 
     private void jMenuHistogrammeAfficherActionPerformed(ActionEvent e) {
         int[][] f_int = null;
-        try {
-            f_int = presenter.getImageMatrix();
-        } catch (CImageNGException ex) {
-            throw new RuntimeException(ex);
-        }
+        f_int = presenter.getImageMatrix();
         int[] histo = Histogramme.Histogramme256(f_int);
 
         //Création du dataset

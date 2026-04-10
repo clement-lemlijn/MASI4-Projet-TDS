@@ -1,5 +1,7 @@
 package domain.image;
 
+import java.io.File;
+
 /**
  * @author Laurent Crema
  */
@@ -13,6 +15,15 @@ public class Image {
         this.pixels = pixels;
     }
 
+    public Image(int red, int green, int blue, int height, int width) {
+        pixels =  new Pixel[height][width];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                pixels[y][x] = new Pixel(red, green, blue);
+            }
+        }
+    }
+
     public int getWidth(){
         return pixels[0].length;
     }
@@ -22,7 +33,8 @@ public class Image {
     }
 
     public Pixel getPixel(int x, int y){
-        if(x < 0 || y < 0 || x >= getWidth() || y >= getHeight()) throw new IllegalArgumentException("Invalid coordinates");
+        if(x < 0 || y < 0 || x >= getWidth() || y >= getHeight())
+            throw new IllegalArgumentException("Invalid coordinates");
         return pixels[x][y];
     }
 

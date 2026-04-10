@@ -1,29 +1,31 @@
 package presenters;
 
-import app.AppState;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import domain.common.Mode;
 import domain.events.ImageChangedEvent;
 import domain.events.ModeChangedEvent;
+import services.ImageService;
 import ui.interfaces.IMainView;
 
+/**
+ * @author Laurent Crema
+ */
 public class MainPresenter {
 
     private final IMainView view;
-    private final AppState appState;
+    private final ImageService service;
 
     @Inject
-    public MainPresenter(IMainView view, AppState appState, EventBus eventBus) {
+    public MainPresenter(IMainView view, ImageService service, EventBus eventBus) {
         this.view = view;
-        this.appState = appState;
+        this.service = service;
         eventBus.register(this);
     }
 
     @Subscribe
     public void onImageChanged(ImageChangedEvent e){
-        view.displayImage(e.image().getImage());
+        view.displayImage(null);
     }
 
     @Subscribe

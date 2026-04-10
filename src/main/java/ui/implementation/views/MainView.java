@@ -1,8 +1,5 @@
 package ui.implementation.views;
 
-import domain.CImage.CImageNG;
-import domain.CImage.CImageRGB;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
@@ -12,34 +9,21 @@ import presenters.MainPresenter;
 import ui.implementation.components.image.ImagePanel;
 import ui.implementation.components.nav.NavBar;
 import ui.interfaces.IMainView;
-import ui.old.Observers.JLabelBeanCImage;
 
+/**
+ * @author Jean-Marc Wagner, Laurent Crema
+ */
 public class MainView extends JFrame implements IMainView
 {
-    private CImageRGB imageRGB;
-    private CImageNG imageNG;
-    private JLabelBeanCImage observer;
-    private Color couleurPinceauRGB;
-    private int   couleurPinceauNG;
-
-    private JScrollPane jScrollPane;
-    private NavBar navBar;
-
+    private JScrollPane imagePreviewContainer;
     private MainPresenter presenter;
 
     public MainView(){
         initComponents();
-
-        imageRGB = null;
-        imageNG  = null;
-
-        couleurPinceauRGB = Color.BLACK;
-        couleurPinceauNG = 0;
     }
 
     public void setNavBar(NavBar navBar) {
-        this.navBar = navBar;
-        setJMenuBar(this.navBar);
+        setJMenuBar(navBar);
     }
 
     public void setPresenter(MainPresenter presenter) {
@@ -47,11 +31,7 @@ public class MainView extends JFrame implements IMainView
     }
 
     private void initComponents() {
-//        observer = new JLabelBeanCImage();
-//        observer.setMode(JLabelBeanCImage.INACTIF);
-
-        jScrollPane = new JScrollPane();
-//        jScrollPane.setViewportView(observer);
+        imagePreviewContainer = new JScrollPane();
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -59,14 +39,14 @@ public class MainView extends JFrame implements IMainView
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane, GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                                .addComponent(imagePreviewContainer, GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                                .addComponent(imagePreviewContainer, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                                 .addContainerGap())
         );
 
@@ -184,14 +164,28 @@ public class MainView extends JFrame implements IMainView
 
     @Override
     public void displayImage(BufferedImage image) {
-        ImagePanel panel = new ImagePanel(image);
-        jScrollPane.setViewportView(panel);
-        jScrollPane.revalidate();
-        jScrollPane.repaint();
+        try {
+            ImagePanel panel = new ImagePanel(image);
+            imagePreviewContainer.setViewportView(panel);
+            imagePreviewContainer.revalidate();
+            imagePreviewContainer.repaint();
+        } catch (Exception ex) {
+            displayErrorMessage("Oups !", ex.getMessage());
+        }
     }
 
     @Override
     public void changeMode(Mode m) {
 
     }
+
+    private void displayErrorMessage(String title, String message) {
+        JOptionPane.showMessageDialog(
+                this,
+                message,
+                title,
+                JOptionPane.ERROR_MESSAGE
+        );
+    }
+
 }
