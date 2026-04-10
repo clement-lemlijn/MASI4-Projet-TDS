@@ -20,12 +20,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
 
             NavBar navBar = injector.getInstance(NavBar.class);
-            NavPresenter navPresenter = injector.getInstance(NavPresenter.class);
-            navBar.setPresenter(navPresenter);
-
             MainView view = (MainView) injector.getInstance(IMainView.class);
-            MainPresenter mainPresenter = injector.getInstance(MainPresenter.class);
-            view.setPresenter(mainPresenter);
             view.setNavBar(navBar);
             view.setVisible(true);
         });

@@ -1,11 +1,10 @@
 package services;
 
 import app.AppState;
+import com.google.inject.Inject;
 import domain.image.Image;
-import domain.image.Pixel;
 import infrastructure.image.io.ImageLoader;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -13,6 +12,7 @@ public class ImageService {
 
     private final AppState appState;
 
+    @Inject
     public ImageService(AppState appState) {
         this.appState = appState;
     }

@@ -1,13 +1,11 @@
 package presenters;
 
 import com.google.inject.Inject;
-import domain.CImage.Exceptions.CImageNGException;
 import domain.common.Mode;
 import services.ImageService;
 import services.ModeService;
 import ui.interfaces.INavBar;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -16,15 +14,18 @@ import java.io.IOException;
  */
 public class NavPresenter {
 
-    private final INavBar navBar;
+    private INavBar navBar;
     private final ImageService imageService;
     private final ModeService modeService;
 
     @Inject
-    public NavPresenter(INavBar navBar, ImageService imageService, ModeService modeService) {
-        this.navBar = navBar;
+    public NavPresenter(ImageService imageService, ModeService modeService) {
         this.imageService = imageService;
         this.modeService = modeService;
+    }
+
+    public void setView(INavBar navBar) {
+        this.navBar = navBar;
     }
 
     public void createImage(int red, int green, int blue, int height, int width) {

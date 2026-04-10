@@ -13,14 +13,17 @@ import ui.interfaces.IMainView;
  */
 public class MainPresenter {
 
-    private final IMainView view;
+    private IMainView view;
     private final ImageService service;
 
     @Inject
-    public MainPresenter(IMainView view, ImageService service, EventBus eventBus) {
-        this.view = view;
+    public MainPresenter(ImageService service, EventBus eventBus) {
         this.service = service;
         eventBus.register(this);
+    }
+
+    public void setView(IMainView view) {
+        this.view = view;
     }
 
     @Subscribe

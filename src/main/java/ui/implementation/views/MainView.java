@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 import domain.common.Mode;
+import jakarta.inject.Inject;
 import presenters.MainPresenter;
 import ui.implementation.components.image.ImagePanel;
 import ui.implementation.components.nav.NavBar;
@@ -15,10 +16,13 @@ import ui.interfaces.IMainView;
  */
 public class MainView extends JFrame implements IMainView
 {
-    private JScrollPane imagePreviewContainer;
-    private MainPresenter presenter;
+    private ImagePanel imagePreviewContainer;
+    private final MainPresenter presenter;
 
-    public MainView(){
+    @Inject
+    public MainView(MainPresenter presenter){
+        this.presenter = presenter;
+        this.presenter.setView(this);
         initComponents();
     }
 
@@ -26,12 +30,9 @@ public class MainView extends JFrame implements IMainView
         setJMenuBar(navBar);
     }
 
-    public void setPresenter(MainPresenter presenter) {
-        this.presenter = presenter;
-    }
 
     private void initComponents() {
-        imagePreviewContainer = new JScrollPane();
+        imagePreviewContainer = new ImagePanel();
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -165,10 +166,7 @@ public class MainView extends JFrame implements IMainView
     @Override
     public void displayImage(BufferedImage image) {
         try {
-            ImagePanel panel = new ImagePanel(image);
-            imagePreviewContainer.setViewportView(panel);
-            imagePreviewContainer.revalidate();
-            imagePreviewContainer.repaint();
+            imagePreviewContainer.paint(image.getGraphics());
         } catch (Exception ex) {
             displayErrorMessage("Oups !", ex.getMessage());
         }

@@ -1,12 +1,14 @@
 package services;
 
 import app.AppState;
+import com.google.inject.Inject;
 import domain.common.Mode;
 
 public class ModeService {
 
     private final AppState appState;
 
+    @Inject
     public ModeService(AppState appState) {
         this.appState = appState;
     }

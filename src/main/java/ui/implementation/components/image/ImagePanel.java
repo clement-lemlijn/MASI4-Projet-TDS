@@ -6,7 +6,15 @@ import java.awt.*;
 public class ImagePanel extends JPanel {
     private Image image;
 
+    public ImagePanel() {
+
+    }
+
     public ImagePanel(Image image) {
+        loadImage(image);
+    }
+
+    private void loadImage(Image image){
         this.image = image;
         setPreferredSize(new Dimension(image.getWidth(null), image.getHeight(null)));
     }

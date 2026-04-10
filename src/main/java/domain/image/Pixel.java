@@ -46,7 +46,7 @@ public class Pixel {
     }
 
     public boolean checkColorValidity(int color) {
-        return color >= 0 && color <= 255;
+        return !(color >= 0 && color <= 255);
     }
 
     /**

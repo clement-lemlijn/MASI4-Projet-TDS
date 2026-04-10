@@ -4,6 +4,7 @@ import domain.CImage.Exceptions.CImageNGException;
 import domain.CImage.Exceptions.CImageRGBException;
 import domain.ImageProcessing.Histogramme.Histogramme;
 import domain.common.Mode;
+import jakarta.inject.Inject;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -34,11 +35,11 @@ public class NavBar extends JMenuBar implements INavBar {
 
     private NavPresenter presenter;
 
-    public NavBar() {
+    @Inject
+    public NavBar(NavPresenter presenter) {
+        this.presenter = presenter;
+        this.presenter.setView(this);
         initComponents();
-        drawingMenu.setEnabled(false);
-        fourierMenu.setEnabled(false);
-        histogramMenu.setEnabled(false);
     }
 
     public void setPresenter(NavPresenter presenter) {
@@ -89,6 +90,10 @@ public class NavBar extends JMenuBar implements INavBar {
         this.add(drawingMenu);
         this.add(fourierMenu);
         this.add(histogramMenu);
+
+        drawingMenu.setEnabled(false);
+        fourierMenu.setEnabled(false);
+        histogramMenu.setEnabled(false);
     }
 
     //####################################################
@@ -261,8 +266,8 @@ public class NavBar extends JMenuBar implements INavBar {
     }
 
     private void jMenuItemFourierAfficherModuleActionPerformed(ActionEvent e) {
-//        try
-//        {
+        try
+        {
 //            int f_int[][] = imageNG.getMatrice();
 //            double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
 //            for(int i=0 ; i<imageNG.getLargeur() ; i++)
@@ -276,10 +281,10 @@ public class NavBar extends JMenuBar implements INavBar {
 //
 //            DoubleMatrix dialog = new DoubleMatrix(this,true,module,"Fourier : Affichage du module");
 //            dialog.setVisible(true);
-//        }
-//        catch (CImageNGException ex)
-//        {
-//            System.out.println("Erreur CImageNG : " + ex.getMessage());
-//        }
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
     }
 }

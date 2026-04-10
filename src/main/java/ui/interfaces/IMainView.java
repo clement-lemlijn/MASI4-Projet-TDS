@@ -1,6 +1,8 @@
 package ui.interfaces;
 
 import domain.common.Mode;
+import presenters.DoubleMatrixPresenter;
+import presenters.MainPresenter;
 
 import java.awt.image.BufferedImage;
 
