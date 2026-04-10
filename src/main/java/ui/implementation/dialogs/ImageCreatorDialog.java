@@ -38,7 +38,10 @@ public abstract class ImageCreatorDialog extends JDialog
         setResizable(false);
 
         GroupLayout jPanelLayout = new GroupLayout(colorVisualizer);
-        colorVisualizer.setBorder(BorderFactory.createCompoundBorder(null, BorderFactory.createLineBorder(new Color(255, 0, 0))));
+        colorVisualizer.setBorder(
+                BorderFactory.createCompoundBorder(null,
+                BorderFactory.createLineBorder(new Color(255, 0, 0)))
+        );
         colorVisualizer.setLayout(jPanelLayout);
 
         jPanelLayout.setHorizontalGroup(

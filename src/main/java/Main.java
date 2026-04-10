@@ -5,6 +5,7 @@ import presenters.MainPresenter;
 import presenters.NavPresenter;
 import ui.implementation.components.nav.NavBar;
 import ui.implementation.views.MainView;
+import ui.interfaces.IMainView;
 
 import javax.swing.*;
 
@@ -19,7 +20,7 @@ public class Main {
             NavPresenter navPresenter = injector.getInstance(NavPresenter.class);
             navBar.setPresenter(navPresenter);
 
-            MainView view = injector.getInstance(MainView.class);
+            MainView view = (MainView) injector.getInstance(IMainView.class);
             MainPresenter mainPresenter = injector.getInstance(MainPresenter.class);
             view.setPresenter(mainPresenter);
             view.setNavBar(navBar);

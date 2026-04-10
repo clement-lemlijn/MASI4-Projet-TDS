@@ -8,11 +8,13 @@ import domain.CImage.Exceptions.CImageRGBException;
 import domain.CImage.Observers.Events.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 import domain.CImage.Observers.JLabelBeanCImage;
 import domain.common.Mode;
 import presenters.MainPresenter;
+import ui.implementation.components.image.ImagePanel;
 import ui.implementation.components.nav.NavBar;
 import ui.interfaces.IMainView;
 
@@ -49,17 +51,11 @@ public class MainView extends JFrame implements IMainView
     }
 
     private void initComponents() {
-        observer = new JLabelBeanCImage();
-//        observer.addClicListener(this);
-//        observer.addSelectLigneListener(this);
-//        observer.addSelectRectListener(this);
-//        observer.addSelectRectFillListener(this);
-//        observer.addSelectCercleListener(this);
-//        observer.addSelectCercleFillListener(this);
-        observer.setMode(JLabelBeanCImage.INACTIF);
+//        observer = new JLabelBeanCImage();
+//        observer.setMode(JLabelBeanCImage.INACTIF);
 
         jScrollPane = new JScrollPane();
-        jScrollPane.setViewportView(observer);
+//        jScrollPane.setViewportView(observer);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -191,8 +187,11 @@ public class MainView extends JFrame implements IMainView
     }
 
     @Override
-    public void displayImage() {
-
+    public void displayImage(BufferedImage image) {
+        ImagePanel panel = new ImagePanel(image);
+        jScrollPane.setViewportView(panel);
+        jScrollPane.revalidate();
+        jScrollPane.repaint();
     }
 
     @Override
