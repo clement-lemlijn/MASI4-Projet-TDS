@@ -1,8 +1,7 @@
 package ui.implementation.components.nav;
 
-import domain.CImage.CImageNG;
-import domain.CImage.CImageRGB;
 import domain.CImage.Exceptions.CImageNGException;
+import domain.CImage.Exceptions.CImageRGBException;
 import domain.CImage.Observers.JLabelBeanCImage;
 import domain.ImageProcessing.Histogramme.Histogramme;
 import domain.common.Mode;
@@ -16,8 +15,9 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import presenters.NavPresenter;
 import ui.implementation.components.intent.FileChooser;
-import ui.implementation.dialogs.CreateImageDialog;
-import ui.implementation.dialogs.GreyScalePicker;
+import ui.implementation.dialogs.ImageCreatorDialog;
+import ui.implementation.dialogs.GreyScaleImageCreatorDialog;
+import ui.implementation.dialogs.RGBImageCreatorDialog;
 import ui.interfaces.INavBar;
 
 import javax.swing.*;
@@ -34,8 +34,8 @@ public class NavBar extends JMenuBar implements INavBar {
     private JMenu jMenuHistogramme;
     private JMenu jMenuImage;
 
-    private CImageRGB imageRGB;
-    private CImageNG imageNG;
+//    private CImageRGB imageRGB;
+//    private CImageNG imageNG;
 
     private Color couleurPinceauRGB;
     private int   couleurPinceauNG;
@@ -57,8 +57,8 @@ public class NavBar extends JMenuBar implements INavBar {
 
         jMenuImage = new Menu("Image","/net_13_p1.jpg",
                 new Menu("Nouvelle", "/file_65_p3.jpg",
-                        new MenuItem("RGB", this::createRGBImage),
-                        new MenuItem("NG", e -> {})
+                        new MenuItem("RGB", e -> this.createImage(e, new RGBImageCreatorDialog(new JFrame(),true))),
+                        new MenuItem("NG", e -> this.createImage(e, new GreyScaleImageCreatorDialog(new JFrame(),true)))
                 ),
                 new Menu("Ouvrir", "/folder_036_p3.jpg",
                         new MenuItem("RGB", this::loadRGBImage),
@@ -111,9 +111,7 @@ public class NavBar extends JMenuBar implements INavBar {
         try
         {
             File file = chooseFile();
-            imageRGB = new CImageRGB(file);
-            observer.setCImage(imageRGB);
-            imageNG = null;
+            presenter.loadImage(file);
             activeMenusRGB();
         }
         catch (IOException ex)
@@ -126,9 +124,7 @@ public class NavBar extends JMenuBar implements INavBar {
         try
         {
             File file = chooseFile();
-            imageNG = new CImageNG(file);
-            observer.setCImage(imageNG);
-            imageRGB = null;
+            presenter.loadImage(file);
             activeMenusNG();
         }
         catch (IOException ex)
@@ -141,37 +137,37 @@ public class NavBar extends JMenuBar implements INavBar {
         System.exit(0);
     }
 
-    private void createRGBImage(ActionEvent e) {
-        CreateImageDialog dialog = new CreateImageDialog(new JFrame(),true);
-        dialog.setVisible(true);
-        imageRGB = dialog.getCImageRGB();
-        observer.setCImage(imageRGB);
-        imageNG = null;
-        activeMenusRGB();
+    private void createImage(ActionEvent e, ImageCreatorDialog dialog) {
+        try {
+            dialog.setVisible(true);
+            presenter.createImage(dialog.getImageColor(), dialog.getImageHeight(), dialog.getImageWidth());
+            activeMenusRGB();
+            activeMenusNG();
+        } catch (CImageRGBException ex) {
+            throw new RuntimeException(ex);
+        }
     }
-
 
     private void setMode(ActionEvent e, Mode mode) {
         presenter.setMode(mode);
     }
 
     private void chooseColor(ActionEvent e) {
-        if (imageRGB != null)
+        /*if (imageRGB != null)
         {
-            Color newC = JColorChooser.showDialog(this,"Couleur du pinceau",couleurPinceauRGB);
+            Color newC = JColorChooser.showDialog(this,"Couleur du pinceau", couleurPinceauRGB);
             if (newC != null) couleurPinceauRGB = newC;
             observer.setCouleurPinceau(couleurPinceauRGB);
         }
 
         if (imageNG != null)
         {
-            GreyScalePicker dialog = new GreyScalePicker(new JFrame(),true,couleurPinceauNG);
+            GreyScalePicker dialog = new GreyScalePicker(new JFrame(),true, couleurPinceauNG);
             dialog.setVisible(true);
             couleurPinceauNG = dialog.getCouleur();
-        }
+        }*/
     }
 
-    //####################################################
 
     private void activeMenusNG()
     {
@@ -187,18 +183,16 @@ public class NavBar extends JMenuBar implements INavBar {
         jMenuHistogramme.setEnabled(false);
     }
 
+    //####################################################
+
     private void jMenuHistogrammeAfficherActionPerformed(ActionEvent e) {
-        int[] histo;
-        try
-        {
-            int[][] f_int = imageNG.getMatrice();
-            histo = Histogramme.Histogramme256(f_int);
+        int[][] f_int = null;
+        try {
+            f_int = presenter.getImageMatrix();
+        } catch (CImageNGException ex) {
+            throw new RuntimeException(ex);
         }
-        catch (CImageNGException ex)
-        {
-            System.out.println("Erreur CImageNG : " + ex.getMessage());
-            return;
-        }
+        int[] histo = Histogramme.Histogramme256(f_int);
 
         //Création du dataset
         XYSeries serie = new XYSeries("Histo");

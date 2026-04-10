@@ -1,8 +1,12 @@
 package presenters;
 
 import app.AppState;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import domain.common.Mode;
+import domain.events.ImageChangedEvent;
+import domain.events.ModeChangedEvent;
 import ui.interfaces.IMainView;
 
 public class MainPresenter {
@@ -11,13 +15,20 @@ public class MainPresenter {
     private final AppState appState;
 
     @Inject
-    public MainPresenter(IMainView view, AppState appState) {
+    public MainPresenter(IMainView view, AppState appState, EventBus eventBus) {
         this.view = view;
         this.appState = appState;
+        eventBus.register(this);
     }
 
-    public void setMode(Mode mode) {
-        appState.setMode(mode);
+    @Subscribe
+    public void onImageChanged(ImageChangedEvent e){
+        view.displayImage();
+    }
+
+    @Subscribe
+    public void onModeChanged(ModeChangedEvent e){
+        view.changeMode(e.mode());
     }
 
     public boolean isPixelModeActive(){

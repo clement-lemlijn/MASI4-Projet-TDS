@@ -142,7 +142,7 @@ public class CImageNG extends CImage
         // Extraction des donnees de l'image
         int pixels[] = new int[largeur*hauteur];
         PixelGrabber pg = new PixelGrabber(image,0,0,largeur,hauteur,pixels,0,largeur);
-        try 
+        try
         {
             pg.grabPixels();
             ColorModel cm = pg.getColorModel();

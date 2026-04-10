@@ -11,13 +11,12 @@ import java.awt.*;
 import javax.swing.*;
 
 import domain.CImage.Observers.JLabelBeanCImage;
+import domain.common.Mode;
 import presenters.MainPresenter;
 import ui.implementation.components.nav.NavBar;
 import ui.interfaces.IMainView;
 
-public class MainView extends JFrame implements IMainView,
-        ClicListener, SelectLigneListener,SelectRectListener,
-        SelectRectFillListener, SelectCercleListener,SelectCercleFillListener
+public class MainView extends JFrame implements IMainView
 {
     private CImageRGB imageRGB;
     private CImageNG imageNG;
@@ -51,12 +50,12 @@ public class MainView extends JFrame implements IMainView,
 
     private void initComponents() {
         observer = new JLabelBeanCImage();
-        observer.addClicListener(this);
-        observer.addSelectLigneListener(this);
-        observer.addSelectRectListener(this);
-        observer.addSelectRectFillListener(this);
-        observer.addSelectCercleListener(this);
-        observer.addSelectCercleFillListener(this);
+//        observer.addClicListener(this);
+//        observer.addSelectLigneListener(this);
+//        observer.addSelectRectListener(this);
+//        observer.addSelectRectFillListener(this);
+//        observer.addSelectCercleListener(this);
+//        observer.addSelectCercleFillListener(this);
         observer.setMode(JLabelBeanCImage.INACTIF);
 
         jScrollPane = new JScrollPane();
@@ -189,5 +188,15 @@ public class MainView extends JFrame implements IMainView,
             catch (CImageNGException ex)
             { System.out.println("Erreur NG : " + ex.getMessage()); }
         }
+    }
+
+    @Override
+    public void displayImage() {
+
+    }
+
+    @Override
+    public void changeMode(Mode m) {
+
     }
 }
