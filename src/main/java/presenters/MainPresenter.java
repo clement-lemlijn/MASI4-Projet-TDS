@@ -28,7 +28,7 @@ public class MainPresenter {
 
     @Subscribe
     public void onImageChanged(ImageChangedEvent e){
-        view.displayImage(null);
+        view.displayImage(e.image());
     }
 
     @Subscribe

@@ -14,7 +14,11 @@ import ui.interfaces.IDoubleMatrix;
 import ui.interfaces.IMainView;
 import ui.interfaces.INavBar;
 
+/**
+ * @author Laurent Crema
+ */
 public class AppModule extends AbstractModule {
+
     @Override
     protected void configure() {
 
@@ -29,9 +33,9 @@ public class AppModule extends AbstractModule {
         bind(IDoubleMatrix.class).to(DoubleMatrix.class).in(Scopes.SINGLETON);
 
         //--- Presentation layer ---
-        bind(MainPresenter.class);
-        bind(NavPresenter.class);
-        bind(DoubleMatrixPresenter.class);
+        bind(MainPresenter.class).in(Scopes.SINGLETON);
+        bind(NavPresenter.class).in(Scopes.SINGLETON);
+        bind(DoubleMatrixPresenter.class).in(Scopes.SINGLETON);
 
         //--- Service layer layer ---
         bind(ImageService.class);

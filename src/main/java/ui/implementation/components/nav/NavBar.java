@@ -42,10 +42,6 @@ public class NavBar extends JMenuBar implements INavBar {
         initComponents();
     }
 
-    public void setPresenter(NavPresenter presenter) {
-        this.presenter = presenter;
-    }
-
     private void initComponents(){
 
         imageMenu = new Menu("Image","/net_13_p1.jpg",

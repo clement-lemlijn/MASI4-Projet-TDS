@@ -1,15 +1,20 @@
 package ui.implementation.views;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import javax.swing.*;
 
+import com.google.inject.Inject;
 import domain.common.Mode;
-import jakarta.inject.Inject;
+import domain.image.Image;
+import infrastructure.ui.ImageMapper;
 import presenters.MainPresenter;
 import ui.implementation.components.image.ImagePanel;
 import ui.implementation.components.nav.NavBar;
 import ui.interfaces.IMainView;
+
+import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.nio.Buffer;
+
 
 /**
  * @author Jean-Marc Wagner, Laurent Crema
@@ -29,7 +34,6 @@ public class MainView extends JFrame implements IMainView
     public void setNavBar(NavBar navBar) {
         setJMenuBar(navBar);
     }
-
 
     private void initComponents() {
         imagePreviewContainer = new ImagePanel();
@@ -164,9 +168,10 @@ public class MainView extends JFrame implements IMainView
 //    }
 
     @Override
-    public void displayImage(BufferedImage image) {
+    public void displayImage(Image image) {
         try {
-            imagePreviewContainer.paint(image.getGraphics());
+            BufferedImage bufferedImage = ImageMapper.toBufferedImage(image);
+            imagePreviewContainer.loadImage(bufferedImage);
         } catch (Exception ex) {
             displayErrorMessage("Oups !", ex.getMessage());
         }

@@ -2,21 +2,23 @@ package ui.implementation.components.image;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class ImagePanel extends JPanel {
-    private Image image;
+    private BufferedImage image;
 
     public ImagePanel() {
 
     }
 
-    public ImagePanel(Image image) {
+    public ImagePanel(BufferedImage image) {
         loadImage(image);
     }
 
-    private void loadImage(Image image){
+    public void loadImage(BufferedImage image){
         this.image = image;
         setPreferredSize(new Dimension(image.getWidth(null), image.getHeight(null)));
+        repaint();
     }
 
     @Override
