@@ -2,7 +2,6 @@ package ui.implementation.components.nav;
 
 import domain.CImage.Exceptions.CImageNGException;
 import domain.CImage.Exceptions.CImageRGBException;
-import domain.CImage.Observers.JLabelBeanCImage;
 import domain.ImageProcessing.Histogramme.Histogramme;
 import domain.common.Mode;
 import org.jfree.chart.ChartFactory;
@@ -28,11 +27,11 @@ import java.io.IOException;
 
 public class NavBar extends JMenuBar implements INavBar {
 
-    private JLabelBeanCImage observer;
-    private JMenu jMenuDessiner;
-    private JMenu jMenuFourier;
-    private JMenu jMenuHistogramme;
-    private JMenu jMenuImage;
+    private JMenu imageMenu;
+    private JMenu editMenu;
+    private JMenu drawingMenu;
+    private JMenu fourierMenu;
+    private JMenu histogramMenu;
 
 //    private CImageRGB imageRGB;
 //    private CImageNG imageNG;
@@ -44,9 +43,9 @@ public class NavBar extends JMenuBar implements INavBar {
 
     public NavBar() {
         initComponents();
-        jMenuDessiner.setEnabled(false);
-        jMenuFourier.setEnabled(false);
-        jMenuHistogramme.setEnabled(false);
+        drawingMenu.setEnabled(false);
+        fourierMenu.setEnabled(false);
+        histogramMenu.setEnabled(false);
     }
 
     public void setPresenter(NavPresenter presenter) {
@@ -55,30 +54,33 @@ public class NavBar extends JMenuBar implements INavBar {
 
     private void initComponents(){
 
-        jMenuImage = new Menu("Image","/net_13_p1.jpg",
+        imageMenu = new Menu("Image","/net_13_p1.jpg",
                 new Menu("Nouvelle", "/file_65_p3.jpg",
                         new MenuItem("RGB", e -> this.createImage(e, new RGBImageCreatorDialog(new JFrame(),true))),
                         new MenuItem("NG", e -> this.createImage(e, new GreyScaleImageCreatorDialog(new JFrame(),true)))
                 ),
-                new Menu("Ouvrir", "/folder_036_p3.jpg",
-                        new MenuItem("RGB", this::loadRGBImage),
-                        new MenuItem("NG", this::loadGreyScaleImage)
-                ),
+                new MenuItem("Ouvrir...", "/folder_036_p3.jpg", this::loadImage),
                 new MenuItem("Enregistrer sous...","/dd_27_p3.jpg", e -> {}),
                 new MenuItem("Quitter","/cp_59_p3.jpg", this::quit)
         );
 
-        jMenuDessiner = new Menu("Dessiner","/dd_28_p1.jpg",
-                new MenuItem("Couleur", "/display_14_p3.jpg", this::chooseColor),
-                new Menu("Formes",
-                        new MenuItem("Pixel", e -> this.setMode(e, Mode.DRAW_PIXEL)),
-                        new MenuItem("Ligne", e -> this.setMode(e, Mode.DRAW_LINE)),
-                        new MenuItem("Rectangle",e -> this.setMode(e, Mode.DRAW_RECTANGLE)),
-                        new MenuItem("Cercle", e -> this.setMode(e, Mode.DRAW_CIRCLE))
-                )
+        drawingMenu = new Menu("Editer","/dd_28_p1.jpg",
+                new Menu("Dessiner", "/display_14_p3.jpg",
+                        new MenuItem("Couleur", this::chooseColor),
+                        new Menu("Formes",
+                                new MenuItem("Pixel", e -> this.setMode(e, Mode.DRAW_PIXEL)),
+                                new MenuItem("Ligne", e -> this.setMode(e, Mode.DRAW_LINE)),
+                                new MenuItem("Rectangle",e -> this.setMode(e, Mode.DRAW_RECTANGLE)),
+                                new MenuItem("Cercle", e -> this.setMode(e, Mode.DRAW_CIRCLE))
+                        )
+                ),
+                new Menu("Convertir",
+                        new MenuItem("RGB", e -> {}),
+                        new MenuItem("NG", e -> {})
+                        )
         );
 
-        jMenuFourier = new Menu("Fourier","/cp_51_p1.jpg",
+        fourierMenu = new Menu("Fourier","/cp_51_p1.jpg",
                 new Menu("Afficher", "/cp_51_p3.jpg",
                         new MenuItem("Module", this::jMenuItemFourierAfficherModuleActionPerformed),
                         new MenuItem("Phase", this::jMenuItemFourierAfficherPhaseActionPerformed),
@@ -86,14 +88,14 @@ public class NavBar extends JMenuBar implements INavBar {
                         new MenuItem("Partie imaginaire", this::jMenuItemFourierAfficherPartieImaginaireActionPerformed)
         ));
 
-        jMenuHistogramme = new Menu("Histogramme","/report_48_hot.jpg",
+        histogramMenu = new Menu("Histogramme","/report_48_hot.jpg",
                 new MenuItem("Afficher", "/report_32_hot.jpg",this::jMenuHistogrammeAfficherActionPerformed)
         );
 
-        this.add(jMenuImage);
-        this.add(jMenuDessiner);
-        this.add(jMenuFourier);
-        this.add(jMenuHistogramme);
+        this.add(imageMenu);
+        this.add(drawingMenu);
+        this.add(fourierMenu);
+        this.add(histogramMenu);
     }
 
     //####################################################
@@ -107,25 +109,13 @@ public class NavBar extends JMenuBar implements INavBar {
         return chooser.getSelectedFile();
     }
 
-    private void loadRGBImage(ActionEvent e) {
+    private void loadImage(ActionEvent e) {
         try
         {
             File file = chooseFile();
+            if(file == null) return;
             presenter.loadImage(file);
             activeMenusRGB();
-        }
-        catch (IOException ex)
-        {
-            System.err.println("Erreur I/O : " + ex.getMessage());
-        }
-    }
-
-    private void loadGreyScaleImage(ActionEvent e) {
-        try
-        {
-            File file = chooseFile();
-            presenter.loadImage(file);
-            activeMenusNG();
         }
         catch (IOException ex)
         {
@@ -171,16 +161,16 @@ public class NavBar extends JMenuBar implements INavBar {
 
     private void activeMenusNG()
     {
-        jMenuDessiner.setEnabled(true);
-        jMenuFourier.setEnabled(true);
-        jMenuHistogramme.setEnabled(true);
+        drawingMenu.setEnabled(true);
+        fourierMenu.setEnabled(true);
+        histogramMenu.setEnabled(true);
     }
 
     private void activeMenusRGB()
     {
-        jMenuDessiner.setEnabled(true);
-        jMenuFourier.setEnabled(false);
-        jMenuHistogramme.setEnabled(false);
+        drawingMenu.setEnabled(true);
+        fourierMenu.setEnabled(false);
+        histogramMenu.setEnabled(false);
     }
 
     //####################################################

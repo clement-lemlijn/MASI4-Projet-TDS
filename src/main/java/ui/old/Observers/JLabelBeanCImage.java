@@ -1,14 +1,15 @@
-package domain.CImage.Observers;
+package ui.old.Observers;
 
-import domain.CImage.*;
 import domain.CImage.CImage;
-import domain.CImage.Observers.Events.*;
+import ui.old.Observers.Events.*;
 
-import java.awt.Color;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.util.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.util.Vector;
 
 public class JLabelBeanCImage extends JLabel implements Observer, MouseListener, MouseMotionListener
 {

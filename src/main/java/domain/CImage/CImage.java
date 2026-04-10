@@ -1,7 +1,7 @@
 package domain.CImage;
 
-import domain.CImage.Observers.*;
-import domain.CImage.Observers.Observer;
+
+import ui.old.Observers.Observer;
 
 import java.awt.*;
 import java.awt.image.*;

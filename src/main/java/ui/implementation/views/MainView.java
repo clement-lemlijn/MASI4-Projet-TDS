@@ -1,22 +1,18 @@
 package ui.implementation.views;
 
-import com.google.inject.Provider;
 import domain.CImage.CImageNG;
 import domain.CImage.CImageRGB;
-import domain.CImage.Exceptions.CImageNGException;
-import domain.CImage.Exceptions.CImageRGBException;
-import domain.CImage.Observers.Events.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 
-import domain.CImage.Observers.JLabelBeanCImage;
 import domain.common.Mode;
 import presenters.MainPresenter;
 import ui.implementation.components.image.ImagePanel;
 import ui.implementation.components.nav.NavBar;
 import ui.interfaces.IMainView;
+import ui.old.Observers.JLabelBeanCImage;
 
 public class MainView extends JFrame implements IMainView
 {
@@ -78,113 +74,113 @@ public class MainView extends JFrame implements IMainView
         setLocationRelativeTo(null);
     }
 
-    public void ClicDetected(UnClicEvent e)
-    {
-        if (presenter.isPixelModeActive())
-        {
-            try
-            {
-                if (imageRGB != null)
-                    imageRGB.setPixel(e.getX(),e.getY(),couleurPinceauRGB);
-                if (imageNG != null)
-                    imageNG.setPixel(e.getX(),e.getY(),couleurPinceauNG);
-            }
-            catch (CImageRGBException ex)
-            { System.out.println("Erreur RGB : " + ex.getMessage()); }
-            catch (CImageNGException ex)
-            { System.out.println("Erreur NG : " + ex.getMessage()); }
-        }
-    }
-
-    public void SelectLigneDetected(DeuxClicsEvent e)
-    {
-        if (presenter.isLineModeActive())
-        {
-            try
-            {
-                if (imageRGB != null)
-                    imageRGB.DessineLigne(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
-                if (imageNG != null)
-                    imageNG.DessineLigne(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
-            }
-            catch (CImageRGBException ex)
-            { System.out.println("Erreur RGB : " + ex.getMessage()); }
-            catch (CImageNGException ex)
-            { System.out.println("Erreur NG : " + ex.getMessage()); }
-        }
-    }
-
-    public void SelectRectDetected(DeuxClicsEvent e)
-    {
-        if (presenter.isRectangleModeActive())
-        {
-            try
-            {
-                if (imageRGB != null)
-                    imageRGB.DessineRect(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
-                if (imageNG != null)
-                    imageNG.DessineRect(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
-            }
-            catch (CImageRGBException ex)
-            { System.out.println("Erreur RGB : " + ex.getMessage()); }
-            catch (CImageNGException ex)
-            { System.out.println("Erreur NG : " + ex.getMessage()); }
-        }
-    }
-
-    public void SelectCercleDetected(DeuxClicsEvent e)
-    {
-        if (presenter.isCircleModeActive())
-        {
-            try
-            {
-                if (imageRGB != null)
-                    imageRGB.DessineCercle(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
-                if (imageNG != null)
-                    imageNG.DessineCercle(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
-            }
-            catch (CImageRGBException ex)
-            { System.out.println("Erreur RGB : " + ex.getMessage()); }
-            catch (CImageNGException ex)
-            { System.out.println("Erreur NG : " + ex.getMessage()); }
-        }
-    }
-
-    public void SelectCercleFillDetected(DeuxClicsEvent e)
-    {
-        if (presenter.isPlainCircleModeActive())
-        {
-            try
-            {
-                if (imageRGB != null)
-                    imageRGB.RemplitCercle(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
-                if (imageNG != null)
-                    imageNG.RemplitCercle(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
-            }
-            catch (CImageRGBException ex)
-            { System.out.println("Erreur RGB : " + ex.getMessage()); }
-            catch (CImageNGException ex)
-            { System.out.println("Erreur NG : " + ex.getMessage()); }
-        }
-    }
-
-    public void SelectRectFillDetected(DeuxClicsEvent e)
-    {
-        if (presenter.isPlainRectangleActive())
-        {
-            try
-            {
-                if (imageRGB != null)
-                    imageRGB.RemplitRect(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
-                if (imageNG != null)
-                    imageNG.RemplitRect(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
-            }
-            catch (CImageRGBException ex)
-            { System.out.println("Erreur RGB : " + ex.getMessage()); }
-            catch (CImageNGException ex)
-            { System.out.println("Erreur NG : " + ex.getMessage()); }
-        }
-    }
+//    public void ClicDetected(UnClicEvent e)
+//    {
+//        if (presenter.isPixelModeActive())
+//        {
+//            try
+//            {
+//                if (imageRGB != null)
+//                    imageRGB.setPixel(e.getX(),e.getY(),couleurPinceauRGB);
+//                if (imageNG != null)
+//                    imageNG.setPixel(e.getX(),e.getY(),couleurPinceauNG);
+//            }
+//            catch (CImageRGBException ex)
+//            { System.out.println("Erreur RGB : " + ex.getMessage()); }
+//            catch (CImageNGException ex)
+//            { System.out.println("Erreur NG : " + ex.getMessage()); }
+//        }
+//    }
+//
+//    public void SelectLigneDetected(DeuxClicsEvent e)
+//    {
+//        if (presenter.isLineModeActive())
+//        {
+//            try
+//            {
+//                if (imageRGB != null)
+//                    imageRGB.DessineLigne(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
+//                if (imageNG != null)
+//                    imageNG.DessineLigne(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
+//            }
+//            catch (CImageRGBException ex)
+//            { System.out.println("Erreur RGB : " + ex.getMessage()); }
+//            catch (CImageNGException ex)
+//            { System.out.println("Erreur NG : " + ex.getMessage()); }
+//        }
+//    }
+//
+//    public void SelectRectDetected(DeuxClicsEvent e)
+//    {
+//        if (presenter.isRectangleModeActive())
+//        {
+//            try
+//            {
+//                if (imageRGB != null)
+//                    imageRGB.DessineRect(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
+//                if (imageNG != null)
+//                    imageNG.DessineRect(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
+//            }
+//            catch (CImageRGBException ex)
+//            { System.out.println("Erreur RGB : " + ex.getMessage()); }
+//            catch (CImageNGException ex)
+//            { System.out.println("Erreur NG : " + ex.getMessage()); }
+//        }
+//    }
+//
+//    public void SelectCercleDetected(DeuxClicsEvent e)
+//    {
+//        if (presenter.isCircleModeActive())
+//        {
+//            try
+//            {
+//                if (imageRGB != null)
+//                    imageRGB.DessineCercle(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
+//                if (imageNG != null)
+//                    imageNG.DessineCercle(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
+//            }
+//            catch (CImageRGBException ex)
+//            { System.out.println("Erreur RGB : " + ex.getMessage()); }
+//            catch (CImageNGException ex)
+//            { System.out.println("Erreur NG : " + ex.getMessage()); }
+//        }
+//    }
+//
+//    public void SelectCercleFillDetected(DeuxClicsEvent e)
+//    {
+//        if (presenter.isPlainCircleModeActive())
+//        {
+//            try
+//            {
+//                if (imageRGB != null)
+//                    imageRGB.RemplitCercle(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
+//                if (imageNG != null)
+//                    imageNG.RemplitCercle(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
+//            }
+//            catch (CImageRGBException ex)
+//            { System.out.println("Erreur RGB : " + ex.getMessage()); }
+//            catch (CImageNGException ex)
+//            { System.out.println("Erreur NG : " + ex.getMessage()); }
+//        }
+//    }
+//
+//    public void SelectRectFillDetected(DeuxClicsEvent e)
+//    {
+//        if (presenter.isPlainRectangleActive())
+//        {
+//            try
+//            {
+//                if (imageRGB != null)
+//                    imageRGB.RemplitRect(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
+//                if (imageNG != null)
+//                    imageNG.RemplitRect(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
+//            }
+//            catch (CImageRGBException ex)
+//            { System.out.println("Erreur RGB : " + ex.getMessage()); }
+//            catch (CImageNGException ex)
+//            { System.out.println("Erreur NG : " + ex.getMessage()); }
+//        }
+//    }
 
     @Override
     public void displayImage(BufferedImage image) {

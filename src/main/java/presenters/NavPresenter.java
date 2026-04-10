@@ -1,15 +1,12 @@
 package presenters;
 
 import app.AppState;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import domain.CImage.CImage;
 import domain.CImage.CImageNG;
 import domain.CImage.CImageRGB;
 import domain.CImage.Exceptions.CImageNGException;
 import domain.CImage.Exceptions.CImageRGBException;
 import domain.common.Mode;
-import domain.events.ImageChangedEvent;
 import ui.interfaces.INavBar;
 
 import java.awt.*;
@@ -44,5 +41,4 @@ public class NavPresenter {
     public void setMode(Mode mode) {
         appState.setMode(mode);
     }
-
 }

@@ -1,6 +1,6 @@
-package domain.CImage.Observers.Events;
+package ui.old.Observers.Events;
 
-import java.util.*;
+import java.util.EventObject;
 
 public class DeuxClicsEvent extends EventObject 
 {

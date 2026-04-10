@@ -1,4 +1,4 @@
-package domain.CImage.Observers;
+package ui.old.Observers;
 
 import domain.CImage.CImage;
 
