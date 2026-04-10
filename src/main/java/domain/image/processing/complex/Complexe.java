@@ -1,4 +1,4 @@
-package domain.ImageProcessing.Complexe;
+package domain.image.processing.complex;
 
 public class Complexe 
 {

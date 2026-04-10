@@ -25,7 +25,7 @@ public class AppModule extends AbstractModule {
         //--- Application layer ---
         bind(EventBus.class).in(Scopes.SINGLETON);
         bind(AppState.class).in(Scopes.SINGLETON);
-        bind(INavigator.class).to(SwingNavigatorService.class).in(Scopes.SINGLETON);
+        bind(INavigator.class).to(SwingNavigator.class).in(Scopes.SINGLETON);
 
         //--- UI layer ---
         bind(INavBar.class).to(NavBar.class).in(Scopes.SINGLETON);

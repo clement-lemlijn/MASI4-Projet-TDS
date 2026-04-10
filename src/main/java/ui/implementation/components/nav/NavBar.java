@@ -1,8 +1,6 @@
 package ui.implementation.components.nav;
 
-import domain.CImage.Exceptions.CImageNGException;
-import domain.CImage.Exceptions.CImageRGBException;
-import domain.ImageProcessing.Histogramme.Histogramme;
+import domain.image.processing.histogram.Histogramme;
 import domain.common.Mode;
 import jakarta.inject.Inject;
 import org.jfree.chart.ChartFactory;
@@ -21,7 +19,6 @@ import ui.implementation.dialogs.RGBImageCreatorDialog;
 import ui.interfaces.INavBar;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -264,6 +261,7 @@ public class NavBar extends JMenuBar implements INavBar {
     private void jMenuItemFourierAfficherModuleActionPerformed(ActionEvent e) {
         try
         {
+            presenter.goToFourierModule();
 //            int f_int[][] = imageNG.getMatrice();
 //            double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
 //            for(int i=0 ; i<imageNG.getLargeur() ; i++)

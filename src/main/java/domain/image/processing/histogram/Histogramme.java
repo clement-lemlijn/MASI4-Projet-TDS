@@ -1,6 +1,6 @@
-package domain.ImageProcessing.Histogramme;
+package domain.image.processing.histogram;
 
-public class Histogramme 
+public class Histogramme
 {
     public static int[] Histogramme256(int mat[][])
     {

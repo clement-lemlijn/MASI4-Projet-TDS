@@ -2,15 +2,14 @@ package app;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import presenters.DoubleMatrixPresenter;
 import ui.implementation.views.DoubleMatrix;
 
-public class SwingNavigatorService implements INavigator {
+public class SwingNavigator implements INavigator {
 
     private final Provider<DoubleMatrix> doubleMatrixProvider;
 
     @Inject
-    public SwingNavigatorService(
+    public SwingNavigator(
             Provider<DoubleMatrix> doubleMatrixProvider
     ) {
         this.doubleMatrixProvider = doubleMatrixProvider;

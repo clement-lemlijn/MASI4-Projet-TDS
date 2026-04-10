@@ -13,8 +13,6 @@ import ui.interfaces.IMainView;
 import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
-
 
 /**
  * @author Jean-Marc Wagner, Laurent Crema

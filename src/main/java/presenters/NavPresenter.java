@@ -1,5 +1,6 @@
 package presenters;
 
+import app.INavigator;
 import com.google.inject.Inject;
 import domain.common.Mode;
 import services.ImageService;
@@ -15,11 +16,13 @@ import java.io.IOException;
 public class NavPresenter {
 
     private INavBar navBar;
+    private INavigator navigator;
     private final ImageService imageService;
     private final ModeService modeService;
 
     @Inject
-    public NavPresenter(ImageService imageService, ModeService modeService) {
+    public NavPresenter(INavigator navigator, ImageService imageService, ModeService modeService) {
+        this.navigator = navigator;
         this.imageService = imageService;
         this.modeService = modeService;
     }
@@ -34,6 +37,10 @@ public class NavPresenter {
 
     public void loadImage(File f) throws IOException {
         imageService.loadImage(f);
+    }
+
+    public void goToFourierModule(){
+        navigator.showFourierModule();
     }
 
     public int[][] getImageMatrix() {
