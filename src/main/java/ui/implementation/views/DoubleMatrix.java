@@ -1,7 +1,8 @@
 package ui.implementation.views;
 
-import domain.CImage.CImageNG;
-import domain.CImage.Exceptions.CImageNGException;
+import domain.image.Image;
+import infrastructure.ui.ImageMapper;
+import jakarta.inject.Inject;
 import presenters.DoubleMatrixPresenter;
 import ui.implementation.components.image.ImagePanel;
 import ui.interfaces.IDoubleMatrix;
@@ -28,10 +29,10 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
     
     private double   matrice[][];
     private int      M,N;
-    private CImageNG image;
+    private Image image;
     private int      matrice_int[][];
     
-    private ImagePanel imagePanel;
+    private ImagePanel imagePreviewContainer;
 
     private JButton jButton1;
     private JLabel jLabel1;
@@ -44,53 +45,45 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
     private JTextField jTextFieldBlanc;
     private JTextField jTextFieldNoir;
 
-    public DoubleMatrix()
+    private final DoubleMatrixPresenter presenter;
+
+    @Inject
+    public DoubleMatrix(DoubleMatrixPresenter presenter)
     {
+        this.presenter = presenter;
+        presenter.setView(this);
+
         initComponents();
-        setTitle("titre");
         
-        matrice = new double[][]{{}};
-        M = matrice.length;
-        N = matrice[0].length;
-        matrice_int = new int[M][N];
-        try 
-        {
-            image = new CImageNG(M,N,0);
-        } 
-        catch (CImageNGException ex) 
-        { System.out.println("Erreur CImageNG : " + ex.getMessage()); }
-        
-        imagePanel = new ImagePanel();
-        jScrollPane1.setViewportView(imagePanel);
-        
-        jSliderNoir.setMaximum(D);
-        jSliderNoir.setValue(0);
-        jSliderBlanc.setMaximum(D);
-        jSliderBlanc.setValue(D);
-        
-        // ***** Recherche du Min *****
-        Min = matrice[0][0];
-        for(int i=0 ; i<M ; i++)
-            for(int j=0 ; j<N ; j++)
-                if (matrice[i][j] < Min) Min = matrice[i][j];
+//        matrice = new double[][]{{}};
+//        M = matrice.length;
+//        N = matrice[0].length;
+//        matrice_int = new int[M][N];
+//        try
+//        {
+//            image = new CImageNG(M,N,0);
+//        }
+//        catch (CImageNGException ex)
+//        { System.out.println("Erreur CImageNG : " + ex.getMessage()); }
+
+//        // ***** Recherche du Min *****
+//        Min = matrice[0][0];
+//        for(int i=0 ; i<M ; i++)
+//            for(int j=0 ; j<N ; j++)
+//                if (matrice[i][j] < Min) Min = matrice[i][j];
+//        noir = Min;
+//
+//        // ***** Recherche du Max *****
+//        Max = matrice[0][0];
+//        for(int i=0 ; i<M ; i++)
+//            for(int j=0 ; j<N ; j++)
+//                if (matrice[i][j] > Max) Max = matrice[i][j];
+//        blanc = Max;
+
         jLabelValeurMin.setText("" + Min);
-        noir = Min;
         jTextFieldNoir.setText("" + noir);
-        
-        // ***** Recherche du Max *****
-        Max = matrice[0][0];
-        for(int i=0 ; i<M ; i++)
-            for(int j=0 ; j<N ; j++)
-                if (matrice[i][j] > Max) Max = matrice[i][j];
         jLabelValeurMax.setText("" + Max);
-        blanc = Max;
         jTextFieldBlanc.setText("" + blanc);
-        
-        MiseAJourCImage();
-    }
-
-    public void setPresenter(DoubleMatrixPresenter  doubleMatrixPresenter){
-
     }
 
     private void initComponents() {
@@ -104,6 +97,14 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         jTextFieldBlanc = new JTextField();
         jTextFieldNoir = new JTextField();
         jButton1 = new JButton();
+
+        imagePreviewContainer = new ImagePanel();
+        jScrollPane1.setViewportView(imagePreviewContainer);
+
+        jSliderNoir.setMaximum(D);
+        jSliderNoir.setValue(0);
+        jSliderBlanc.setMaximum(D);
+        jSliderBlanc.setValue(D);
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         jLabel1.setText("Valeur MAX :");
@@ -126,11 +127,7 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
                 jSliderBlancMouseReleased(evt);
             }
         });
-        jSliderBlanc.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent evt) {
-                jSliderBlancStateChanged(evt);
-            }
-        });
+        jSliderBlanc.addChangeListener(this::updateWhiteValue);
 
         jSliderNoir.setForeground(new Color(0, 1, 0));
         jSliderNoir.setMaximum(1000);
@@ -140,37 +137,21 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
                 jSliderNoirMouseReleased(evt);
             }
         });
-        jSliderNoir.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent evt) {
-                jSliderNoirStateChanged(evt);
-            }
-        });
+        jSliderNoir.addChangeListener(this::updateBlackValue);
 
         jTextFieldBlanc.setFont(new Font("Tahoma", 1, 11));
         jTextFieldBlanc.setForeground(new Color(255, 0, 0));
         jTextFieldBlanc.setHorizontalAlignment(JTextField.CENTER);
-        jTextFieldBlanc.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                jTextFieldBlancActionPerformed(evt);
-            }
-        });
+        jTextFieldBlanc.addActionListener(this::jTextFieldBlancActionPerformed);
 
         jTextFieldNoir.setBackground(new Color(0, 0, 0));
         jTextFieldNoir.setFont(new Font("Tahoma", 1, 11));
         jTextFieldNoir.setForeground(new Color(255, 0, 0));
         jTextFieldNoir.setHorizontalAlignment(JTextField.CENTER);
-        jTextFieldNoir.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                jTextFieldNoirActionPerformed(evt);
-            }
-        });
+        jTextFieldNoir.addActionListener(this::jTextFieldNoirActionPerformed);
 
         jButton1.setIcon(new ImageIcon(getClass().getResource("/dd_27_p3.jpg")));
-        jButton1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -226,9 +207,61 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
                 .addContainerGap())
         );
         pack();
+
+        setTitle("titre");
     }
 
-    private void jButton1ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    @Override
+    public void updateImage(Image image) {
+        try {
+            imagePreviewContainer.loadImage(ImageMapper.toBufferedImage(image));
+        } catch (Exception e){
+            displayErrorMessage("Oups !", e.getMessage());
+        }
+    }
+
+    public void updateBlackValue(ChangeEvent e){
+        presenter.setWhiteLevel(jSliderNoir.getValue());
+    }
+
+    public void updateWhiteValue(ChangeEvent e){
+        presenter.setWhiteLevel(jSliderBlanc.getValue());
+    }
+
+    public void onBlackValueChanged(){
+        int sNoir = jSliderNoir.getValue();
+        int sBlanc = jSliderBlanc.getValue();
+
+        if (sBlanc > sNoir)
+        {
+            noir = Min + (Max-Min)*(double)sNoir/(double)D;
+            jTextFieldNoir.setText("" + noir);
+        }
+    }
+
+    public void onWhiteValueChanged(){
+        int sNoir = jSliderNoir.getValue();
+        int sBlanc = jSliderBlanc.getValue();
+
+        if (sBlanc > sNoir)
+        {
+            blanc = Min + (Max-Min)*(double)sBlanc/(double)D;
+            jTextFieldBlanc.setText("" + blanc);
+        }
+    }
+
+    private void displayErrorMessage(String title, String message) {
+        JOptionPane.showMessageDialog(
+                this,
+                message,
+                title,
+                JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+    //####################################################
+
+    private void jButton1ActionPerformed(ActionEvent evt) {
         JFileChooser choix = new JFileChooser();
         File fichier;
 
@@ -240,7 +273,8 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
                 {
                     try
                     {
-                        image.enregistreFormatPNG(fichier);
+                        presenter.saveImage(null);
+                        //image.enregistreFormatPNG(fichier);
                     }
                     catch (IOException ex)
                     {
@@ -250,41 +284,42 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         }
     }
 
-    private void MiseAJourCImage()
-    {
-        int val;
 
-        for(int i=0 ; i<M ; i++)
-            for(int j=0 ; j<N ; j++)
-            {
-                if (matrice[i][j] >= blanc)
-                {
-                    matrice_int[i][j] = 255;
-                }
-                else
-                {
-                    if (matrice[i][j] <= noir)
-                    {
-                        matrice_int[i][j] = 0;
-                    }
-                    else
-                    {
-                        val = (int)((matrice[i][j] - noir)/(blanc-noir)*255+0.5);
-                        if (val > 255) val = 255;
-                        if (val < 0) val = 0;
-                        matrice_int[i][j] = val;
-                    }
-                }
-            }
-        try 
-        {
-            image.setMatrice(matrice_int);
-        } 
-        catch (CImageNGException ex) 
-        {
-            System.out.println("Erreur CImageNG : " + ex.getMessage());
-        }
-    }
+//    private void MiseAJourCImage()
+//    {
+//        int val;
+//
+//        for(int i=0 ; i<M ; i++)
+//            for(int j=0 ; j<N ; j++)
+//            {
+//                if (matrice[i][j] >= blanc)
+//                {
+//                    matrice_int[i][j] = 255;
+//                }
+//                else
+//                {
+//                    if (matrice[i][j] <= noir)
+//                    {
+//                        matrice_int[i][j] = 0;
+//                    }
+//                    else
+//                    {
+//                        val = (int)((matrice[i][j] - noir)/(blanc-noir)*255+0.5);
+//                        if (val > 255) val = 255;
+//                        if (val < 0) val = 0;
+//                        matrice_int[i][j] = val;
+//                    }
+//                }
+//            }
+//        try
+//        {
+//            image.setMatrice(matrice_int);
+//        }
+//        catch (CImageNGException ex)
+//        {
+//            System.out.println("Erreur CImageNG : " + ex.getMessage());
+//        }
+//    }
     
     private void jTextFieldNoirActionPerformed(ActionEvent evt) {
         double val = Double.parseDouble(jTextFieldNoir.getText());
@@ -327,31 +362,5 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
     private void jSliderBlancMouseReleased(MouseEvent evt) {
         if (jSliderBlanc.getValue() <= jSliderNoir.getValue()) 
             jSliderBlanc.setValue(jSliderNoir.getValue()+1); 
-    }
-
-    private void jSliderBlancStateChanged(ChangeEvent evt) {
-        int sNoir = jSliderNoir.getValue();
-        int sBlanc = jSliderBlanc.getValue();
-        
-        if (sBlanc > sNoir)
-        {
-            blanc = Min + (Max-Min)*(double)sBlanc/(double)D;
-            jTextFieldBlanc.setText("" + blanc);
-        }
-        
-        MiseAJourCImage();
-    }
-
-    private void jSliderNoirStateChanged(ChangeEvent evt) {
-        int sNoir = jSliderNoir.getValue();
-        int sBlanc = jSliderBlanc.getValue();
-        
-        if (sBlanc > sNoir)
-        {
-            noir = Min + (Max-Min)*(double)sNoir/(double)D;
-            jTextFieldNoir.setText("" + noir);
-        }
-
-        MiseAJourCImage();
     }
 }

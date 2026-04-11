@@ -1,7 +1,5 @@
 package domain.image;
 
-import java.io.File;
-
 /**
  * @author Laurent Crema
  */
@@ -44,6 +42,7 @@ public class Image {
      * @return A newly converted image
      */
     public Image toGreyScale() {
+
         Pixel[][] res = new Pixel[getHeight()][getWidth()];
 
         for (int y = 0; y < getHeight(); y++) {

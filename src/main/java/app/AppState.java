@@ -3,7 +3,6 @@ package app;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import domain.CImage.CImage;
 import domain.common.Mode;
 import domain.events.ImageChangedEvent;
 import domain.events.ModeChangedEvent;
@@ -14,7 +13,7 @@ public class AppState {
 
     private EventBus eventBus;
     private Mode mode;
-    private Image image;
+    private Image rgbImage;
 
     @Inject
     public AppState(EventBus eventBus) {
@@ -27,11 +26,11 @@ public class AppState {
     }
 
     public void setImage(Image image) {
-        this.image = image;
+        this.rgbImage = image;
         this.eventBus.post(new ImageChangedEvent(image));
     }
 
     public Image getImage(){
-        return this.image;
+        return this.rgbImage;
     }
 }

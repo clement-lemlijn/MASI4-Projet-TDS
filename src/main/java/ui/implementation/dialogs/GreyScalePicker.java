@@ -101,7 +101,7 @@ public class GreyScalePicker extends javax.swing.JDialog
     }//GEN-LAST:event_jSliderStateChanged
     
     public int getCouleur() { return couleur; }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -112,7 +112,7 @@ public class GreyScalePicker extends javax.swing.JDialog
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonOk;
     private javax.swing.JPanel jPanel;

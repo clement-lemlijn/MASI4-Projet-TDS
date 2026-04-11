@@ -4,6 +4,7 @@ import app.AppState;
 import com.google.inject.Inject;
 import domain.image.Image;
 import infrastructure.image.io.ImageLoader;
+import infrastructure.image.io.ImageSaver;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,4 +27,17 @@ public class ImageService {
         Image image = ImageLoader.loadImage(f);
         appState.setImage(image);
     }
+
+    public void saveImage(Image image) throws IOException {
+        ImageSaver.saveImage(image);
+    }
+
+    public Image getImage(){
+        return appState.getImage();
+    }
+
+    public Image loadGrayScale(){
+        return appState.getImage().toGreyScale();
+    }
+
 }

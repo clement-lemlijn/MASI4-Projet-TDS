@@ -23,6 +23,9 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author Jean-Marc Wagner, Laurent Crema
+ */
 public class NavBar extends JMenuBar implements INavBar {
 
     private JMenu imageMenu;
@@ -262,19 +265,19 @@ public class NavBar extends JMenuBar implements INavBar {
         try
         {
             presenter.goToFourierModule();
-//            int f_int[][] = imageNG.getMatrice();
-//            double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
-//            for(int i=0 ; i<imageNG.getLargeur() ; i++)
-//                for(int j=0 ; j<imageNG.getHauteur() ; j++) f[i][j] = (double)(f_int[i][j]);
+//          int f_int[][] = imageNG.getMatrice();
+//          double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
+//          for(int i=0 ; i<imageNG.getLargeur() ; i++)
+//              for(int j=0 ; j<imageNG.getHauteur() ; j++) f[i][j] = (double)(f_int[i][j]);
 //
-//            System.out.println("Debut Fourier");
-//            MatriceComplexe fourier = Fourier.Fourier2D(f);
-//            System.out.println("Fin Fourier");
-//            fourier = Fourier.decroise(fourier);
-//            double module[][] = fourier.getModule();
+//          System.out.println("Debut Fourier");
+//          MatriceComplexe fourier = Fourier.Fourier2D(f);
+//          System.out.println("Fin Fourier");
+//          fourier = Fourier.decroise(fourier);
+//          double module[][] = fourier.getModule();
 //
-//            DoubleMatrix dialog = new DoubleMatrix(this,true,module,"Fourier : Affichage du module");
-//            dialog.setVisible(true);
+//          DoubleMatrix dialog = new DoubleMatrix(this,true,module,"Fourier : Affichage du module");
+//          dialog.setVisible(true);
         }
         catch (Exception ex)
         {
