@@ -51,7 +51,7 @@ public class Pixel {
 
     /**
      * Convert the current RGB combination into a gray value according to UIT-R BT 709 standard.
-     * The current RGB values is not modified.
+     * The current RGB values are not modified.
      * @return the corresponding gray scale value
      */
     public int grayValue(){

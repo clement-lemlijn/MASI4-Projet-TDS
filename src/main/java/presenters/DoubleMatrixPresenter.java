@@ -1,6 +1,9 @@
 package presenters;
 
+import app.state.DoubleMatrixState;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import domain.events.MatrixChangedEvent;
 import domain.image.Image;
 import services.ImageService;
 import ui.interfaces.IDoubleMatrix;
@@ -13,12 +16,14 @@ import java.io.IOException;
 public class DoubleMatrixPresenter {
 
     private IDoubleMatrix view;
+    private DoubleMatrixState state;
     private ImageService imageService;
-    private Image image;
 
     @Inject
-    public DoubleMatrixPresenter(ImageService imageService) {
+    public DoubleMatrixPresenter(ImageService imageService, DoubleMatrixState state) {
         this.imageService = imageService;
+        this.state = state;
+        this.state.register(this);
     }
 
     public void setView(IDoubleMatrix view){
@@ -37,8 +42,13 @@ public class DoubleMatrixPresenter {
         view.onBlackValueChanged();
     }
 
+    @Subscribe
+    public void onMatrixUpdate(MatrixChangedEvent event) {
+        view.updateMatrix(event.matrix());
+    }
+
     public void loadGrayScale(){
-        this.image = imageService.loadGrayScale();
+        //imageService.loadGrayScale();
     }
 
 }

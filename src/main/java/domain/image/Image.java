@@ -5,7 +5,7 @@ package domain.image;
  */
 public class Image {
 
-    private Pixel[][] pixels;
+    private final Pixel[][] pixels;
 
     public Image(Pixel[][] pixels) {
         if(pixels == null || pixels.length == 0 || pixels[0].length == 0)
@@ -37,24 +37,22 @@ public class Image {
     }
 
     /**
-     * Convert the image into a gray scale one. Since this operation is destructive, the original image is not modified.
+     * Return the corresponding gray scale matrix. Since this operation is destructive, the original image is not modified.
      * Instead, a new one is returned.
      * @return A newly converted image
      */
-    public Image toGreyScale() {
+    public GrayScaleMatrix toGreyScale() {
 
-        Pixel[][] res = new Pixel[getHeight()][getWidth()];
+        double[][] res = new double[getHeight()][getWidth()];
 
         for (int y = 0; y < getHeight(); y++) {
             for (int x = 0; x < getWidth(); x++) {
 
                 Pixel p = pixels[y][x];
-                int grayValue = p.grayValue();
-
-                res[y][x] = new Pixel(grayValue, grayValue, grayValue);
+                res[y][x] = p.grayValue();
             }
         }
 
-        return new Image(res);
+        return new GrayScaleMatrix(res);
     }
 }

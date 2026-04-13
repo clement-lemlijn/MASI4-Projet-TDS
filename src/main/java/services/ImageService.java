@@ -1,8 +1,9 @@
 package services;
 
-import app.AppState;
+import app.state.AppState;
 import com.google.inject.Inject;
 import domain.image.Image;
+import domain.image.GrayScaleMatrix;
 import infrastructure.image.io.ImageLoader;
 import infrastructure.image.io.ImageSaver;
 
@@ -32,11 +33,19 @@ public class ImageService {
         ImageSaver.saveImage(image);
     }
 
+    public void updateMatrixBlack(GrayScaleMatrix matrix, int black) {
+        matrix.updateBlack(black);
+    }
+
+    public void updateMatrixWhite(GrayScaleMatrix matrix, int white) {
+        matrix.updateWhite(white);
+    }
+
     public Image getImage(){
         return appState.getImage();
     }
 
-    public Image loadGrayScale(){
+    public GrayScaleMatrix loadGrayScale(){
         return appState.getImage().toGreyScale();
     }
 

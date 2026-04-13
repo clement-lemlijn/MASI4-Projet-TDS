@@ -1,12 +1,13 @@
 package infrastructure.ui;
 
+import domain.image.Image;
 import domain.image.Pixel;
 
 import java.awt.image.BufferedImage;
 
 public final class ImageMapper {
 
-    public static BufferedImage toBufferedImage(domain.image.Image image) {
+    public static BufferedImage toBufferedImage(Image image) {
 
         int width = image.getWidth();
         int height = image.getHeight();

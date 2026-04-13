@@ -1,4 +1,4 @@
-package app;
+package app.state;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
@@ -9,15 +9,14 @@ import domain.events.ModeChangedEvent;
 import domain.image.Image;
 
 @Singleton
-public class AppState {
+public class AppState extends State {
 
-    private EventBus eventBus;
     private Mode mode;
     private Image rgbImage;
 
     @Inject
     public AppState(EventBus eventBus) {
-        this.eventBus = eventBus;
+        super(eventBus);
     }
 
     public void setMode(Mode mode) {

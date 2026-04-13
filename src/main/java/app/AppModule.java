@@ -1,5 +1,6 @@
 package app;
 
+import app.state.AppState;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;

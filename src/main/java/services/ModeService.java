@@ -1,6 +1,6 @@
 package services;
 
-import app.AppState;
+import app.state.AppState;
 import com.google.inject.Inject;
 import domain.common.Mode;
 

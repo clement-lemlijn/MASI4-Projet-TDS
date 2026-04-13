@@ -1,10 +1,10 @@
 package ui.interfaces;
 
-import domain.image.Image;
+import domain.image.GrayScaleMatrix;
 
 public interface IDoubleMatrix {
 
-    void updateImage(Image image);
+    void updateMatrix(GrayScaleMatrix matrix);
     void onBlackValueChanged();
     void onWhiteValueChanged();
 }

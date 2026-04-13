@@ -1,23 +1,26 @@
 package ui.implementation.views;
 
+import domain.image.GrayScaleMatrix;
 import domain.image.Image;
 import infrastructure.ui.ImageMapper;
 import jakarta.inject.Inject;
 import presenters.DoubleMatrixPresenter;
 import ui.implementation.components.image.ImagePanel;
+import ui.implementation.components.intent.FileChooser;
 import ui.interfaces.IDoubleMatrix;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
+/**
+ * @author Jean-Marc Wagner, Laurent Crema
+ */
 public class DoubleMatrix extends JFrame implements IDoubleMatrix
 {
     private double Max;
@@ -27,10 +30,9 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
     
     private final int D = 512;
     
-    private double   matrice[][];
-    private int      M,N;
-    private Image image;
-    private int      matrice_int[][];
+    private double matrice[][];
+    private int M,N;
+    private int matrice_int[][];
     
     private ImagePanel imagePreviewContainer;
 
@@ -151,7 +153,7 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         jTextFieldNoir.addActionListener(this::jTextFieldNoirActionPerformed);
 
         jButton1.setIcon(new ImageIcon(getClass().getResource("/dd_27_p3.jpg")));
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        jButton1.addActionListener(this::saveImage);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -211,10 +213,19 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         setTitle("titre");
     }
 
+    private File chooseFile(){
+        FileChooser chooser = new FileChooser("./");
+
+        int dialogResult = chooser.showOpenDialog(this);
+        if (dialogResult != JFileChooser.APPROVE_OPTION) return null;
+
+        return chooser.getSelectedFile();
+    }
+
     @Override
-    public void updateImage(Image image) {
+    public void updateMatrix(GrayScaleMatrix matrix) {
         try {
-            imagePreviewContainer.loadImage(ImageMapper.toBufferedImage(image));
+            imagePreviewContainer.loadImage(matrix);
         } catch (Exception e){
             displayErrorMessage("Oups !", e.getMessage());
         }
@@ -259,31 +270,20 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         );
     }
 
-    //####################################################
+    private void saveImage(ActionEvent evt) {
 
-    private void jButton1ActionPerformed(ActionEvent evt) {
-        JFileChooser choix = new JFileChooser();
-        File fichier;
-
-        choix.setCurrentDirectory(new File ("."));
-        if (choix.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-        {
-                fichier = choix.getSelectedFile();
-                if (fichier != null)
-                {
-                    try
-                    {
-                        presenter.saveImage(null);
-                        //image.enregistreFormatPNG(fichier);
-                    }
-                    catch (IOException ex)
-                    {
-                        System.err.println("Erreur I/O : " + ex.getMessage());
-                    }
-                }
+        File file = chooseFile();
+        if (file != null) {
+            try {
+                presenter.saveImage(null);
+                //image.enregistreFormatPNG(fichier);
+            } catch (IOException ex) {
+                System.err.println("Erreur I/O : " + ex.getMessage());
+            }
         }
     }
 
+    //####################################################
 
 //    private void MiseAJourCImage()
 //    {
