@@ -20,4 +20,8 @@ public class DoubleMatrixState extends State {
         this.matrix = matrix;
         this.eventBus.post(new MatrixChangedEvent(matrix));
     }
+
+    public GrayScaleMatrix getMatrix() {
+        return matrix;
+    }
 }

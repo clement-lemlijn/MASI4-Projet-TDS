@@ -23,16 +23,14 @@ import javax.swing.event.ChangeEvent;
  */
 public class DoubleMatrix extends JFrame implements IDoubleMatrix
 {
-    private double Max;
-    private double Min;
     private double blanc;
     private double noir;
     
     private final int D = 512;
     
-    private double matrice[][];
-    private int M,N;
-    private int matrice_int[][];
+//    private double matrice[][];
+//    private int M,N;
+//    private int matrice_int[][];
     
     private ImagePanel imagePreviewContainer;
 
@@ -52,11 +50,11 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
     @Inject
     public DoubleMatrix(DoubleMatrixPresenter presenter)
     {
+        initComponents();
         this.presenter = presenter;
         presenter.setView(this);
+        presenter.loadGrayScale();
 
-        initComponents();
-        
 //        matrice = new double[][]{{}};
 //        M = matrice.length;
 //        N = matrice[0].length;
@@ -82,10 +80,10 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
 //                if (matrice[i][j] > Max) Max = matrice[i][j];
 //        blanc = Max;
 
-        jLabelValeurMin.setText("" + Min);
-        jTextFieldNoir.setText("" + noir);
-        jLabelValeurMax.setText("" + Max);
-        jTextFieldBlanc.setText("" + blanc);
+//        jLabelValeurMin.setText("" + Min);
+//        jTextFieldNoir.setText("" + noir);
+//        jLabelValeurMax.setText("" + Max);
+//        jTextFieldBlanc.setText("" + blanc);
     }
 
     private void initComponents() {
@@ -232,7 +230,7 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
     }
 
     public void updateBlackValue(ChangeEvent e){
-        presenter.setWhiteLevel(jSliderNoir.getValue());
+        presenter.setBlackLevel(jSliderNoir.getValue());
     }
 
     public void updateWhiteValue(ChangeEvent e){
@@ -243,9 +241,12 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         int sNoir = jSliderNoir.getValue();
         int sBlanc = jSliderBlanc.getValue();
 
+        double black = presenter.getBlackLevel();
+        double white = presenter.getWhiteLevel();
+
         if (sBlanc > sNoir)
         {
-            noir = Min + (Max-Min)*(double)sNoir/(double)D;
+            noir = black + (white-black)*(double)sNoir/(double)D;
             jTextFieldNoir.setText("" + noir);
         }
     }
@@ -254,20 +255,14 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         int sNoir = jSliderNoir.getValue();
         int sBlanc = jSliderBlanc.getValue();
 
+        double black = presenter.getBlackLevel();
+        double white = presenter.getWhiteLevel();
+
         if (sBlanc > sNoir)
         {
-            blanc = Min + (Max-Min)*(double)sBlanc/(double)D;
+            blanc = black + (white-black)*(double)sBlanc/(double)D;
             jTextFieldBlanc.setText("" + blanc);
         }
-    }
-
-    private void displayErrorMessage(String title, String message) {
-        JOptionPane.showMessageDialog(
-                this,
-                message,
-                title,
-                JOptionPane.ERROR_MESSAGE
-        );
     }
 
     private void saveImage(ActionEvent evt) {
@@ -281,6 +276,15 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
                 System.err.println("Erreur I/O : " + ex.getMessage());
             }
         }
+    }
+
+    private void displayErrorMessage(String title, String message) {
+        JOptionPane.showMessageDialog(
+                this,
+                message,
+                title,
+                JOptionPane.ERROR_MESSAGE
+        );
     }
 
     //####################################################
@@ -323,7 +327,11 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
     
     private void jTextFieldNoirActionPerformed(ActionEvent evt) {
         double val = Double.parseDouble(jTextFieldNoir.getText());
-        if (val < Min)
+
+        double black = presenter.getBlackLevel();
+        double white = presenter.getWhiteLevel();
+
+        if (val < black)
         {
             jSliderNoir.setValue(0);
             return;
@@ -333,14 +341,17 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
             jSliderNoir.setValue(jSliderBlanc.getValue()-1);
             return;
         }
-        int s = (int)((double)D*(val-Min)/(Max-Min)+0.5);
+        int s = (int)((double)D*(val-black)/(white-black)+0.5);
         jSliderNoir.setValue(s);
 
     }
 
     private void jTextFieldBlancActionPerformed(ActionEvent evt) {
         double val = Double.parseDouble(jTextFieldBlanc.getText());
-        if (val > Max)
+        double black = presenter.getBlackLevel();
+        double white = presenter.getWhiteLevel();
+
+        if (val > white)
         {
             jSliderBlanc.setValue(D);
             return;
@@ -350,7 +361,7 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
             jSliderBlanc.setValue(jSliderNoir.getValue()+1);
             return;
         }
-        int s = (int)((double)D*(val-Min)/(Max-Min)+0.5);
+        int s = (int)((double)D*(val-black)/(white-black)+0.5);
         jSliderBlanc.setValue(s);
     }
 
