@@ -1,5 +1,6 @@
 package ui.implementation.components.nav;
 
+import domain.image.GrayScaleMatrix;
 import domain.image.processing.histogram.Histogramme;
 import domain.common.Mode;
 import jakarta.inject.Inject;
@@ -168,9 +169,8 @@ public class NavBar extends JMenuBar implements INavBar {
     //####################################################
 
     private void jMenuHistogrammeAfficherActionPerformed(ActionEvent e) {
-        int[][] f_int = null;
-        f_int = presenter.getImageMatrix();
-        int[] histo = Histogramme.Histogramme256(f_int);
+        GrayScaleMatrix i_graymatrix = presenter.getImageGrayMatrix();
+        int[] histo = Histogramme.Histogramme256(i_graymatrix);
 
         //Création du dataset
         XYSeries serie = new XYSeries("Histo");

@@ -3,6 +3,7 @@ package presenters;
 import app.INavigator;
 import com.google.inject.Inject;
 import domain.common.Mode;
+import domain.image.GrayScaleMatrix;
 import services.ImageService;
 import services.ModeService;
 import ui.interfaces.INavBar;
@@ -43,9 +44,9 @@ public class NavPresenter {
         navigator.showFourierModule();
     }
 
-    public int[][] getImageMatrix() {
+    public GrayScaleMatrix getImageGrayMatrix() {
         //return ((CImageNG)appState.getImage()).getMatrice();
-        return null;
+        return imageService.getImage().toGreyScale();
     }
 
     public void setMode(Mode mode) {
