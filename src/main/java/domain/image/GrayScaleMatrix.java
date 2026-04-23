@@ -1,5 +1,7 @@
 package domain.image;
 
+import java.util.Arrays;
+
 public class GrayScaleMatrix {
 
     private final double[][] matrix;
@@ -12,6 +14,15 @@ public class GrayScaleMatrix {
         this.maxValue = computeMax();
         this.minValue = computeMin();
 
+    }
+
+    /**
+     * Returns a copy of the actual content of this matrix.
+     * Since a copy is returned, no change that will be applied on it is going to affect the original matrix
+     * @return a copy of the actual content
+     */
+    public double[][] getRawData() {
+        return Arrays.copyOf(matrix, matrix.length);
     }
 
     public int getWidth(){

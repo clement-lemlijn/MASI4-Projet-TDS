@@ -6,6 +6,8 @@ import com.google.inject.Inject;
 import domain.events.MatrixChangedEvent;
 import domain.image.GrayScaleMatrix;
 import domain.image.Image;
+import domain.image.processing.complex.MatriceComplexe;
+import domain.image.processing.fourier.Fourier;
 import services.ImageService;
 import ui.interfaces.IDoubleMatrix;
 
@@ -66,4 +68,35 @@ public class DoubleMatrixPresenter {
         //imageService.loadGrayScale();
     }
 
+    public void loadModule(){
+        GrayScaleMatrix matrix = imageService.loadGrayScale();
+        MatriceComplexe fourier = Fourier.Fourier2D(matrix.getRawData());
+        fourier = Fourier.decroise(fourier);
+        double[][] module = fourier.getModule();
+        state.setMatrix(new GrayScaleMatrix(module));
+    }
+
+    public void loadPhase(){
+        GrayScaleMatrix matrix = imageService.loadGrayScale();
+        MatriceComplexe fourier = Fourier.Fourier2D(matrix.getRawData());
+        fourier = Fourier.decroise(fourier);
+        double[][] module = fourier.getModule();
+        state.setMatrix(new GrayScaleMatrix(module));
+    }
+
+    public void loadReal(){
+        GrayScaleMatrix matrix = imageService.loadGrayScale();
+        MatriceComplexe fourier = Fourier.Fourier2D(matrix.getRawData());
+        fourier = Fourier.decroise(fourier);
+        double[][] module = fourier.getPartieReelle();
+        state.setMatrix(new GrayScaleMatrix(module));
+    }
+
+    public void loadImaginary(){
+        GrayScaleMatrix matrix = imageService.loadGrayScale();
+        MatriceComplexe fourier = Fourier.Fourier2D(matrix.getRawData());
+        fourier = Fourier.decroise(fourier);
+        double[][] module = fourier.getPartieImaginaire();
+        state.setMatrix(new GrayScaleMatrix(module));
+    }
 }

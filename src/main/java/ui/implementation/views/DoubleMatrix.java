@@ -1,8 +1,6 @@
 package ui.implementation.views;
 
 import domain.image.GrayScaleMatrix;
-import domain.image.Image;
-import infrastructure.ui.ImageMapper;
 import jakarta.inject.Inject;
 import presenters.DoubleMatrixPresenter;
 import ui.implementation.components.image.ImagePanel;
@@ -14,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
+import java.util.Objects;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -28,19 +27,8 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
 
     private boolean isUpdating = false;
     private final int D = 512;
-    
-//    private double matrice[][];
-//    private int M,N;
-//    private int matrice_int[][];
-    
-    private ImagePanel imagePreviewContainer;
 
-    private JButton jButton1;
-    private JLabel jLabel1;
-    private JLabel jLabel2;
-    private JLabel jLabelValeurMax;
-    private JLabel jLabelValeurMin;
-    private JScrollPane jScrollPane1;
+    private ImagePanel imagePreviewContainer;
     private JSlider jSliderBlanc;
     private JSlider jSliderNoir;
     private JTextField jTextFieldBlanc;
@@ -54,160 +42,127 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         initComponents();
         this.presenter = presenter;
         presenter.setView(this);
-        presenter.loadGrayScale();
-
-//        matrice = new double[][]{{}};
-//        M = matrice.length;
-//        N = matrice[0].length;
-//        matrice_int = new int[M][N];
-//        try
-//        {
-//            image = new CImageNG(M,N,0);
-//        }
-//        catch (CImageNGException ex)
-//        { System.out.println("Erreur CImageNG : " + ex.getMessage()); }
-
-//        // ***** Recherche du Min *****
-//        Min = matrice[0][0];
-//        for(int i=0 ; i<M ; i++)
-//            for(int j=0 ; j<N ; j++)
-//                if (matrice[i][j] < Min) Min = matrice[i][j];
-//        noir = Min;
-//
-//        // ***** Recherche du Max *****
-//        Max = matrice[0][0];
-//        for(int i=0 ; i<M ; i++)
-//            for(int j=0 ; j<N ; j++)
-//                if (matrice[i][j] > Max) Max = matrice[i][j];
-//        blanc = Max;
-
-//        jLabelValeurMin.setText("" + Min);
-//        jTextFieldNoir.setText("" + noir);
-//        jLabelValeurMax.setText("" + Max);
-//        jTextFieldBlanc.setText("" + blanc);
+        presenter.loadModule();
     }
 
     private void initComponents() {
-        jLabel1 = new JLabel();
-        jLabelValeurMax = new JLabel();
-        jLabel2 = new JLabel();
-        jLabelValeurMin = new JLabel();
-        jScrollPane1 = new JScrollPane();
-        jSliderBlanc = new JSlider();
-        jSliderNoir = new JSlider();
-        jTextFieldBlanc = new JTextField();
-        jTextFieldNoir = new JTextField();
-        jButton1 = new JButton();
-
         imagePreviewContainer = new ImagePanel();
-        jScrollPane1.setViewportView(imagePreviewContainer);
 
-        jSliderNoir.setMaximum(D);
-        jSliderNoir.setValue(0);
-        jSliderBlanc.setMaximum(D);
-        jSliderBlanc.setValue(D);
+        jSliderNoir  = buildSlider(0);
+        jSliderBlanc = buildSlider(D);
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        jLabel1.setText("Valeur MAX :");
+        jTextFieldNoir  = buildTextField(Color.BLACK);
+        jTextFieldBlanc = buildTextField(null);
 
-        jLabelValeurMax.setFont(new Font("Tahoma", 1, 11));
-        jLabelValeurMax.setForeground(new Color(0, 0, 255));
-        jLabelValeurMax.setText("0.0");
+        JLabel minValueLabel = buildValueLabel();
+        JLabel maxValueLabel = buildValueLabel();
+        JLabel minValueText = new JLabel("Valeur MIN :");
+        JLabel maxValueText = new JLabel("Valeur MAX :");
 
-        jLabel2.setText("Valeur MIN :");
+        JButton saveButton = new JButton(new ImageIcon(Objects.requireNonNull(getClass().getResource("/dd_27_p3.jpg"))));
+        saveButton.addActionListener(this::saveImage);
 
-        jLabelValeurMin.setFont(new Font("Tahoma", 1, 11));
-        jLabelValeurMin.setForeground(new Color(0, 0, 255));
-        jLabelValeurMin.setText("0.0");
-
-        jSliderBlanc.setForeground(new Color(255, 255, 255));
-        jSliderBlanc.setOrientation(JSlider.VERTICAL);
-        jSliderBlanc.addMouseListener(new MouseAdapter() {
-            public void mouseReleased(MouseEvent evt) {
-                jSliderBlancMouseReleased(evt);
-            }
-        });
-        jSliderBlanc.addChangeListener(this::updateWhiteValue);
-
-        jSliderNoir.setForeground(new Color(0, 1, 0));
-        jSliderNoir.setOrientation(JSlider.VERTICAL);
-        jSliderNoir.addMouseListener(new MouseAdapter() {
-            public void mouseReleased(MouseEvent evt) {
-                jSliderNoirMouseReleased(evt);
-            }
-        });
         jSliderNoir.addChangeListener(this::updateBlackValue);
+        jSliderNoir.addMouseListener(new MouseAdapter() {
+            public void mouseReleased(MouseEvent evt) { jSliderNoirMouseReleased(evt); }
+        });
 
-        jTextFieldBlanc.setFont(new Font("Tahoma", 1, 11));
-        jTextFieldBlanc.setForeground(new Color(255, 0, 0));
-        jTextFieldBlanc.setHorizontalAlignment(JTextField.CENTER);
+        jSliderBlanc.addChangeListener(this::updateWhiteValue);
+        jSliderBlanc.addMouseListener(new MouseAdapter() {
+            public void mouseReleased(MouseEvent evt) { jSliderBlancMouseReleased(evt); }
+        });
+
+        jTextFieldNoir.addActionListener(this::jTextFieldNoirActionPerformed);
         jTextFieldBlanc.addActionListener(this::jTextFieldBlancActionPerformed);
 
-        jTextFieldNoir.setBackground(new Color(0, 0, 0));
-        jTextFieldNoir.setFont(new Font("Tahoma", 1, 11));
-        jTextFieldNoir.setForeground(new Color(255, 0, 0));
-        jTextFieldNoir.setHorizontalAlignment(JTextField.CENTER);
-        jTextFieldNoir.addActionListener(this::jTextFieldNoirActionPerformed);
+        JScrollPane imagePane = new JScrollPane(imagePreviewContainer);
 
-        jButton1.setIcon(new ImageIcon(getClass().getResource("/dd_27_p3.jpg")));
-        jButton1.addActionListener(this::saveImage);
-
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelValeurMin)
-                        .addGap(50, 50, 50)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelValeurMax)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
-                        .addComponent(jButton1))
-                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jSliderNoir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                                .addComponent(jSliderBlanc, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextFieldBlanc, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                            .addComponent(jTextFieldNoir, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabelValeurMin)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabelValeurMax))
-                    .addComponent(jButton1))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextFieldBlanc, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(jSliderNoir, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
-                            .addComponent(jSliderBlanc, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldNoir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        pack();
+        buildLayout(imagePane, maxValueText, minValueText, minValueLabel, maxValueLabel, saveButton);
 
         setTitle("titre");
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        pack();
+    }
+
+    private JSlider buildSlider(int value) {
+        JSlider slider = new JSlider(JSlider.VERTICAL, 0, D, value);
+        slider.setForeground(value == 0 ? new Color(0, 1, 0) : Color.WHITE);
+        return slider;
+    }
+
+    private JTextField buildTextField(Color background) {
+        JTextField field = new JTextField();
+        field.setFont(new Font("Tahoma", Font.BOLD, 11));
+        field.setForeground(Color.RED);
+        field.setHorizontalAlignment(JTextField.CENTER);
+        if (background != null) field.setBackground(background);
+        return field;
+    }
+
+    private JLabel buildValueLabel() {
+        JLabel label = new JLabel("0.0");
+        label.setFont(new Font("Tahoma", Font.BOLD, 11));
+        label.setForeground(Color.BLUE);
+        return label;
+    }
+
+    private void buildLayout(JScrollPane scrollPane, JLabel labelMax, JLabel labelMin,
+                             JLabel valeurMin, JLabel valeurMax, JButton button) {
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(labelMin)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(valeurMin)
+                                                .addGap(50, 50, 50)
+                                                .addComponent(labelMax)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(valeurMax)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
+                                                .addComponent(button))
+                                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                .addComponent(jSliderNoir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                                                                .addComponent(jSliderBlanc, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(jTextFieldBlanc, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                                                        .addComponent(jTextFieldNoir, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))))
+                                .addContainerGap())
+        );
+
+        layout.setVerticalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                .addComponent(labelMin)
+                                                .addComponent(valeurMin)
+                                                .addComponent(labelMax)
+                                                .addComponent(valeurMax))
+                                        .addComponent(button))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jTextFieldBlanc, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jSliderNoir, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                                                        .addComponent(jSliderBlanc, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE))
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jTextFieldNoir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
+                                .addContainerGap())
+        );
     }
 
     private File chooseFile(){
@@ -267,16 +222,6 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         presenter.setWhiteLevel(jSliderBlanc.getValue());
     }
 
-//    private void jSliderNoirMouseReleased(MouseEvent evt) {
-//        if (jSliderNoir.getValue() >= jSliderBlanc.getValue())
-//            jSliderNoir.setValue(jSliderBlanc.getValue()-1);
-//    }
-//
-//    private void jSliderBlancMouseReleased(MouseEvent evt) {
-//        if (jSliderBlanc.getValue() <= jSliderNoir.getValue())
-//            jSliderBlanc.setValue(jSliderNoir.getValue()+1);
-//    }
-
     private void saveImage(ActionEvent evt) {
 
         File file = chooseFile();
@@ -299,44 +244,6 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         );
     }
 
-    //####################################################
-
-//    private void MiseAJourCImage()
-//    {
-//        int val;
-//
-//        for(int i=0 ; i<M ; i++)
-//            for(int j=0 ; j<N ; j++)
-//            {
-//                if (matrice[i][j] >= blanc)
-//                {
-//                    matrice_int[i][j] = 255;
-//                }
-//                else
-//                {
-//                    if (matrice[i][j] <= noir)
-//                    {
-//                        matrice_int[i][j] = 0;
-//                    }
-//                    else
-//                    {
-//                        val = (int)((matrice[i][j] - noir)/(blanc-noir)*255+0.5);
-//                        if (val > 255) val = 255;
-//                        if (val < 0) val = 0;
-//                        matrice_int[i][j] = val;
-//                    }
-//                }
-//            }
-//        try
-//        {
-//            image.setMatrice(matrice_int);
-//        }
-//        catch (CImageNGException ex)
-//        {
-//            System.out.println("Erreur CImageNG : " + ex.getMessage());
-//        }
-//    }
-    
     private void jTextFieldNoirActionPerformed(ActionEvent evt) {
         double val = Double.parseDouble(jTextFieldNoir.getText());
 
@@ -376,6 +283,4 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         int s = (int)((double)D*(val-black)/(white-black)+0.5);
         jSliderBlanc.setValue(s);
     }
-
-
 }

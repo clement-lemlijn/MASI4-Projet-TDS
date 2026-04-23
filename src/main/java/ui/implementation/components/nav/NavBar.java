@@ -111,6 +111,7 @@ public class NavBar extends JMenuBar implements INavBar {
             if(file == null) return;
             presenter.loadImage(file);
             activeMenusRGB();
+            activeMenusNG();
         }
         catch (IOException ex)
         {
