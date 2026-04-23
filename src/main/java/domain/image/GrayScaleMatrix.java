@@ -87,17 +87,18 @@ public class GrayScaleMatrix {
         }
     }
 
-    public Image toImage(){
+    public Image toImage() {
         Pixel[][] res = new Pixel[getHeight()][getWidth()];
-
         for (int y = 0; y < getHeight(); y++) {
             for (int x = 0; x < getWidth(); x++) {
-
-                int value = (int)matrix[y][x];
-                res[y][x] = new Pixel(value, value, value);
+                double value = matrix[y][x];
+                int normalized;
+                if (value <= minValue) normalized = 0;
+                else if (value >= maxValue) normalized = 255;
+                else normalized = (int) ((value - minValue) / (maxValue - minValue) * 255);
+                res[y][x] = new Pixel(normalized, normalized, normalized);
             }
         }
-
         return new Image(res);
     }
 

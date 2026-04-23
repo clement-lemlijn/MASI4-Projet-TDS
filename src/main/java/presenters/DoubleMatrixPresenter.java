@@ -50,16 +50,15 @@ public class DoubleMatrixPresenter {
     }
 
     public void setBlackLevel(int value){
+        System.out.println(value);
         GrayScaleMatrix matrix = state.getMatrix();
-        matrix.updateBlack(value);
+        matrix.updateWhite(value);
         state.setMatrix(matrix);
     }
 
     @Subscribe
     public void onMatrixUpdate(MatrixChangedEvent event) {
         view.updateMatrix(event.matrix());
-        view.onBlackValueChanged();
-        view.onWhiteValueChanged();
     }
 
     public void loadGrayScale(){
