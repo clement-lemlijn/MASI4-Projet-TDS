@@ -112,7 +112,9 @@ public class DoubleMatrixPresenter {
     }
 
     private GrayScaleMatrix clip(GrayScaleMatrix matrix, double black, double white){
-        return matrix.clip(black, white);
+        double lowerBound = matrix.getValueAt(black);
+        double upperBound = matrix.getValueAt(white);
+        return matrix.clip(lowerBound, upperBound);
     }
 
     private ComplexMatrix getFourier() {
