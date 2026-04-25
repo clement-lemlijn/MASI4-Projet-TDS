@@ -45,8 +45,7 @@ public class ImageService {
         return appState.getImage();
     }
 
-    public GrayScaleMatrix loadGrayScale(){
-        return appState.getImage().toGreyScale();
+    public GrayScaleMatrix getGrayScale(){
+        return appState.getImage().toGrayScale();
     }
-
 }

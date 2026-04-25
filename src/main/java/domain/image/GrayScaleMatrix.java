@@ -42,12 +42,12 @@ public class GrayScaleMatrix {
     }
 
     public void updateBlack(double value) {
-        this.minValue = value;
+        this.minValue = minValue + (maxValue - minValue) * value;
         recompute();
     }
 
     public void updateWhite(double value) {
-        this.maxValue = value;
+        this.maxValue = minValue + (maxValue - minValue) * value;
         recompute();
     }
 

@@ -40,13 +40,13 @@ public class NavPresenter {
         imageService.loadImage(f);
     }
 
-    public void goToFourierModule(){
-        navigator.showFourierModule();
+    public void goToFourier(){
+        navigator.showFourier();
     }
 
     public GrayScaleMatrix getImageGrayMatrix() {
         //return ((CImageNG)appState.getImage()).getMatrice();
-        return imageService.getImage().toGreyScale();
+        return imageService.getImage().toGrayScale();
     }
 
     public void setMode(Mode mode) {

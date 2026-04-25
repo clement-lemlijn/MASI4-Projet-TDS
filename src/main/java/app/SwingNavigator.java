@@ -16,28 +16,8 @@ public class SwingNavigator implements INavigator {
     }
 
     @Override
-    public void showFourierModule() {
+    public void showFourier() {
         DoubleMatrix doubleMatrix = doubleMatrixProvider.get();
         doubleMatrix.setVisible(true);
-    }
-
-    @Override
-    public void showFourierPhase() {
-
-    }
-
-    @Override
-    public void showFourierReal() {
-
-    }
-
-    @Override
-    public void showFourierImaginary() {
-
-    }
-
-    @Override
-    public void showHistogram() {
-
     }
 }

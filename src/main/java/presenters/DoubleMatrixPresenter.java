@@ -3,7 +3,10 @@ package presenters;
 import app.state.DoubleMatrixState;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import domain.events.MatrixChangedEvent;
+import domain.events.fourier.ImaginaryChangedEvent;
+import domain.events.fourier.ModuleChangedEvent;
+import domain.events.fourier.PhaseChangedEvent;
+import domain.events.fourier.RealChangedEvent;
 import domain.image.GrayScaleMatrix;
 import domain.image.Image;
 import domain.image.processing.complex.MatriceComplexe;
@@ -37,66 +40,89 @@ public class DoubleMatrixPresenter {
         this.imageService.saveImage(image);
     }
 
-    public double getBlackLevel(){
-        return state.getMatrix().getMinValue();
+//    public double getBlackLevel(){
+//        return imageService.getGrayScale().getMinValue();
+//    }
+//
+//    public double getWhiteLevel(){
+//        return imageService.getGrayScale().getMaxValue();
+//    }
+
+    public void setModuleLevel(double black, double white){
+        GrayScaleMatrix matrix = updateLevels(imageService.getGrayScale(), black, white);
+        state.setModule(matrix);
     }
 
-    public double getWhiteLevel(){
-        return state.getMatrix().getMaxValue();
+    public void setPhaseLevel(double black, double white){
+        GrayScaleMatrix matrix = updateLevels(imageService.getGrayScale(), black, white);
+        state.setPhase(matrix);
     }
 
-    public void setWhiteLevel(int value){
-        GrayScaleMatrix matrix = state.getMatrix();
-        matrix.updateBlack(value);
-        state.setMatrix(matrix);
+    public void setRealLevel(double black, double white){
+        GrayScaleMatrix matrix = updateLevels(imageService.getGrayScale(), black, white);
+        state.setReal(matrix);
     }
 
-    public void setBlackLevel(int value){
-        System.out.println(value);
-        GrayScaleMatrix matrix = state.getMatrix();
-        matrix.updateWhite(value);
-        state.setMatrix(matrix);
+    public void setImaginary(double black, double white){
+        GrayScaleMatrix matrix = updateLevels(imageService.getGrayScale(), black, white);
+        state.setImaginary(matrix);
     }
 
     @Subscribe
-    public void onMatrixUpdate(MatrixChangedEvent event) {
-        view.updateMatrix(event.matrix());
+    public void onModuleUpdate(ModuleChangedEvent event) {
+        view.updateModule(event.matrix());
     }
 
-    public void loadGrayScale(){
-        state.setMatrix(imageService.loadGrayScale());
-        //imageService.loadGrayScale();
+    @Subscribe
+    public void onPhaseUpdate(PhaseChangedEvent event) {
+        view.updatePhase(event.matrix());
+    }
+
+    @Subscribe
+    public void onRealUpdate(RealChangedEvent event) {
+        view.updateReal(event.matrix());
+    }
+
+    @Subscribe
+    public void onImaginaryUpdate(ImaginaryChangedEvent event) {
+        view.updateImaginary(event.matrix());
     }
 
     public void loadModule(){
-        GrayScaleMatrix matrix = imageService.loadGrayScale();
+        GrayScaleMatrix matrix = imageService.getGrayScale();
         MatriceComplexe fourier = Fourier.Fourier2D(matrix.getRawData());
         fourier = Fourier.decroise(fourier);
         double[][] module = fourier.getModule();
-        state.setMatrix(new GrayScaleMatrix(module));
+        state.setModule(new GrayScaleMatrix(module));
     }
 
     public void loadPhase(){
-        GrayScaleMatrix matrix = imageService.loadGrayScale();
+        GrayScaleMatrix matrix = imageService.getGrayScale();
         MatriceComplexe fourier = Fourier.Fourier2D(matrix.getRawData());
         fourier = Fourier.decroise(fourier);
         double[][] module = fourier.getModule();
-        state.setMatrix(new GrayScaleMatrix(module));
+        state.setPhase(new GrayScaleMatrix(module));
     }
 
     public void loadReal(){
-        GrayScaleMatrix matrix = imageService.loadGrayScale();
+        GrayScaleMatrix matrix = imageService.getGrayScale();
         MatriceComplexe fourier = Fourier.Fourier2D(matrix.getRawData());
         fourier = Fourier.decroise(fourier);
         double[][] module = fourier.getPartieReelle();
-        state.setMatrix(new GrayScaleMatrix(module));
+        state.setReal(new GrayScaleMatrix(module));
     }
 
     public void loadImaginary(){
-        GrayScaleMatrix matrix = imageService.loadGrayScale();
+        GrayScaleMatrix matrix = imageService.getGrayScale();
         MatriceComplexe fourier = Fourier.Fourier2D(matrix.getRawData());
         fourier = Fourier.decroise(fourier);
         double[][] module = fourier.getPartieImaginaire();
-        state.setMatrix(new GrayScaleMatrix(module));
+        state.setImaginary(new GrayScaleMatrix(module));
+    }
+
+    private GrayScaleMatrix updateLevels(GrayScaleMatrix matrix, double black, double white){
+        matrix.updateBlack(black);
+        matrix.updateWhite(white);
+        return matrix;
     }
 }

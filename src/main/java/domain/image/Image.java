@@ -6,6 +6,7 @@ package domain.image;
 public class Image {
 
     private final Pixel[][] pixels;
+    private GrayScaleMatrix grayScaleEquivalent;
 
     public Image(Pixel[][] pixels) {
         if(pixels == null || pixels.length == 0 || pixels[0].length == 0)
@@ -41,7 +42,9 @@ public class Image {
      * Instead, a new one is returned.
      * @return A newly converted image
      */
-    public GrayScaleMatrix toGreyScale() {
+    public GrayScaleMatrix toGrayScale() {
+
+        if(grayScaleEquivalent != null) return this.grayScaleEquivalent;
 
         double[][] res = new double[getHeight()][getWidth()];
 
@@ -53,6 +56,7 @@ public class Image {
             }
         }
 
-        return new GrayScaleMatrix(res);
+        this.grayScaleEquivalent = new GrayScaleMatrix(res);
+        return this.grayScaleEquivalent;
     }
 }

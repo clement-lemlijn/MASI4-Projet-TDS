@@ -73,10 +73,7 @@ public class NavBar extends JMenuBar implements INavBar {
 
         fourierMenu = new Menu("Fourier","/cp_51_p1.jpg",
                 new Menu("Afficher", "/cp_51_p3.jpg",
-                        new MenuItem("Module", this::jMenuItemFourierAfficherModuleActionPerformed),
-                        new MenuItem("Phase", this::jMenuItemFourierAfficherPhaseActionPerformed),
-                        new MenuItem("Partie réelle", this::jMenuItemFourierAfficherPartieReelleActionPerformed),
-                        new MenuItem("Partie imaginaire", this::jMenuItemFourierAfficherPartieImaginaireActionPerformed)
+                        new MenuItem("Afficher", this::displayFourier)
         ));
 
         histogramMenu = new Menu("Histogramme","/report_48_hot.jpg",
@@ -262,10 +259,10 @@ public class NavBar extends JMenuBar implements INavBar {
 //        }
     }
 
-    private void jMenuItemFourierAfficherModuleActionPerformed(ActionEvent e) {
+    private void displayFourier(ActionEvent e) {
         try
         {
-            presenter.goToFourierModule();
+            presenter.goToFourier();
 //          int f_int[][] = imageNG.getMatrice();
 //          double f[][] = new double[imageNG.getLargeur()][imageNG.getHauteur()];
 //          for(int i=0 ; i<imageNG.getLargeur() ; i++)

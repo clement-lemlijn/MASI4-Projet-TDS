@@ -29,14 +29,14 @@ public class AppModule extends AbstractModule {
         bind(INavigator.class).to(SwingNavigator.class).in(Scopes.SINGLETON);
 
         //--- UI layer ---
-        bind(INavBar.class).to(NavBar.class).in(Scopes.SINGLETON);
-        bind(IMainView.class).to(MainView.class).in(Scopes.SINGLETON);
-        bind(IDoubleMatrix.class).to(DoubleMatrix.class).in(Scopes.SINGLETON);
+        bind(INavBar.class).to(NavBar.class);
+        bind(IMainView.class).to(MainView.class);
+        bind(IDoubleMatrix.class).to(DoubleMatrix.class);
 
         //--- Presentation layer ---
-        bind(MainPresenter.class).in(Scopes.SINGLETON);
-        bind(NavPresenter.class).in(Scopes.SINGLETON);
-        bind(DoubleMatrixPresenter.class).in(Scopes.SINGLETON);
+        bind(MainPresenter.class);
+        bind(NavPresenter.class);
+        bind(DoubleMatrixPresenter.class);
 
         //--- Service layer layer ---
         bind(ImageService.class);
