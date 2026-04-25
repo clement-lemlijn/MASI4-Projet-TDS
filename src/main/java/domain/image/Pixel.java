@@ -9,7 +9,8 @@ public class Pixel {
 
     public Pixel(int red, int green, int blue) {
 
-        if(checkColorValidity(red)) throw new IllegalArgumentException("Invalid red value");
+        if(checkColorValidity(red))
+            throw new IllegalArgumentException("Invalid red value"); // <-- here
         if(checkColorValidity(green)) throw new IllegalArgumentException("Invalid green value");
         if(checkColorValidity(blue)) throw new IllegalArgumentException("Invalid blue value");
 

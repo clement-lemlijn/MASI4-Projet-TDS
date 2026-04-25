@@ -1,13 +1,13 @@
 package domain.image.processing.complex;
 
-public class MatriceComplexe 
+public class ComplexMatrix
 {
     private Complexe  m[][];
     private int       lignes;
     private int       colonnes;
     
     /** Creates a new instance of MatriceComplexe */
-    public MatriceComplexe(int l,int c) 
+    public ComplexMatrix(int l, int c)
     {
         lignes = l;
         colonnes = c;

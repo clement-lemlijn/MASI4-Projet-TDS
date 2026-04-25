@@ -1,14 +1,14 @@
 package domain.image.processing.fourier;
 
-import domain.image.processing.complex.MatriceComplexe;
+import domain.image.processing.complex.ComplexMatrix;
 
 public class Fourier 
 {
-    public static MatriceComplexe Fourier2D(double f[][])
+    public static ComplexMatrix Fourier2D(double f[][])
     {
         int M = f.length;
         int N = f[0].length;
-        MatriceComplexe F = new MatriceComplexe(M,N);
+        ComplexMatrix F = new ComplexMatrix(M,N);
         
         //********** n --> v **********
         double pr1[][] = new double[M][N];
@@ -79,11 +79,11 @@ public class Fourier
         return F;
     }
 
-    public static MatriceComplexe InverseFourier2D(MatriceComplexe F)
+    public static ComplexMatrix InverseFourier2D(ComplexMatrix F)
     {
         int M = F.getLignes();
         int N = F.getColonnes();
-        MatriceComplexe f = new MatriceComplexe(M,N);
+        ComplexMatrix f = new ComplexMatrix(M,N);
         
         double pr0[][] = F.getPartieReelle();
         double pi0[][] = F.getPartieImaginaire();
@@ -148,11 +148,11 @@ public class Fourier
         return f;
     }
     
-    public static MatriceComplexe decroise(MatriceComplexe F)
+    public static ComplexMatrix decroise(ComplexMatrix F)
     {
         int M = F.getLignes();
         int N = F.getColonnes();
-        MatriceComplexe mat = new MatriceComplexe(M,N);
+        ComplexMatrix mat = new ComplexMatrix(M,N);
         
         int m,n;
         

@@ -1,19 +1,23 @@
 package domain.image;
 
+import infrastructure.image.io.ImageSaver;
+
 import java.util.Arrays;
 
+/**
+ * @author Jean-Marc Wagner, Laurent Crema
+ */
 public class GrayScaleMatrix {
 
     private final double[][] matrix;
 
-    private double maxValue;
-    private double minValue;
+    private final double maxValue;
+    private final double minValue;
 
     public GrayScaleMatrix(double[][] matrix) {
         this.matrix = matrix;
         this.maxValue = computeMax();
         this.minValue = computeMin();
-
     }
 
     /**
@@ -41,14 +45,10 @@ public class GrayScaleMatrix {
         return minValue;
     }
 
-    public void updateBlack(double value) {
-        this.minValue = minValue + (maxValue - minValue) * value;
-        recompute();
-    }
-
-    public void updateWhite(double value) {
-        this.maxValue = minValue + (maxValue - minValue) * value;
-        recompute();
+    public double getValueAt(double normalized) {
+        if(normalized <= 0) { return minValue; }
+        if(normalized >= 1) { return maxValue; }
+        return minValue + (maxValue - minValue) * normalized;
     }
 
     private double computeMax(){
@@ -73,44 +73,58 @@ public class GrayScaleMatrix {
         return res;
     }
 
-    private void recompute() {
+    public GrayScaleMatrix clip() {
+        return clip(minValue, maxValue);
+    }
 
-        for (int y = 0; y < getHeight(); y++) {
-            for (int x = 0; x < getWidth(); x++) {
+    public GrayScaleMatrix clip(double lowerBound, double upperBound) {
 
-                double value = matrix[y][x];
-                double result;
+        int height = getHeight();
+        int width = getWidth();
 
-                if (value <= minValue) {
-                    result = 0;
-                } else if (value >= maxValue) {
-                    result = 255;
+        double[][] res = new double[height][width];
+
+        double range = upperBound - lowerBound;
+        if (range == 0) range = 1;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+
+                double v = matrix[y][x];
+                double out;
+
+                if (v >= upperBound) {
+                    out = 255;
+                } else if (v <= lowerBound) {
+                    out = 0;
                 } else {
-                    result = (value - minValue) / (maxValue - minValue) * 255;
+                    out = (v - lowerBound) / range * 255.0;
                 }
 
-                result = Math.max(0, Math.min(255, result));
-                matrix[y][x] = result;
-
-                if (result < minValue) minValue = result;
-                if (result > maxValue) maxValue = result;
+                res[y][x] = Math.clamp(out, 0, 255);
             }
         }
+
+        return new GrayScaleMatrix(res);
     }
 
     public Image toImage() {
+
         Pixel[][] res = new Pixel[getHeight()][getWidth()];
+
+        double range = maxValue - minValue;
+        if (range == 0) range = 1;
+
         for (int y = 0; y < getHeight(); y++) {
             for (int x = 0; x < getWidth(); x++) {
-                double value = matrix[y][x];
-                int normalized;
-                if (value <= minValue) normalized = 0;
-                else if (value >= maxValue) normalized = 255;
-                else normalized = (int) ((value - minValue) / (maxValue - minValue) * 255);
-                res[y][x] = new Pixel(normalized, normalized, normalized);
+
+                double normalized = (matrix[y][x] - minValue) / range;
+                int gray = (int) (normalized * 255);
+
+                res[y][x] = new Pixel(gray, gray, gray);
             }
         }
+
         return new Image(res);
     }
-
 }

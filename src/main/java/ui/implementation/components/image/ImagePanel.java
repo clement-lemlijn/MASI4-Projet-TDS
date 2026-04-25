@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 
 public class ImagePanel extends JPanel {
+    private Image original;
     private BufferedImage image;
 
     public ImagePanel() {
@@ -20,21 +21,27 @@ public class ImagePanel extends JPanel {
         loadImage(image);
     }
 
+    public Image getImage(){
+        return original;
+    }
+
     public void loadImage(BufferedImage image){
         this.image = image;
+        this.original = ImageMapper.fromBufferedImage(image);
         setPreferredSize(new Dimension(image.getWidth(null), image.getHeight(null)));
         repaint();
     }
 
     public void loadImage(Image image){
+        this.original = image;
         this.image = ImageMapper.toBufferedImage(image);
         setPreferredSize(new Dimension(this.image.getWidth(null), this.image.getHeight(null)));
         repaint();
     }
 
     public void loadImage(GrayScaleMatrix matrix){
-        Image image = matrix.toImage();
-        this.image = ImageMapper.toBufferedImage(image);
+        this.original = matrix.toImage();
+        this.image = ImageMapper.toBufferedImage(original);
         setPreferredSize(new Dimension(this.image.getWidth(null), this.image.getHeight(null)));
         repaint();
     }

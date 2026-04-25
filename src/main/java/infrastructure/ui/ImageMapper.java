@@ -29,4 +29,27 @@ public final class ImageMapper {
 
         return out;
     }
+
+    public static Image fromBufferedImage(BufferedImage img) {
+
+        int width = img.getWidth();
+        int height = img.getHeight();
+
+        Pixel[][] pixels = new Pixel[height][width];
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+
+                int rgb = img.getRGB(x, y);
+
+                int r = (rgb >> 16) & 0xFF;
+                int g = (rgb >> 8) & 0xFF;
+                int b = rgb & 0xFF;
+
+                pixels[y][x] = new Pixel(r, g, b);
+            }
+        }
+
+        return new Image(pixels);
+    }
 }

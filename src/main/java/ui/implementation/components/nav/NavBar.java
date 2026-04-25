@@ -72,12 +72,11 @@ public class NavBar extends JMenuBar implements INavBar {
         );
 
         fourierMenu = new Menu("Fourier","/cp_51_p1.jpg",
-                new Menu("Afficher", "/cp_51_p3.jpg",
-                        new MenuItem("Afficher", this::displayFourier)
-        ));
+                new MenuItem("Afficher", "/cp_51_p3.jpg", this::displayFourier)
+        );
 
         histogramMenu = new Menu("Histogramme","/report_48_hot.jpg",
-                new MenuItem("Afficher", "/report_32_hot.jpg",this::jMenuHistogrammeAfficherActionPerformed)
+                new MenuItem("Afficher", "/report_32_hot.jpg",this::displayHistogram)
         );
 
         this.add(imageMenu);
@@ -166,7 +165,7 @@ public class NavBar extends JMenuBar implements INavBar {
 
     //####################################################
 
-    private void jMenuHistogrammeAfficherActionPerformed(ActionEvent e) {
+    private void displayHistogram(ActionEvent e) {
         GrayScaleMatrix i_graymatrix = presenter.getImageGrayMatrix();
         int[] histo = Histogramme.Histogramme256(i_graymatrix);
 
@@ -177,7 +176,8 @@ public class NavBar extends JMenuBar implements INavBar {
         dataset.addSeries(serie);
 
         // Creation du chart
-        JFreeChart chart = ChartFactory.createHistogram("Histogramme","Niveaux de gris","Nombre de pixels",dataset, PlotOrientation.VERTICAL,false,false,false);
+        JFreeChart chart = ChartFactory.createHistogram("Histogramme","Niveaux de gris",
+                "Nombre de pixels", dataset, PlotOrientation.VERTICAL,false,false,false);
 
         XYPlot plot = chart.getXYPlot();
         ValueAxis axeX = plot.getDomainAxis();
