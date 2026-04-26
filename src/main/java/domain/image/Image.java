@@ -34,7 +34,7 @@ public class Image {
     public Pixel getPixel(int x, int y){
         if(x < 0 || y < 0 || x >= getWidth() || y >= getHeight())
             throw new IllegalArgumentException("Invalid coordinates");
-        return pixels[x][y];
+        return pixels[y][x];
     }
 
     /**
