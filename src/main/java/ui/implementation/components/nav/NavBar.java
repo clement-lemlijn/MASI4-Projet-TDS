@@ -32,6 +32,7 @@ public class NavBar extends JMenuBar implements INavBar {
     private JMenu imageMenu;
     private JMenu drawingMenu;
     private JMenu fourierMenu;
+    private JMenu linearMenu;
     private JMenu histogramMenu;
 
     private NavPresenter presenter;
@@ -75,6 +76,17 @@ public class NavBar extends JMenuBar implements INavBar {
                 new MenuItem("Afficher", "/cp_51_p3.jpg", this::displayFourier)
         );
 
+        linearMenu = new Menu("Linéaire","/cp_51_p1.jpg",
+                new Menu("Global",
+                        new Menu("Formes",
+                                new MenuItem("PasseBasIdeal", e -> this.setMode(e, Mode.DRAW_PIXEL)),
+                                new MenuItem("PasseHautIdeal", e -> this.setMode(e, Mode.DRAW_LINE)),
+                                new MenuItem("PasseBasButterworth",e -> this.setMode(e, Mode.DRAW_RECTANGLE)),
+                                new MenuItem("PasseHautButterworth", e -> this.setMode(e, Mode.DRAW_CIRCLE))
+                        )
+                )
+        );
+
         histogramMenu = new Menu("Histogramme","/report_48_hot.jpg",
                 new MenuItem("Afficher", "/report_32_hot.jpg",this::displayHistogram)
         );
@@ -82,10 +94,12 @@ public class NavBar extends JMenuBar implements INavBar {
         this.add(imageMenu);
         this.add(drawingMenu);
         this.add(fourierMenu);
+        this.add(linearMenu);
         this.add(histogramMenu);
 
         drawingMenu.setEnabled(false);
         fourierMenu.setEnabled(false);
+        linearMenu.setEnabled(false);
         histogramMenu.setEnabled(false);
     }
 
@@ -153,6 +167,7 @@ public class NavBar extends JMenuBar implements INavBar {
     {
         drawingMenu.setEnabled(true);
         fourierMenu.setEnabled(true);
+        linearMenu.setEnabled(true);
         histogramMenu.setEnabled(true);
     }
 
@@ -160,6 +175,7 @@ public class NavBar extends JMenuBar implements INavBar {
     {
         drawingMenu.setEnabled(true);
         fourierMenu.setEnabled(false);
+        linearMenu.setEnabled(false);
         histogramMenu.setEnabled(false);
     }
 
