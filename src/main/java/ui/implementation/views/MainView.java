@@ -53,7 +53,7 @@ public class MainView extends JFrame implements IMainView
                                 .addContainerGap())
         );
 
-        setSize(new Dimension(500, 400));
+        setSize(new Dimension(700, 500));
         setLocationRelativeTo(null);
     }
 

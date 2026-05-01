@@ -1,6 +1,7 @@
 package presenters;
 
 import app.INavigator;
+import app.state.GlobalFilteringType;
 import com.google.inject.Inject;
 import domain.common.Mode;
 import domain.image.GrayScaleMatrix;
@@ -42,6 +43,9 @@ public class NavPresenter {
 
     public void goToFourier(){
         navigator.showFourier();
+    }
+    public void goToGlobalFilter(GlobalFilteringType type){
+        navigator.showFiltreLineaire(type);
     }
 
     public GrayScaleMatrix getImageGrayMatrix() {

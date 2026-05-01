@@ -1,5 +1,6 @@
 package ui.implementation.components.nav;
 
+import app.state.GlobalFilteringType;
 import domain.image.GrayScaleMatrix;
 import domain.image.processing.histogram.Histogramme;
 import domain.common.Mode;
@@ -33,6 +34,7 @@ public class NavBar extends JMenuBar implements INavBar {
     private JMenu drawingMenu;
     private JMenu fourierMenu;
     private JMenu histogramMenu;
+    private JMenu linearFilteringMenu;
 
     private NavPresenter presenter;
 
@@ -79,14 +81,25 @@ public class NavBar extends JMenuBar implements INavBar {
                 new MenuItem("Afficher", "/report_32_hot.jpg",this::displayHistogram)
         );
 
+        linearFilteringMenu = new Menu("Filtrage linéaire", "/placeholder.jpg",
+                new Menu("Global", "/placeholder.jpg",
+                        new MenuItem("Filtre passe-bas idéal", e -> {this.displayGlobalLinearFilter(e, GlobalFilteringType.IDEAL_LOW_PASS);}),
+                        new MenuItem("Filtre passe-haut idéal", e -> {this.displayGlobalLinearFilter(e, GlobalFilteringType.IDEAL_HIGH_PASS);}),
+                        new MenuItem("Filtre passe-bas Butterworth", e -> {this.displayGlobalLinearFilter(e, GlobalFilteringType.BUTTERWORTH_LOW_PASS);}),
+                        new MenuItem("Filtre passe-haut Butterworth", e -> {this.displayGlobalLinearFilter(e, GlobalFilteringType.BUTTERWORTH_HIGH_PASS);})
+                )
+        );
+
         this.add(imageMenu);
         this.add(drawingMenu);
         this.add(fourierMenu);
         this.add(histogramMenu);
+        this.add(linearFilteringMenu);
 
         drawingMenu.setEnabled(false);
         fourierMenu.setEnabled(false);
         histogramMenu.setEnabled(false);
+        linearFilteringMenu.setEnabled(false);
     }
 
     //####################################################
@@ -154,6 +167,7 @@ public class NavBar extends JMenuBar implements INavBar {
         drawingMenu.setEnabled(true);
         fourierMenu.setEnabled(true);
         histogramMenu.setEnabled(true);
+        linearFilteringMenu.setEnabled(true);
     }
 
     private void activeMenusRGB()
@@ -161,6 +175,7 @@ public class NavBar extends JMenuBar implements INavBar {
         drawingMenu.setEnabled(true);
         fourierMenu.setEnabled(false);
         histogramMenu.setEnabled(false);
+        linearFilteringMenu.setEnabled(false);
     }
 
     //####################################################
@@ -281,5 +296,9 @@ public class NavBar extends JMenuBar implements INavBar {
         {
             System.out.println("Erreur CImageNG : " + ex.getMessage());
         }
+    }
+
+    private void displayGlobalLinearFilter(ActionEvent e, GlobalFilteringType type) {
+        presenter.goToGlobalFilter(type);
     }
 }

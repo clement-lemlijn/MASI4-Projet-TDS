@@ -19,7 +19,7 @@ import javax.swing.event.ChangeEvent;
 /**
  * @author Jean-Marc Wagner, Laurent Crema
  */
-public class DoubleMatrix extends JFrame implements IDoubleMatrix
+public class DoubleMatrix extends Frame implements IDoubleMatrix
 {
     private double normalizedWhite;
     private double normalizedBlack;
@@ -61,8 +61,8 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
         blackSlider = buildSlider();
         whiteSlider = buildSlider();
 
-        blackTextField = buildTextField(Color.BLACK);
-        whiteTextField = buildTextField(null);
+        blackTextField = buildTextField(Color.BLACK, Color.BLACK);
+        whiteTextField = buildTextField();
 
         minLabel = buildValueLabel();
         maxLabel = buildValueLabel();
@@ -91,26 +91,6 @@ public class DoubleMatrix extends JFrame implements IDoubleMatrix
 
         blackSlider.setValue(0);
         whiteSlider.setValue(1000);
-    }
-
-    private JSlider buildSlider() {
-        return new JSlider(JSlider.VERTICAL);
-    }
-
-    private JTextField buildTextField(Color background) {
-        JTextField field = new JTextField();
-        field.setFont(new Font("Tahoma", Font.BOLD, 11));
-        field.setForeground(Color.RED);
-        field.setHorizontalAlignment(JTextField.CENTER);
-        if (background != null) field.setBackground(background);
-        return field;
-    }
-
-    private JLabel buildValueLabel() {
-        JLabel label = new JLabel("0.0");
-        label.setFont(new Font("Tahoma", Font.BOLD, 11));
-        label.setForeground(Color.BLUE);
-        return label;
     }
 
     private JTabbedPane buildModeTab(){
