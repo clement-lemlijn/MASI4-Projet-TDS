@@ -1,6 +1,7 @@
 package app;
 
 import app.state.AppState;
+import app.state.DoubleMatrixState;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
@@ -23,9 +24,12 @@ public class AppModule extends AbstractModule {
     @Override
     protected void configure() {
 
+        //--- States ---
+        bind(AppState.class).in(Scopes.SINGLETON);
+        bind(DoubleMatrixState.class);
+
         //--- Application layer ---
         bind(EventBus.class).in(Scopes.SINGLETON);
-        bind(AppState.class).in(Scopes.SINGLETON);
         bind(INavigator.class).to(SwingNavigator.class).in(Scopes.SINGLETON);
 
         //--- UI layer ---

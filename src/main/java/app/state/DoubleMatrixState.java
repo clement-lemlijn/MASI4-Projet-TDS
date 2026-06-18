@@ -7,7 +7,6 @@ import domain.events.fourier.*;
 import domain.image.GrayScaleMatrix;
 import domain.image.processing.complex.ComplexMatrix;
 
-@Singleton
 public class DoubleMatrixState extends State {
 
     private ComplexMatrix fourier;
@@ -18,16 +17,16 @@ public class DoubleMatrixState extends State {
 
     @Inject
     public DoubleMatrixState(EventBus eventBus) {
-        super(eventBus);
+        super(new EventBus());
+    }
+
+    public ComplexMatrix getFourier() {
+        return fourier;
     }
 
     public void setFourier(ComplexMatrix fourier) {
         this.fourier = fourier;
         this.eventBus.post(new ComplexMatrixChanged(fourier));
-    }
-
-    public ComplexMatrix getFourier() {
-        return fourier;
     }
 
     public void setModule(GrayScaleMatrix matrix) {
