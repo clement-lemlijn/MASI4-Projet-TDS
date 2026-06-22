@@ -1,6 +1,5 @@
 package ui.implementation.views;
 
-
 import com.google.inject.Inject;
 import domain.common.Mode;
 import domain.image.Image;
@@ -12,6 +11,7 @@ import ui.interfaces.IMainView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
  */
 public class MainView extends JFrame implements IMainView
 {
+    private Mode currentMode;
     private ImagePanel imagePreviewContainer;
     private final MainPresenter presenter;
 
@@ -42,6 +43,32 @@ public class MainView extends JFrame implements IMainView
             @Override
             public void mouseDragged(MouseEvent e) {
                 drawPixel(e.getX(), e.getY(), 255, 0, 0);
+            }
+        });
+
+        imagePreviewContainer.addMouseListener(new MouseAdapter() {
+
+            private Point startPoint;
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                startPoint = new Point(e.getX(), e.getY());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                Point endPoint = new Point(e.getX(), e.getY());
+                if (startPoint == null) return;
+
+                drawShape(
+                        startPoint.x,
+                        endPoint.x,
+                        startPoint.y,
+                        endPoint.y,
+                        255, 0, 0
+                );
+
+                startPoint = null;
             }
         });
 
@@ -77,60 +104,22 @@ public class MainView extends JFrame implements IMainView
         }
     }
 
-//    public void ClicDetected(UnClicEvent e)
-//    {
-//        if (presenter.isPixelModeActive())
-//        {
-//            try
-//            {
-//                if (imageRGB != null)
-//                    imageRGB.setPixel(e.getX(),e.getY(),couleurPinceauRGB);
-//                if (imageNG != null)
-//                    imageNG.setPixel(e.getX(),e.getY(),couleurPinceauNG);
-//            }
-//            catch (CImageRGBException ex)
-//            { System.out.println("Erreur RGB : " + ex.getMessage()); }
-//            catch (CImageNGException ex)
-//            { System.out.println("Erreur NG : " + ex.getMessage()); }
-//        }
-//    }
-//
-//    public void SelectLigneDetected(DeuxClicsEvent e)
-//    {
-//        if (presenter.isLineModeActive())
-//        {
-//            try
-//            {
-//                if (imageRGB != null)
-//                    imageRGB.DessineLigne(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
-//                if (imageNG != null)
-//                    imageNG.DessineLigne(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
-//            }
-//            catch (CImageRGBException ex)
-//            { System.out.println("Erreur RGB : " + ex.getMessage()); }
-//            catch (CImageNGException ex)
-//            { System.out.println("Erreur NG : " + ex.getMessage()); }
-//        }
-//    }
-//
-//    public void SelectRectDetected(DeuxClicsEvent e)
-//    {
-//        if (presenter.isRectangleModeActive())
-//        {
-//            try
-//            {
-//                if (imageRGB != null)
-//                    imageRGB.DessineRect(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauRGB);
-//                if (imageNG != null)
-//                    imageNG.DessineRect(e.getX1(),e.getY1(),e.getX2(),e.getY2(),couleurPinceauNG);
-//            }
-//            catch (CImageRGBException ex)
-//            { System.out.println("Erreur RGB : " + ex.getMessage()); }
-//            catch (CImageNGException ex)
-//            { System.out.println("Erreur NG : " + ex.getMessage()); }
-//        }
-//    }
-//
+    public void drawShape(int x1, int x2, int y1, int y2, int red, int green, int blue){
+        try {
+            Point p1 = imagePreviewContainer.toImageCoordinates(x1, y1);
+            Point p2 = imagePreviewContainer.toImageCoordinates(x2, y2);
+            if(p1 == null || p2 == null) return;
+            presenter.drawShape(
+                    (int)p1.getX(), (int)p2.getX(), (int) p1.getY(), (int) p2.getY(),
+                    red, green, blue);
+
+        } catch (Exception e) {
+            displayErrorMessage("Oups !",
+                    "Impossible de dessiner sur l'image pour le moment : " + e.getMessage());
+        }
+    }
+
+
 //    public void SelectCercleDetected(DeuxClicsEvent e)
 //    {
 //        if (presenter.isCircleModeActive())

@@ -67,6 +67,8 @@ public class ImagePanel extends JPanel {
             offsetY = (getHeight() - drawH) / 2;
     }
 
+
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

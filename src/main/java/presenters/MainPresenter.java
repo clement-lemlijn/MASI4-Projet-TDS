@@ -3,10 +3,12 @@ package presenters;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import domain.common.Mode;
 import domain.events.ImageChangedEvent;
 import domain.events.ModeChangedEvent;
 import domain.image.Image;
 import services.ImageService;
+import services.ModeService;
 import ui.interfaces.IMainView;
 
 /**
@@ -15,11 +17,13 @@ import ui.interfaces.IMainView;
 public class MainPresenter {
 
     private IMainView view;
-    private final ImageService service;
+    private final ModeService modeService;
+    private final ImageService imageService;
 
     @Inject
-    public MainPresenter(ImageService service, EventBus eventBus) {
-        this.service = service;
+    public MainPresenter(ModeService modeService, ImageService imageService, EventBus eventBus) {
+        this.modeService = modeService;
+        this.imageService = imageService;
         eventBus.register(this);
     }
 
@@ -38,33 +42,26 @@ public class MainPresenter {
     }
 
     public void drawPixel(int x, int y, int red, int green, int blue){
-        Image image = service.getImage();
+        if(modeService.getMode() != Mode.DRAW_PIXEL) return;
+        Image image = imageService.getImage();
         image.setPixelColor(x, y, red, green, blue);
-        service.setImage(image);
+        imageService.setImage(image);
     }
 
-    public boolean isPixelModeActive(){
-        return false;
+    public void drawShape(int x1, int x2, int y1, int y2, int red, int green, int blue){
+        Image image = imageService.getImage();
+        switch (modeService.getMode()) {
+            case DRAW_RECTANGLE:
+                image.setRectangleColor(x1, x2, y1, y2, red, green, blue);
+                break;
+            case DRAW_LINE:
+                image.setLineColor(x1, x2, y1, y2, red, green, blue);
+                break;
+            case DRAW_CIRCLE:
+                break;
+        }
+        imageService.setImage(image);
     }
 
-    public boolean isLineModeActive(){
-        return false;
-    }
-
-    public boolean isRectangleModeActive(){
-        return false;
-    }
-
-    public boolean isPlainRectangleActive(){
-        return false;
-    }
-
-    public boolean isCircleModeActive(){
-        return false;
-    }
-
-    public boolean isPlainCircleModeActive(){
-        return false;
-    }
 
 }

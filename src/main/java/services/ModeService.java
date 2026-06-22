@@ -17,4 +17,6 @@ public class ModeService {
         appState.setMode(m);
     }
 
+    public Mode getMode() { return this.appState.getMode(); }
+
 }

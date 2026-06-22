@@ -32,4 +32,6 @@ public class AppState extends State {
     public Image getImage(){
         return this.rgbImage;
     }
+
+    public Mode getMode() { return this.mode; }
 }

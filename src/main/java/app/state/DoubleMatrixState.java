@@ -16,9 +16,7 @@ public class DoubleMatrixState extends State {
     private GrayScaleMatrix imaginary;
 
     @Inject
-    public DoubleMatrixState(EventBus eventBus) {
-        super(new EventBus());
-    }
+    public DoubleMatrixState() { super(new EventBus()); }
 
     public ComplexMatrix getFourier() {
         return fourier;
