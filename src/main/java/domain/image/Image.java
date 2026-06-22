@@ -37,6 +37,14 @@ public class Image {
         return pixels[y][x];
     }
 
+    public void setPixelColor(int x, int y, int red, int green, int blue){
+        if(x < 0 || y < 0 || x >= getWidth() || y >= getHeight())
+            throw new IllegalArgumentException("Invalid coordinates");
+        Pixel p = new Pixel(red, green, blue);
+        pixels[y][x] = p;
+        grayScaleEquivalent = toGrayScale();
+    }
+
     /**
      * Return the corresponding gray scale matrix. Since this operation is destructive, the original image is not modified.
      * Instead, a new one is returned.

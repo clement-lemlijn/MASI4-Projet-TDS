@@ -11,7 +11,9 @@ import ui.implementation.components.nav.NavBar;
 import ui.interfaces.IMainView;
 
 import javax.swing.*;
-import java.awt.Dimension;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 
 /**
@@ -36,25 +38,43 @@ public class MainView extends JFrame implements IMainView
     private void initComponents() {
         imagePreviewContainer = new ImagePanel();
 
+        imagePreviewContainer.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                drawPixel(e.getX(), e.getY(), 255, 0, 0);
+            }
+        });
+
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(imagePreviewContainer, GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                                .addComponent(imagePreviewContainer)
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(imagePreviewContainer, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                                .addComponent(imagePreviewContainer)
                                 .addContainerGap())
         );
 
         setSize(new Dimension(500, 400));
         setLocationRelativeTo(null);
+    }
+
+    public void drawPixel(int x, int y, int red, int green, int blue){
+        try {
+            Point p = imagePreviewContainer.toImageCoordinates(x, y);
+            if(p == null) return;
+            presenter.drawPixel((int)p.getX(), (int)p.getY(), red, green, blue);
+        } catch (Exception e) {
+            displayErrorMessage("Oups !",
+                    "Impossible de dessiner sur l'image pour le moment : " + e.getMessage());
+        }
     }
 
 //    public void ClicDetected(UnClicEvent e)

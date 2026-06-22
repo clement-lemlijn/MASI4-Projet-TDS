@@ -10,54 +10,68 @@ import java.awt.image.BufferedImage;
 
 
 public class ImagePanel extends JPanel {
-    private Image original;
     private BufferedImage image;
+    private double scale;
+    private int drawW;
+    private int drawH;
+    private int offsetX;
+    private int offsetY;
 
-    public ImagePanel() {
-
-    }
+    public ImagePanel() { }
 
     public ImagePanel(BufferedImage image) {
         loadImage(image);
     }
 
-    public Image getImage(){
-        return original;
-    }
-
     public void loadImage(BufferedImage image){
         this.image = image;
-        this.original = ImageMapper.fromBufferedImage(image);
         setPreferredSize(new Dimension(image.getWidth(null), image.getHeight(null)));
         repaint();
     }
 
-    public void loadImage(Image image){
-        this.original = image;
-        this.image = ImageMapper.toBufferedImage(image);
+    public void loadImage(GrayScaleMatrix matrix){
+        this.image = ImageMapper.toBufferedImage(matrix.toImage());
         setPreferredSize(new Dimension(this.image.getWidth(null), this.image.getHeight(null)));
         repaint();
     }
 
-    public void loadImage(GrayScaleMatrix matrix){
-        this.original = matrix.toImage();
-        this.image = ImageMapper.toBufferedImage(original);
-        setPreferredSize(new Dimension(this.image.getWidth(null), this.image.getHeight(null)));
-        repaint();
+    public Point toImageCoordinates(int x, int y) {
+        if (image == null) return null;
+
+        if (x < offsetX || x >= offsetX + drawW ||
+                y < offsetY || y >= offsetY + drawH) {
+            return null;
+        }
+
+        int imgX = (int) ((x - offsetX) / scale);
+        int imgY = (int) ((y - offsetY) / scale);
+
+        return new Point(imgX, imgY);
+    }
+
+    private void computeViewport() {
+            if (image == null) return;
+
+            int imgW = image.getWidth();
+            int imgH = image.getHeight();
+
+            scale = Math.min(
+                    (double) getWidth() / imgW,
+                    (double) getHeight() / imgH
+            );
+
+            drawW = (int) (imgW * scale);
+            drawH = (int) (imgH * scale);
+
+            offsetX = (getWidth() - drawW) / 2;
+            offsetY = (getHeight() - drawH) / 2;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (image != null) {
-            int imgW = image.getWidth(null);
-            int imgH = image.getHeight(null);
-            double scale = Math.min((double) getWidth() / imgW, (double) getHeight() / imgH);
-            int drawW = (int) (imgW * scale);
-            int drawH = (int) (imgH * scale);
-            int x = (getWidth() - drawW) / 2;
-            int y = (getHeight() - drawH) / 2;
-            g.drawImage(image, x, y, drawW, drawH, null);
-        }
+        if (image == null) return;
+        computeViewport();
+        g.drawImage(image, offsetX, offsetY, drawW, drawH, null);
     }
 }
